@@ -12,6 +12,6 @@ settings = {
     'login_url' : '/login', 
     'cookie_secret' : environment.get_cookie_secret(), 
     'static_path' : environment.get_local_position('static'),
-    'template_path' : environment.get_local_position('templates'),
+    'template_path' : environment.get_local_position('template'),
     #'log_file_prefix': '8888.log',
 }

@@ -1,0 +1,77 @@
+html {
+  position: relative;
+  min-height: 100%;
+}
+body{
+margin-bottom:500px;
+}
+#Banner{
+    background-color: #fff;
+    border: none;
+    padding: 30px;
+}
+#Banner .navbar-brand{
+    padding: 0 15px 0 0;
+}
+#Banner .navbar-brand img{
+    height: 50px; 
+}
+#TextBrand{
+    text-align: center;
+    padding-left: 0px;    
+}
+#ChineseBrand{
+    font-size: 1.5em;
+}
+#EnglishBrand{
+    font-size: 0.7em;
+}
+.footer{
+    position: absolute;
+    bottom: 0px;
+    width: 100%;
+}
+#InfoFooter{
+    padding: 5px;
+}
+#InfoFooter .container>div{
+    height:165px;
+}
+#InfoFooter .banner{
+    padding: 50px 0;
+}
+#InfoFooter .banner img{
+    height: 50px;
+    float:left;
+}
+#InfoFooter .banner div{
+    height: 50px;
+    padding-top: 10px;
+    font-size: 1.7em;
+    margin-left: 10px;
+    float: left;
+}
+#InfoFooter .basic_info div{
+    margin-top: 5px;
+}
+#InfoFooter .info_title{
+    color: #046380;
+    font-weight: bold;
+    margin-top:10px;
+}
+#InfoFooter .basic_info .info_title{
+    margin-top:10px;
+}
+#InfoFooter .related_links ul,li{
+    margin-top:5px;
+}
+#RightsFooter{
+    height: 30px;
+    background-color: #EFECCA;
+}
+#RightsFooter small{
+    line-height: 30px;
+    color: #A7A37E;
+    padding-right: 10px;
+    float:right;
+}

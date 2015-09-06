@@ -9,6 +9,8 @@ margin-bottom:500px;
     background-color: #fff;
     border: none;
     padding: 30px;
+    margin-bottom:0px;
+    margin-top:30px;
 }
 #Banner .navbar-brand{
     padding: 0 15px 0 0;

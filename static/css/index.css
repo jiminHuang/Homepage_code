@@ -1,0 +1,46 @@
+.carousel-inner .item>div{
+    padding: 0px;
+    height: 320px;
+}
+.carousel-control.right{
+    background-image: none;
+    width:5%;
+}
+.carousel-control.left{
+    background-image: none;
+    width:5%;
+}
+.carousel-indicators li{
+    border-color: #000;
+}
+.carousel-indicators .active{
+    background-color: #000;
+    border-color: #000;
+}
+.carousel_img img{
+    width: 100%;
+    height: 320px;
+}
+.carousel_text{
+    background-color: #efecaa; 
+}
+.carousel_text .carousel_title{
+    margin-top: 40px;
+    height: 100px;
+    font-size: 3em;
+    padding: 0 100px;
+}
+.carousel_text .carousel_intro{
+    padding: 0 100px;
+}
+.carousel_text .carousel_link{
+    margin-left: 100px;
+    margin-top: 20px;
+    padding: 0px;
+    width: 16%;
+    background-color: inherit; 
+    height: 40px;
+    border-color: #000;
+    border-width: 3px;
+    font-size: 1.5em;
+}

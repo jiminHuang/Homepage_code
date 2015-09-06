@@ -31,4 +31,4 @@ class MainHandler(BaseHandler):
         首页handler
     '''
     def get(self):
-        self.render("banner.html", page_title="test")
+        self.render("index.html", page_title=u"武汉大学互联网数据挖掘实验室")

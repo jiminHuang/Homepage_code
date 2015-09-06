@@ -1,6 +1,7 @@
+/*Carousel*/
 .carousel-inner .item>div{
     padding: 0px;
-    height: 320px;
+    min-height: 320px;
 }
 .carousel-control.right{
     background-image: none;
@@ -22,13 +23,13 @@
     height: 320px;
 }
 .carousel_text{
-    background-color: #efecaa; 
+    background-color: #a7a37e; 
+    min-height: 320px;
 }
 .carousel_text .carousel_title{
-    margin-top: 40px;
     height: 100px;
-    font-size: 3em;
-    padding: 0 100px;
+    font-size: 2em;
+    padding: 40px 100px 0 100px;
 }
 .carousel_text .carousel_intro{
     padding: 0 100px;
@@ -36,11 +37,46 @@
 .carousel_text .carousel_link{
     margin-left: 100px;
     margin-top: 20px;
+    margin-bottom: 25px;
     padding: 0px;
-    width: 16%;
+    min-width: 16%;
     background-color: inherit; 
     height: 40px;
     border-color: #000;
     border-width: 3px;
     font-size: 1.5em;
+}
+/*Section*/
+.section_title{
+    margin-top: 40px;
+    text-align:center;
+    font-weight: bold;
+    margin-bottom:50px;
+    font-size: 2em;
+}
+/*Fields*/
+#Fields{
+    min-height: 300px;
+}
+.col-md-4{
+    height: 300px;
+}
+.field_title{
+    font-size: 1.4em;
+    margin: 20px 0;
+}
+.field_text{
+    height: 120px;
+}
+.field_link{
+    float: right;
+    color: #046380;
+}
+.field_link:hover, .field_link:active{
+    text-decoration: none;
+} 
+/*Papers*/
+#Papers{
+    background-color: #e6e2af;
+    min-height: 400px;
 }

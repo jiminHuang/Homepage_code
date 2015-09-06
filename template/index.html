@@ -3,6 +3,7 @@
 <link href="{{ static_url("css/index.css") }}" rel="stylesheet">
 {% end %}
 {% block main %}
+<!-- Carousel -->
 <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
     <!-- Indicators -->
     <ol class="carousel-indicators">
@@ -55,4 +56,65 @@
         <span class="sr-only">Next</span>
     </a>
 </div>
+<!--Fields-->
+<section id="Fields">
+    <div class="container">
+        <div class="section_title">研究方向</div>
+        <div class="col-md-4">
+            <div class="field_title">研究方向1</div>
+            <div class="field_text">测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测测试测试测试测试测试测试测试测试测试测试测试测试测试</div>
+            <a class="field_link" href="#">了解更多</a>
+        </div>
+        <div class="col-md-4">
+            <div class="field_title">研究方向2</div>
+            <div class="field_text">测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测测试测试测试测试测试测试测试测试测试测试测试测试测试</div>
+            <a class="field_link" href="#">了解更多</a>
+        </div>
+        <div class="col-md-4">
+            <div class="field_title">研究方向3</div>
+            <div class="field_text">测试测试试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测测试测试测试测试测试测试测试测试测试测试测试测试测试</div>
+            <a class="field_link" href="#">了解更多</a>
+        </div>
+    </div>
+</section>
+<!--Papers-->
+<section id="Papers">
+    <div class="container">
+        <div class="section_title">最新论文</div>
+        <a href="#">
+            <div class="col-md-3">
+                <div class="thumbnail">
+                    <img src="{{static_url("img/paper.png")}}" data-src="holder.js/100%x300" style="height:300px; width:100%"/>
+                    <p>Streaming First Story Detection with application to Twitter</p>
+                </div>
+            </div>
+        </a> 
+        <a href="#">
+            <div class="col-md-3">
+                <div class="thumbnail">
+                    <img src="{{static_url("img/paper.png")}}" data-src="holder.js/100%x300" style="height:300px; width:100%"/>
+                    <p>Streaming First Story Detection with application to Twitter</p>
+                </div>
+            </div>
+        </a> 
+        <a href="#">
+            <div class="col-md-3">
+                <div class="thumbnail">
+                    <img src="{{static_url("img/paper.png")}}" data-src="holder.js/100%x300" style="height:300px; width:100%"/>
+                    <p>Streaming First Story Detection with application to Twitter</p>
+                </div>
+            </div>
+        </a> 
+        <a href="#">
+            <div class="col-md-3">
+                <div class="thumbnail">
+                    <img src="{{static_url("img/paper.png")}}" data-src="holder.js/100%x300" style="height:300px; width:100%"/>
+                    <p>Streaming First Story Detection with application to Twitter</p>
+                </div>
+            </div>
+        </a> 
+    </div>
+     
+</section>
+    
 {% end %}

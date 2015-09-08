@@ -23,7 +23,6 @@
     height: 320px;
 }
 .carousel_text{
-    background-color: #a7a37e; 
     min-height: 320px;
 }
 .carousel_text .carousel_title{
@@ -42,27 +41,29 @@
     min-width: 16%;
     background-color: inherit; 
     height: 40px;
-    border-color: #000;
+    border-color: #333;
     border-width: 3px;
     font-size: 1.5em;
 }
 /*Section*/
+section{
+    padding: 80px 0;
+}
 .section_title{
-    margin-top: 40px;
-    text-align:center;
     font-weight: bold;
-    margin-bottom:50px;
-    font-size: 2em;
+    font-size: 1.6em;
+    margin-bottom: 40px;
+    margin-left: 60px;
 }
 /*Fields*/
 #Fields{
     min-height: 300px;
 }
-.col-md-4{
-    height: 300px;
+#Fields .col-md-4{
+    height: 200px;
 }
 .field_title{
-    font-size: 1.4em;
+    font-size: 1.2em;
     margin: 20px 0;
 }
 .field_text{
@@ -77,6 +78,60 @@
 } 
 /*Papers*/
 #Papers{
-    background-color: #e6e2af;
-    min-height: 400px;
+    min-height: 300px;
+}
+#Papers a:hover{
+    text-decoration: none;
+}
+#Papers .col-md-4 .paper_text{
+    color: #333;
+    padding: 10px;
+    max-height: 180px;
+}
+#Papers .col-md-4 .paper_text .paper_title{
+    height: 40px; 
+    font-size: 1.2em;
+    color: #000;
+}
+#Papers .col-md-4 .paper_text .paper_publisher{
+    font-size: 0.9em;
+    color: #888;
+}
+#Papers .col-md-4 .paper_text:hover{
+    text-decoration: none;
+}
+#Papers .col-md-4 img{
+    width: 150px;
+    height: 180px;
+    float: left;
+}
+/*Projects*/
+#Projects .projects_img{
+    margin:0 auto;
+    width: 100px;
+}
+#Projects .projects_img img{
+    height: 100px;    
+    width: 100px;
+    border-radius: 100px;
+}
+.projects_text{
+    padding: 15px;
+}
+.projects_title{
+    text-align: center;
+    color: #000;
+    font-size: 1.2em;
+    margin-bottom: 10px;
+}
+.projects_intro{
+    padding: 5px 15px;
+}
+.projects_link{
+    margin: 5px auto;
+    width: 82px;
+}
+.projects_link a{
+    border-width: 2px;
+    border-color: #333;
 }

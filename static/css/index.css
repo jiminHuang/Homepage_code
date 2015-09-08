@@ -83,10 +83,13 @@ section{
 #Papers a:hover{
     text-decoration: none;
 }
+#Papers .col-md-4{
+    min-height: 200px;
+}
 #Papers .col-md-4 .paper_text{
     color: #333;
     padding: 10px;
-    max-height: 180px;
+    height: 180px;
 }
 #Papers .col-md-4 .paper_text .paper_title{
     height: 40px; 
@@ -134,4 +137,21 @@ section{
 .projects_link a{
     border-width: 2px;
     border-color: #333;
+}
+/*Team*/
+.team_selection li.active span{
+    border-bottom-color: #000;
+    border-bottom-width: 2px;
+    border-bottom-style: solid;
+}
+.team_view{
+    margin: 20px 0px;
+    min-height: 226px; 
+}
+.team_view .col-md-2{
+    padding: 0px;
+    min-height: 226px; 
+}
+.team_view img{
+    width: 100%;
 }

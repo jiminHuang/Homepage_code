@@ -12,11 +12,11 @@
     width:5%;
 }
 .carousel-indicators li{
-    border-color: #000;
+    border-color: #303030;
 }
 .carousel-indicators .active{
-    background-color: #000;
-    border-color: #000;
+    background-color: #303030;
+    border-color: #303030;
 }
 .carousel_img img{
     width: 100%;
@@ -24,6 +24,7 @@
 }
 .carousel_text{
     min-height: 320px;
+    background-color: #88aea3;
 }
 .carousel_text .carousel_title{
     height: 100px;
@@ -37,10 +38,15 @@
     margin-left: 100px;
     margin-top: 20px;
     margin-bottom: 25px;
-    background-color: inherit; 
 }
 .carousel_link a{
     font-size: 1.2em;
+    background-color: #006e5f;
+    border-color: #333;
+}
+.carousel_link a:hover{
+    background-color: #006e5f;
+    border-color: #333;
 }
 /*Section*/
 section{
@@ -51,6 +57,7 @@ section{
     font-size: 1.6em;
     margin-bottom: 40px;
     text-align: center;
+    color: #304758;
 }
 /*Intro*/
 #Intro .intro_slogen{
@@ -96,6 +103,7 @@ section{
 /*Papers*/
 #Papers{
     min-height: 300px;
+    background-color:#b0b7ac;
 }
 #Papers a:hover{
     text-decoration: none;
@@ -103,29 +111,40 @@ section{
 #Papers .col-md-4{
     min-height: 200px;
 }
-#Papers .col-md-4 .paper_text{
+.paper_text{
     color: #333;
     padding: 10px;
     height: 180px;
+    float:left;
 }
-#Papers .col-md-4 .paper_text .paper_title{
+.paper_title{
     height: 40px; 
     font-size: 1.2em;
     color: #000;
 }
-#Papers .col-md-4 .paper_text .paper_publisher{
+.paper_publisher{
     font-size: 0.9em;
     color: #888;
 }
-#Papers .col-md-4 .paper_text:hover{
+.paper_text:hover{
     text-decoration: none;
 }
-#Papers .col-md-4 img{
+.paper_img img{
+    width: 150px;
+    height: 180px;
+}
+.paper_img{
     width: 150px;
     height: 180px;
     float: left;
 }
 /*Projects*/
+#Projects{
+    background-color: #17507d;
+}
+#Projects .section_title{
+    color: #fff;
+}
 #Projects .projects_img{
     margin:0 auto;
     width: 100px;
@@ -140,20 +159,28 @@ section{
 }
 .projects_title{
     text-align: center;
-    color: #000;
+    color: #fff;
     font-size: 1.2em;
     margin-bottom: 10px;
 }
 .projects_intro{
     padding: 5px 15px;
+    color: #fff;
 }
 .projects_link{
     margin: 5px auto;
     width: 82px;
 }
 .projects_link a{
+    background-color: #17507d;
+    color: #fff;
 }
 /*Team*/
+#Team{
+}
+.team_selection{
+    text-align: center;
+}
 .team_selection li.active span{
     border-bottom-color: #000;
     border-bottom-width: 2px;

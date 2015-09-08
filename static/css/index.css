@@ -37,37 +37,54 @@
     margin-left: 100px;
     margin-top: 20px;
     margin-bottom: 25px;
-    padding: 0px;
-    min-width: 16%;
     background-color: inherit; 
-    height: 40px;
-    border-color: #333;
-    border-width: 3px;
-    font-size: 1.5em;
+}
+.carousel_link a{
+    font-size: 1.2em;
 }
 /*Section*/
 section{
-    padding: 80px 0;
+    padding: 60px 0;
 }
 .section_title{
     font-weight: bold;
     font-size: 1.6em;
     margin-bottom: 40px;
-    margin-left: 60px;
+    text-align: center;
 }
-/*Fields*/
-#Fields{
-    min-height: 300px;
+/*Intro*/
+#Intro .intro_slogen{
+    text-align: center;
+    font-size: 2em;
 }
-#Fields .col-md-4{
-    height: 200px;
+.intro_text{
+    padding: 0 100px;
+}
+.intro_link{
+    margin: 0 auto;
+    padding-top: 20px;
+    width: 106px;
+}
+.intro_link a{
+    font-size: 1.4em;
+}
+#Intro .row{
+    margin-top: 80px;
+}
+.field_img{
+    height: 100px;
+    width: 100px;
+    margin: 0 auto;
+}
+.field_img img{
+    width: 100px;
+    height: 100px;
+    border-radius: 100px;
 }
 .field_title{
     font-size: 1.2em;
     margin: 20px 0;
-}
-.field_text{
-    height: 120px;
+    text-align: center;
 }
 .field_link{
     float: right;
@@ -135,8 +152,6 @@ section{
     width: 82px;
 }
 .projects_link a{
-    border-width: 2px;
-    border-color: #333;
 }
 /*Team*/
 .team_selection li.active span{

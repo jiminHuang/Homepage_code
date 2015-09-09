@@ -1,0 +1,184 @@
+/*Carousel*/
+.carousel-inner .item>div{
+    padding: 0px;
+    min-height: 320px;
+}
+.carousel-control.right{
+    background-image: none;
+    width:5%;
+}
+.carousel-control.left{
+    background-image: none;
+    width:5%;
+}
+.carousel-indicators li{
+    border-color: #000;
+}
+.carousel-indicators .active{
+    background-color: #000;
+    border-color: #000;
+}
+.carousel_img img{
+    width: 100%;
+    height: 320px;
+}
+.carousel_text{
+    min-height: 320px;
+    background-color: #ebf4ec;
+}
+.carousel_title{
+    height: 100px;
+    font-size: 2em;
+    padding: 40px 100px 0 100px;
+}
+.carousel_intro{
+    padding: 0 100px;
+}
+.carousel_link{
+    margin-left: 100px;
+    margin-top: 20px;
+    margin-bottom: 25px;
+}
+.carousel_link a{
+    font-size: 1.2em;
+    background-color: #2ec3e7;
+    border-color: #2ec3e7;
+    color: #fff;
+}
+.carousel_link a:hover{
+    background-color: #2ec3e7;
+    border-color: #333;
+    border-color: #2ec3e7;
+    color: #fff;
+}
+/*Section*/
+section{
+    padding: 60px 0;
+}
+.section_title{
+    font-weight: bold;
+    font-size: 1.6em;
+    margin-bottom: 40px;
+    text-align: center;
+    color: #303030;
+}
+/*Intro*/
+#Intro .intro_slogen{
+    text-align: center;
+    font-size: 2em;
+}
+.intro_text{
+    padding: 0 100px;
+}
+.intro_link{
+    margin: 0 auto;
+    padding-top: 40px;
+    width: 106px;
+}
+.intro_link a{
+    font-size: 1.4em;
+    background-color: #2ec3e7;
+    border-color: #2ec3e7;
+    color: #fff;
+    margin-top: 20px;
+}
+.intro_link a:hover{
+    background-color: #2ec3e7;
+    border-color: #2ec3e7;
+    color: #fff;
+}
+/*Papers*/
+#Papers{
+    min-height: 300px;
+    background-color:#ebf4ec;
+}
+#Papers a{
+    text-align: center;
+}
+.paper_text{
+    color: #333;
+    padding: 10px;
+    height: 180px;
+}
+.paper_title{
+    height: 40px; 
+    font-size: 1.2em;
+    color: #000;
+}
+.paper_date{
+    font-size: 1.9em;
+    color: #2ec3e7;
+}
+.paper_publisher{
+    font-size: 0.9em;
+    color: #888;
+}
+.paper_text:hover{
+    text-decoration: none;
+}
+.paper_img img{
+    width: 150px;
+    height: 180px;
+}
+.paper_img{
+    width: 150px;
+    height: 180px;
+    float: left;
+}
+/*Projects*/
+#Projects{
+    background-color: #2ec3e7;
+}
+.projects_img{
+    margin:0 auto;
+    width: 100px;
+}
+.projects_img img{
+    height: 100px;    
+    width: 100px;
+    border-radius: 100px;
+}
+.projects_text{
+    padding: 15px;
+}
+.projects_title{
+    text-align: center;
+    font-size: 1.2em;
+    margin-bottom: 10px;
+}
+.projects_intro{
+    padding: 5px 15px;
+}
+.projects_link{
+    margin: 5px auto;
+    width: 82px;
+}
+.projects_link a{
+    background-color: #2ec3e7;
+    border-color: #303030;
+    margin-top: 10px;
+}
+.projects_link a:hover{
+    background-color: #2ec3e7;
+    border-color: #303030;
+}
+/*Team*/
+.team_selection{
+    text-align: center;
+}
+.team_selection li.active span{
+    border-bottom-color: #2ec3e7;
+    border-bottom-width: 2px;
+    border-bottom-style: solid;
+}
+.team_view{
+    margin: 20px 0px;
+    min-height: 226px; 
+}
+.team_view .col-md-2{
+    padding: 0px;
+    min-height: 226px; 
+}
+.team_view img{
+    width: 100%;
+}

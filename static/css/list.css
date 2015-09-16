@@ -1,0 +1,29 @@
+.list_selector{
+    font-weight: bold;
+}
+.list_selectors{
+    padding-bottom: 25px;
+}
+.list_selectors li:first-child{
+    padding-left:5px;
+}
+.list_selectors li{
+    padding:5px 5px;
+}
+.list_selectors li.active{
+    background-color: #2ec3e7;
+    color: #fff;
+}
+li.media{
+    padding: 20px 0;
+}
+.media-left a>img{
+    width: 200px;
+    height: 150px;
+}
+.list_loading_more{
+    margin: auto;
+    margin-top: 50px;
+    width: 82px;
+    display: block;
+}

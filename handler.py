@@ -32,3 +32,10 @@ class MainHandler(BaseHandler):
     '''
     def get(self):
         self.render("index.html", page_title=u"武汉大学互联网数据挖掘实验室")
+
+class ArticlesHandler(BaseHandler):
+    '''
+        文章列表页handler
+    '''
+    def get(self):
+        self.render("articles.html", page_title=u"文章列表-武汉大学互联网数据挖掘实验室")

@@ -1,0 +1,13 @@
+.article_heading{
+    font-size: 1.8em;
+}
+.article_author{
+    color: #2ec3ce;
+    padding-right:5px;
+}
+.article_publish_time{
+    color: #888;
+}
+.article_abstract{
+    padding: 10px 0;
+}

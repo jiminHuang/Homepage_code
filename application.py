@@ -13,6 +13,7 @@ from settings import settings
 
 application = tornado.web.Application([
     (r"/", handler.MainHandler),
+    (r"/articles", handler.ArticlesHandler),
     (r".*", handler.BaseHandler),
 ], **settings)
 

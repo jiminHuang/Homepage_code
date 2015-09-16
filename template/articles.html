@@ -1,0 +1,195 @@
+{% extends "main.html" %}
+{% block css %}
+    <link href="{{ static_url("css/articles.css") }}" rel="stylesheet">
+{% end %}
+{% block breadCrumb %}
+    <li class="active">文章列表</li>
+{% end %}
+{% block leftMain %}
+    {% module List() %}
+    <div class="list_selector">排序</div>
+    <hr />
+    <ul class="list-inline list_selectors">
+        <li class="active">默认推荐</li>
+        <li>最新发表</li>
+        <li>最多点评</li>
+    </ul> 
+    <div class="list_selector">时间</div>
+    <hr />
+    <ul class="list-inline list_selectors">
+        <li class="active">最近一天</li>
+        <li>最近一周</li>
+        <li>最近一月</li>
+        <li>最近一年</li>
+    </ul> 
+{% end %}
+{% block rightMain %}
+    <hr />
+    <ul class="media-list">
+        <li class="media">
+            <div class="media-left">
+                <a href="#">
+                    <img class="media-object" src="{{static_url("img/switch_one.jpeg")}}" alt="...">
+                </a>
+            </div>
+            <div class="media-body">
+                <h4 class="article_heading">测试标题</h4>
+                <div class="article_info">
+                    <span class="article_author">彭敏</span>
+                    <span class="article_publish_time">2015-09-16</span>
+                </div> 
+                <div class="article_abstract">
+                    测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试
+                </div>
+            </div>
+        </li> 
+        <hr />
+        <li class="media">
+            <div class="media-left">
+                <a href="#">
+                    <img class="media-object" src="{{static_url("img/switch_one.jpeg")}}" alt="...">
+                </a>
+            </div>
+            <div class="media-body">
+                <h4 class="article_heading">测试标题</h4>
+                <div class="article_info">
+                    <span class="article_author">彭敏</span>
+                    <span class="article_publish_time">2015-09-16</span>
+                </div> 
+                <div class="article_abstract">
+                    测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试
+                </div>
+            </div>
+        </li> 
+        <hr />
+        <li class="media">
+            <div class="media-left">
+                <a href="#">
+                    <img class="media-object" src="{{static_url("img/switch_one.jpeg")}}" alt="...">
+                </a>
+            </div>
+            <div class="media-body">
+                <h4 class="article_heading">测试标题</h4>
+                <div class="article_info">
+                    <span class="article_author">彭敏</span>
+                    <span class="article_publish_time">2015-09-16</span>
+                </div> 
+                <div class="article_abstract">
+                    测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试
+                </div>
+            </div>
+        </li> 
+        <hr />
+        <li class="media">
+            <div class="media-left">
+                <a href="#">
+                    <img class="media-object" src="{{static_url("img/switch_one.jpeg")}}" alt="...">
+                </a>
+            </div>
+            <div class="media-body">
+                <h4 class="article_heading">测试标题</h4>
+                <div class="article_info">
+                    <span class="article_author">彭敏</span>
+                    <span class="article_publish_time">2015-09-16</span>
+                </div> 
+                <div class="article_abstract">
+                    测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试
+                </div>
+            </div>
+        </li> 
+        <hr />
+        <li class="media">
+            <div class="media-left">
+                <a href="#">
+                    <img class="media-object" src="{{static_url("img/switch_one.jpeg")}}" alt="...">
+                </a>
+            </div>
+            <div class="media-body">
+                <h4 class="article_heading">测试标题</h4>
+                <div class="article_info">
+                    <span class="article_author">彭敏</span>
+                    <span class="article_publish_time">2015-09-16</span>
+                </div> 
+                <div class="article_abstract">
+                    测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试
+                </div>
+            </div>
+        </li> 
+        <hr />
+        <li class="media">
+            <div class="media-left">
+                <a href="#">
+                    <img class="media-object" src="{{static_url("img/switch_one.jpeg")}}" alt="...">
+                </a>
+            </div>
+            <div class="media-body">
+                <h4 class="article_heading">测试标题</h4>
+                <div class="article_info">
+                    <span class="article_author">彭敏</span>
+                    <span class="article_publish_time">2015-09-16</span>
+                </div> 
+                <div class="article_abstract">
+                    测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试
+                </div>
+            </div>
+        </li> 
+        <hr />
+        <li class="media">
+            <div class="media-left">
+                <a href="#">
+                    <img class="media-object" src="{{static_url("img/switch_one.jpeg")}}" alt="...">
+                </a>
+            </div>
+            <div class="media-body">
+                <h4 class="article_heading">测试标题</h4>
+                <div class="article_info">
+                    <span class="article_author">彭敏</span>
+                    <span class="article_publish_time">2015-09-16</span>
+                </div> 
+                <div class="article_abstract">
+                    测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试
+                </div>
+            </div>
+        </li> 
+        <hr />
+        <li class="media">
+            <div class="media-left">
+                <a href="#">
+                    <img class="media-object" src="{{static_url("img/switch_one.jpeg")}}" alt="...">
+                </a>
+            </div>
+            <div class="media-body">
+                <h4 class="article_heading">测试标题</h4>
+                <div class="article_info">
+                    <span class="article_author">彭敏</span>
+                    <span class="article_publish_time">2015-09-16</span>
+                </div> 
+                <div class="article_abstract">
+                    测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试
+                </div>
+            </div>
+        </li> 
+        <hr />
+        <li class="media">
+            <div class="media-left">
+                <a href="#">
+                    <img class="media-object" src="{{static_url("img/switch_one.jpeg")}}" alt="...">
+                </a>
+            </div>
+            <div class="media-body">
+                <h4 class="article_heading">测试标题</h4>
+                <div class="article_info">
+                    <span class="article_author">彭敏</span>
+                    <span class="article_publish_time">2015-09-16</span>
+                </div> 
+                <div class="article_abstract">
+                    测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试
+                </div>
+            </div>
+        </li> 
+        <hr />
+    </ul>
+    <div class="list_loading_more btn btn-default">
+        加载更多
+    </div>
+{% end %}

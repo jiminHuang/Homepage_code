@@ -54,6 +54,7 @@
 /*Section*/
 section{
     padding: 60px 0;
+    min-height:1px;
 }
 .section_title{
     font-weight: bold;
@@ -173,7 +174,7 @@ section{
 }
 .team_view{
     margin: 20px 0px;
-    min-height: 226px; 
+    min-height: 226px;
 }
 .team_view .col-md-2{
     padding: 0px;
@@ -181,4 +182,5 @@ section{
 }
 .team_view img{
     width: 100%;
+    min-height: 226px; 
 }

@@ -1,11 +1,12 @@
-#listMain{
-    padding: 10px 200px;
-}
 li.media{
     padding: 20px 0;
 }
 .media-body{
     padding-right: 40px;
+}
+.media-body a, a:hover{
+    color: #333;
+    text-decoration: none;
 }
 .media-left a>img{
     width: 200px;

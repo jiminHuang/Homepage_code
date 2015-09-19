@@ -10,8 +10,21 @@
 import tornado.web
 
 class ListModule(tornado.web.UIModule):
+    '''
+        列表页公用css
+    '''
     def render(self):
         return ''
     
     def css_files(self):
         return "/static/css/list.css"
+
+class SinglePageModule(tornado.web.UIModule):
+    '''
+        内容单页公用css
+    '''
+    def render(self):
+        return ''
+    
+    def css_files(self):
+        return "/static/css/single.css"

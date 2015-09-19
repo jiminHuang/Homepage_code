@@ -16,6 +16,7 @@ settings = {
     'template_path' : environment.get_local_position('template'),
     'ui_modules' : {
         'List' : modules.ListModule,
+        'SinglePage' : modules.SinglePageModule,
     }
     #'log_file_prefix': '8888.log',
 }

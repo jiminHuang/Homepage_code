@@ -1,0 +1,46 @@
+.article_title{
+    font-size: 3em;
+}
+.article_info{
+    margin: 10px 0;
+}
+.article_author{
+    color: #2ec3e7;
+    margin-right: 10px;
+}
+.article_publish_time{
+    color: #aaa;
+}
+.article_abstract{
+    margin-top: 20px;
+    background-color: #ebf4ec;
+    padding: 20px;
+}
+.article_abstract span{
+    font-weight: bold;
+}
+.article_image{
+    padding: 60px 0px;
+}
+.article_image img{
+    width: 100%;
+}
+.article_text{
+    font-size: 1.2em;
+}
+.article_text p{
+    margin: 40px 0;
+}
+.article_backinfo{
+    margin: 40px 0px;
+    text-align:center;    
+    color: #555;
+}
+.article_backinfo span.glyphicon{
+    font-size: 3em;
+    border-radius: 100px;
+    border-color: #555;
+    border-style: solid;
+    border-width: thin;
+    padding: 10px;
+}

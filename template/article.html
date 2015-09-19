@@ -1,0 +1,34 @@
+{% extends "main.html" %}
+{% block css %}
+    <link href="{{ static_url("css/article.css") }}" rel="stylesheet">
+{% end %}
+{% block breadCrumb %}
+    <li><a href="/articles">最新动态</a></li>
+    <li class="active">{{article["article_title"]}}</li>
+{% end %}
+{% block contentMain %}
+    <div class="article_wrapper">
+        <div class="article_title">{{article["article_title"]}}</div>
+        <div class="article_info">
+            <span class="article_author">{{article["article_author"]}}</span>
+            <span class="article_publish_time">{{article["article_publish_time"]}}</span>
+        </div>
+        <div class="article_abstract">
+            <span>摘要：</span>
+            {{article["article_abstract"]}}
+        </div>
+        <div class="row article_image">
+            <div class="col-md-offset-1 col-md-10">
+                <img src="{{static_url(article["article_image"])}}" />
+            </div>
+        </div>
+        <div class="article_text">
+            {% raw article["article_text"] %}
+        </div>
+        <hr/>
+        <div class="article_backinfo">
+            <p><span class="glyphicon glyphicon-eye-open"></span></p>
+            <p>{{article["article_viewed"]}}人已经读过了这篇文章</p>
+        </div>
+    </div>
+{% end %}

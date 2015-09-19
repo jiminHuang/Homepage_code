@@ -15,6 +15,7 @@ application = tornado.web.Application([
     (r"/", handler.MainHandler),
     (r"/articles", handler.ArticlesHandler),
     (r"/article", handler.ArticleHandler),
+    (r"/person", handler.PersonHandler),
     (r".*", handler.BaseHandler),
 ], **settings)
 

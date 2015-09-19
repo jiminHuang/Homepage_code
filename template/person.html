@@ -1,0 +1,13 @@
+{% extends "main.html" %}
+{% block css %}
+    <link href="{{ static_url("css/person.css") }}" rel="stylesheet">
+{% end %}
+{% block breadCrumb %}
+    <li class="active">{{person["person_realname"]}}</li>
+{% end %}
+{% block contentMain %}
+    <div class="person_image">
+        <img src="{{static_url(person["person_image"])}}" />
+    </div>
+    <div class="person_realname">{{person["person_realname"]}}</div>
+{% end %}

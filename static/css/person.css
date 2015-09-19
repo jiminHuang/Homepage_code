@@ -1,0 +1,13 @@
+.person_image{
+    width: 200px;        
+    margin: auto;
+} 
+.person_image img{
+    width: 100%;
+    border-radius: 200px;
+}
+.person_realname{
+    text-align: center;
+    margin: 40px;
+    font-size: 1.8em;
+}

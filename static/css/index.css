@@ -53,7 +53,7 @@
 }
 /*Section*/
 section{
-    padding: 60px 0;
+    padding: 100px 0;
     min-height:1px;
 }
 .section_title{
@@ -63,6 +63,19 @@ section{
     text-align: center;
     color: #303030;
 }
+.section_link{
+    margin: 30px auto;
+    width: 100px;
+}
+.section_link .btn{
+    font-size: 1.5em;
+    background-color: #2ec3e7;
+    color: #fff;
+    border-style: none;
+}
+.section_link .btn:hover{
+    border-style: none;
+}
 /*Intro*/
 #Intro .intro_slogen{
     text-align: center;
@@ -70,23 +83,6 @@ section{
 }
 .intro_text{
     padding: 0 100px;
-}
-.intro_link{
-    margin: 0 auto;
-    padding-top: 40px;
-    width: 106px;
-}
-.intro_link a{
-    font-size: 1.4em;
-    background-color: #2ec3e7;
-    border-color: #2ec3e7;
-    color: #fff;
-    margin-top: 20px;
-}
-.intro_link a:hover{
-    background-color: #2ec3e7;
-    border-color: #2ec3e7;
-    color: #fff;
 }
 /*Papers*/
 #Papers{
@@ -96,19 +92,27 @@ section{
 #Papers a{
     text-align: center;
 }
+#Papers .row{
+    padding: 0 100px;
+}
+.paper_wrapper{
+    background-color: #fff;
+}
 .paper_text{
     color: #333;
-    padding: 10px;
-    height: 180px;
+    padding-bottom: 20px;
+}
+.paper_title_wrapper{
+    background-color: #2ec3e7;
 }
 .paper_title{
-    height: 40px; 
     font-size: 1.2em;
     color: #000;
 }
 .paper_date{
     font-size: 1.9em;
-    color: #2ec3e7;
+    color: #fff;
+    line-height: 90px;
 }
 .paper_publisher{
     font-size: 0.9em;
@@ -117,18 +121,24 @@ section{
 .paper_text:hover{
     text-decoration: none;
 }
-.paper_img img{
-    width: 150px;
-    height: 180px;
-}
-.paper_img{
-    width: 150px;
-    height: 180px;
-    float: left;
-}
 /*Projects*/
 #Projects{
+    color: #fff;
     background-color: #2ec3e7;
+}
+#Projects .row{
+    padding: 0 100px;
+}
+#Projects .section_link .btn{
+    border-color: #333;
+    border-style: solid;
+    color: #333;
+}
+#Projects .row>a, a:hover{
+    color: #333;
+}
+#Projects .project_wrapper{
+    padding: 30px 0;
 }
 .projects_img{
     margin:0 auto;
@@ -150,20 +160,13 @@ section{
 .projects_intro{
     padding: 5px 15px;
 }
-.projects_link{
-    margin: 5px auto;
-    width: 82px;
-}
-.projects_link a{
-    background-color: #2ec3e7;
-    border-color: #303030;
-    margin-top: 10px;
-}
-.projects_link a:hover{
-    background-color: #2ec3e7;
-    border-color: #303030;
-}
 /*Team*/
+#Team{
+    background-color: #ebf4ec;
+}
+#Team .row{
+    margin: 0;
+}
 .team_selection{
     text-align: center;
 }
@@ -177,10 +180,9 @@ section{
     min-height: 226px;
 }
 .team_view .col-md-2{
-    padding: 0px;
-    min-height: 226px; 
+    padding: 0;
 }
 .team_view img{
     width: 100%;
-    min-height: 226px; 
+    min-height: 226px;
 }

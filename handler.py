@@ -69,6 +69,7 @@ class PersonHandler(BaseHandler):
         person = {
             'person_realname' : 'Min Peng',
             'person_image' : 'team_head.jpeg',
+            'person_type' : 'Teacher',
         }
         person["person_image"] = 'img/' + person["person_image"]
         self.render(

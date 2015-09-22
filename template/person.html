@@ -1,0 +1,156 @@
+{% extends "main.html" %}
+{% block css %}
+    <link href="{{ static_url("css/person.css") }}" rel="stylesheet">
+{% end %}
+{% block breadCrumb %}
+    <li class="active">{{person["person_realname"]}}</li>
+{% end %}
+{% block contentMain %}
+    <div class="person_image" id="BasicInfo">
+        <img src="{{static_url(person["person_image"])}}" />
+    </div>
+    <div class="person_realname">{{person["person_realname"]}}</div>
+    <div class="person_type">{{person["person_type"]}}</div>
+    <hr/>
+    <section id="PersonalInfo">
+        <div class="section_title">PERSONAL INFORMATION</div>
+        <div class="sub_title">Address</div>
+        <div class="sub_info">
+            Computer School</br>
+            Wuhan University</br>
+            Wuhan, Hubei 430072</br>
+            China
+        </div>
+        <div class="sub_title">Phone Number</div>
+        <div class="sub_info">
+            +86-18602719688
+        </div>
+        <div class="sub_title">Email</div>
+        <div class="sub_info">
+            pengm@whu.edu.cn
+        </div>
+    </section>
+    <hr/>
+    <section id="BIO">
+        <div class="section_title">BIO</div>
+        <div class="bio_text">
+            Min Peng is Professor in Computer School at Wuhan University, Wuhan, China.  She received her Ph.D. degree in Computer Software and Theory from Wuhan University in 2006.  She worked as a post-doctor from 2009 to 2010 at the Advanced Cyber-Infrastructure Laboratory, ECE Department at the University of New Mexico, USA. Her current research focus areas include information retrieval, network services and natural language process. In particular, her project and publications areas cover web information retrieval and social networks. Her work is being supported by the NSFC, NSF of Hubei and Education Office of Hubei. Dr. Peng is the recipient of the second Hubei Province Prize for Natural Sciences in 2009.  She was TPC chair of High Speed Networking workshop for IEEE INFOCOM 2011, and served as TPC member for many academic symposiums.
+        </div>
+    </section>
+    <hr/>
+    <section id="EducationBackground">
+        <div class="section_title">EDUCATION BACKGROUND</div>
+        <div class="sub_title">Bachelor</div>
+        <div class="duration">1990.09 - 1994.06</div>
+        <div class="sub_info">
+            Bachelor of Physics<br/>
+            Physics Department of Wuhan University
+        </div>
+        <div class="sub_title">Master</span></div>
+        <div class="duration">1999.09 - 2002.06</div>
+        <div class="sub_info">
+            Master of Computer Applications<br/>
+            Computer School of Wuhan University 
+        </div>
+        <div class="sub_title">Ph.D</div>
+        <div class="duration">2002.09 - 2006.06</div>
+        <div class="sub_info">
+            Ph.D of Computer Software and Theory<br/>
+            Computer School of Wuhan University
+        </div>
+    </section>
+    <hr/>
+    <section id="WorkExperience">
+        <div class="section_title">WORK EXPERIENCE</div>
+        <div class="sub_title">Professor</div>
+        <div class="duration">1994.07 - Present</div>
+        <div class="sub_info">
+            Computer School, Wuhan University
+        </div>
+        <div class="sub_title">Vice Professor</div>
+        <div class="duration">2005.01 - Present</div>
+        <div class="sub_info">
+            National Engineering Research Center of Multimedia Software, Wuhan, China
+        </div>
+        <div class="sub_title">Post Doctor</div>
+        <div class="duration">2009.08 - 2011.01</div>
+        <div class="sub_info">
+            Department of Electrical and Computer Engineering, University of New Mexico, Albuquerque, NM, U.S.A
+        </div>
+        <div class="sub_title">Visiting Scholar</div>
+        <div class="duration">2006.02 - 2006.09</div>
+        <div class="sub_info">
+            Department of Electrical and Computer Engineering, City University of Hong Kong
+        </div>
+    </section>
+    <hr />
+    <section id="ScientificResearch">
+        <div class="section_title">SCIENTIFIC RESEARCH</div>
+        <div class="sub_title">Interests</div>
+        <div class="research_field"><span>01</span>Information Retrieval</div>
+        <div class="research_field"><span>02</span>Natural Language Process</div>
+        <div class="research_field"><span>03</span>Network Services</div>
+        <div class="sub_title" id="MainPublishedPapers">Main Published Papers</div>
+        <ul class="list-group">
+            <li class="list-group-item">[1]. M. Peng, J. Huang, N. GhaniS. Sun, B. Wu, Y. He, W.Wen*, Micro-blogger influence analysis based on use feature, Journal of Internet Technology, ISSN: 1607-9264, Vol.14, No.2, pp.307-314, 2013.</li>
+            <li class="list-group-item">[2]. K. Liang, H. Alazemi, F. Xu, M. Peng, N. Ghani*, An Optimization Approach for Multi-Domain Optical Network Provisioning, IEEE Journal of Optical and Communications Networks, ISSN: 1943-0620, 5(12), pp.1413-1424, 2013.</li>
+            <li class="list-group-item">[3]. M. Peng, N. Xiong, J. H. Park*, A. V. Vasilakos, J. Zhang, The Weighted Shortest Path Search Based on Multi-Agents in Mobile GIS Services, Journal of Wireless Communications and Mobile Computing (WCMC), ISSN: 1530-8677, Vol.12, No.4, pp.302-317, 2012. </li>
+            <li class="list-group-item">[4]. F. Xu, T. Das, M. Peng, N. Ghani*, Evaluation of Post-Fault Restoration Strategies in Multi-Domain Networks, Optical Switching and Networking, ISSN: 1573-4277, Vol.9, No.2, pp.147-155, 2012.</li>
+            <li class="list-group-item">[5]. J. Huang , C. Li, S. Sun, N. Ghani, M. Peng*, A Query Expansion Based on Sentence and Vector Integration Strategy Using Universal Gravitation, Journal of Information and Computational Science, ISSN: 1548-7741, Vol.19, No.7, pp.5391-5400, 2012. </li>
+            <li class="list-group-item">[6]. N. Liu, Y. He, F. He, M. Peng*, J. Liu, The Method of Chinese Opinion Sentence Extraction and Polarity Identification Based on Sentimental Elements, Advanced Materials Research, Vols. 765-767, pp.1406-1410, 2013. </li>
+            <li class="list-group-item">[7]. N. Liu, Y. He, Q. Chen, M. Peng, Y. Tian, A New Method for Micro-blog Platform Users Classification Based on Infinitesimal-time, Journal of Information and Computational Science, ISSN: 1548-7741, Vol.10, No.9, pp.2569-2579, 2013. </li>
+            <li class="list-group-item">[8]. Min Peng, Naixue Xiong, Jong Hyuk Park*, Athanasios V. Vasilakos, Jiawen Zhang, The Weighted Shortest Path Search Based on Multi-Agents in Mobile GIS Services, Journal of Wireless Communications and Mobile Computing (WCMC), Vol.12, No.4, pp.302-317, 2012.3.</li>
+            <li class="list-group-item">[9]. Feng Xu, Mostafa Esmaeili, Min Peng, Nasir Ghani*, A. Rayes, Multi-Domain Restoration with Crankback IP/MPLS Networks, Optical Switching and Networking, Vol. 8, pp. 68-78, 2010. </li>
+            <li class="list-group-item">[10]. Mostafa Esmaeili, Feng Xu, Min Peng, Nasir Ghani*, Ashwin A. Gumaste, J. Finochietto, Enhanced Crankback Signaling for Multi-Domain IP/MPLS Networks” Computer Communications, Vol. 33, No.18, pp. 2215-2223, 2010. </li>
+            <li class="list-group-item">[11]. N. Ghani*, M. Esmaeili, H. Wu, Y. Qiao, R. Wang, Min Peng, Service Overlays for Ethernet LAN Over SONET/SDH, Optical Switching and Networking ,Vol. 7, No. 2, pp. 54-65,2010. </li>
+            <li class="list-group-item">[12]. Mostafa Esmaeili, Feng Xu, Nasir Ghani*, Chongyang Xie, Min Peng, Qing Liu, Enhanced Crankback for Lightpath Setup in Multi-Domain Optical Networks, IEEE Communications Letters, Vol. 14, No. 5, pp. 480-482, 2010. </li>
+            <li class="list-group-item">[13]. Feng Xu, Tamal Das, Min Peng, Nasir Ghani*, Evaluation of Post-Fault Restoration Strategies in Multi-Domain Networks, Optical Switching and Networking, Vol.9, No.2, pp.147-155, 2012. </li>
+            <li class="list-group-item">[14]. Jiajia Huang , Chundian Li, Songtao Sun, Nasir Ghani, Min Peng*, A Query Expansion Based on Sentence and Vector Integration Strategy Using Universal Gravitation, Journal of Information and Computational Science, Vol. 19, No.7,pp. 5391-5400,2012. </li>
+            <li class="list-group-item">[15]. F. Gu, M. Peng, S. Khan, A. Rayes, N. Ghani, Virtual Network Reconfiguration in Optical Substrate Networks, IEEE/OSA OFC 2013, Los Angeles, CA, March 2013.</li>
+            <li class="list-group-item">[16]. K. Liang, Min Peng, S. Khan, A. Rayes, Nasir. Ghani, Lightpath Optimization in Multi-Domain Optical Networks, IEEE/OSA OFC 2013, Los Angeles, CA, March 2013. </li>
+            <li class="list-group-item">[17]. Feng Xu, Min Peng, A. Rayes, Nasir Ghani, Ashwin A. Gumaste, Multi-Failure Post-Fault Restoration in Multidomain DWDM Networks, IEEE/OSA OFC 2011, Los pp.1-3,Angeles, CA, pp.6-10, 2011. </li>
+            <li class="list-group-item">[18]. Mostafa. Esmaeili, Min Peng, Samee Khan, Jorge Finochietto, Yaohui Jin, Nasir Ghani, Multi-Domain DWDM Network Provisioning For Correlated Failures, IEEE/OSA OFC 2011, Los Angeles, CA, pp.6-10, 2011. </li>
+            <li class="list-group-item">[19]. Zheng Wan, Naixue Xiong*, Nasir Ghani, Min Peng, Athanasios V. Vasilakos, Liang Zhou, Adaptive Scheduling for Wireless Video Transmission in High-Speed Networks, IEEE INFOCOM 2011 High Speed Networks Workshop, April 2011, pp.180-185, Shanghai, China. </li>
+            <li class="list-group-item">[20]. Min Peng, Xiaoxiao  Ma, Ye  Tian, Yang  Ming, Hua  Long, Quanchen  Lin, The Web Information Extraction for Update Summarization Based on Shallow Parsing, 3PGCIC-2011: Sixth International Conference on P2P, Parallel, Grid, Cloud and Internet Computing, October 2011, pp.109-114, Barcelona, Spain. </li>
+            <li class="list-group-item">[21]. Min Peng, Quanchen Lin, Ye Tian, Ming Yang, Yuling Xiao, Bin Ni, Query Expansion Based on Conceptual Word Cluster Space Graph, NISS2011: The 5th International Conference on New trends in Information and Service Science, Macau, China, Vol.1, October, pp. 128-133, 2011. </li>
+            <li class="list-group-item">[22]. Min Peng, Ming Yang, Songtao Sun, Hua Long, Nasir Ghani, Bin Ni, A Query Expansion Based on Sentence and Vector Integration Strategy, NISS2011: The 5th International Conference on New trends in Information and Service Science, Macau, China, Vol.1, October, pp.41-45, 2011. </li>
+            <li class="list-group-item">[23]. Mostafa Esmaeili, Feng Xu, Nasir Ghani, Min Peng, Qing Liu, Enhanced Crankback Signaling in Multi-Domain Optical Networks, IEEE/OSA OFC 2010, March 2010, pp.21-25, San Diego, CA, 2010. </li>
+            <li class="list-group-item">[24]. Feng Xu, Mostafa Esmaeili, Chongyang Xie, Nasir Ghani, Min Peng, Qing Liu, Enhanced Crankback Signaling for Multi-Domain Traffic Engineering, IEEE ICC 2010, May 2010, pp.23-27,Cape Town, South Africa.</li>
+            <li class="list-group-item">[25]. F. Xu, T. Das, M. Peng, N. Ghani, “Evaluation of Post-Fault Restoration Strategies in Multi-Domain Networks,” IEEE ANTS 2010, Bombay, India, December 2010 (received best paper award).</li>
+            <li class="list-group-item">[26]. Feng Xu, Min Peng, Mostafa Esmaeili, M. Rahnamay-Naeini, Samee Khan, Nasir Ghani, M. Hayat, Post-Fault Restoration in Multi-Domain Networks with Multiple Failures, IEEE MILCOM 2010, October, pp.593-598, San Jose, CA, 2010. </li>
+            <li class="list-group-item">[27]. Feng Xu, Min Peng, Mostafa Esmaeili, Nasir Ghani, Advanced Crankback Provisioning for Multi-Domain Networks, IEEE HPSR June 2010, pp.209-214, Dallas, TX, 2010. </li>
+            <li class="list-group-item">[28]. Min Peng, Jiawen Zhang, Ming Li, Yang Hu, Zhaohua He. The Street View Character Recognition Based on Support Vector Machine, International Conference on Artificial Intelligence and Pattern Recognition (AIPR-09), July, Orlando, Florida, USA,2009. </li>
+            <li class="list-group-item">[29]. Min Peng, Laurence T. Yang, Wuqing Zhao, Naixue Xiong , Wireless Service Attributes Classification and Matching Mechanism Based on Decision Tree, The IEEE 22nd International Conference on Advanced Information Networking and Applications (AINA 2008), March 25-28, Ginowan, Okinawa, Japan.</li>
+        </ul>
+        <div class="sub_title" id="MainItemsandResearch">Main Items and Research</div>
+        <ul class="list-group">
+            <li class="list-group-item">[1]. “社会网络的主题演化分析与传播趋势预测研究”，国家自然科学基金，2015.1-2019.12</li>
+            <li class="list-group-item">[2]. The Research on Query-focused Update Multi-document Summarization Based on Feedback Ranking Framework F-Rank, National Nature Science Fundation of China, 1/2010-12/2013</li>
+            <li class="list-group-item">[3]. 基于压缩感知的社交网络主题提取与演化分析，深圳市战略新兴产业发展专项资金项目，深圳市科技创新委员会基础研究项目，批准号：JCYJ20130401160028799，2013.10-2015.8.30 </li>
+            <li class="list-group-item">[4]. 移动音频编解码基础理论与关键技术，国家自然科学基金重点项目，2009.1-2012.12 </li>
+            <li class="list-group-item">[5]. 面向中文文本信息融合的句子排序研究，国家自然科学基金，2008，01－2010，12 </li>
+            <li class="list-group-item">[6]. The Research and Application of Web Page Documents Summarization Based on Graph Model, Natural Science Fundation of Hubei Province, 1/2009-12/2010.</li>
+            <li class="list-group-item">[7]. The Research and Development of Real-time Streaming Media Stream Platform Based on P2P, The Industry-Academy-Research Cooperation Fundation of Hubei Provincial Education Department, 1/2009-12/2010.</li>
+            <li class="list-group-item">[8]. The Research on Update Summarization Oriented by Keywords Query, Research Fundation of Wuhan University, 1/2010-12/2012.</li>
+            <li class="list-group-item">[9]. The Research on Self-adaptive Service Strategies Mechanism in Ubiquitous Computing Environment, Open Fund of the National Key Laboratory of Software Engineering,  1/2009-12/2011</li>
+            <li class="list-group-item">[10]. Continuations and Kernel Stack Sharing ，2008 Windows Core Curriculum Development Project, Asia Research Centre of Microsoft Co., 3/2008- 3/2009.</li>
+            <li class="list-group-item">[11]. Feature Extraction Based on Multi-Feature Integration for Handwritten Chinese Character Recognition, Asia Research Centre of Microsoft Co., 4/2008-4/2009.</li>
+            <li class="list-group-item">[12]. The Research on Key Technologies and Performance Analysis of Dynamic Web Services Combination, National 863 Project, 1/2008－12/2009.</li>
+        </ul>
+        <div class="sub_title" id="ResearchPrize">Research Prize</div>
+        <ul class="list-group">
+            <li class="list-group-item">[1]. “可信软件的构造方法与技术”，湖北省科技进步一等奖，项目主持人，2014</li>
+            <li class="list-group-item">[2]. “The Research and Implement of the Key Technologies in the Process of Web Information Accessing, Analysis and Measurement”. Hubei Prize for Natural Sciences (Second Prize)</li>
+            <li class="list-group-item">[3]. F. Xu, T. Das, M. Peng, N. Ghani, “Evaluation of Post-Fault Restoration Strategies in Multi-Domain Networks,” IEEE ANTS 2010, Bombay, India, December 2010, Best Paper Award. </li>
+        </ul>
+        <div class="sub_title" id="Others">专利、软著</div>
+        <ul class="list-group">
+            <li class="list-group-item">[1]. 彭敏, 武斌, 汪清, 黄佳佳, 代心媛. 一种社交网络重要目标及社区群体识别方法, 2012,中国（国家发明专利），201210514421.7</li>
+            <li class="list-group-item">[2]. 彭敏, 武斌, 汪清. 微博猎手系统, （软件著作权）, 2013年1月</li>
+            <li class="list-group-item">[3]. 彭敏, 周李, 张泰玮. 木马分类管理系统, （软件著作权）, 2013年1月</li>
+            <li class="list-group-item">[4]. 任延珍, 黄轩, 彭敏. 图像数字指纹追踪方法, 2011, 中国（国家发明专利）, 武汉大学, CN201110278906.6</li>
+            <li class="list-group-item">[5]. 胡瑞敏, 任延珍, 彭敏. 数字指纹生成和跟踪方法, 2008, 中国（国家发明专利）, CN200810047646.X</li>
+        </ul>
+    </section>
+    <hr />
+{% end %}

@@ -1,0 +1,62 @@
+/*Person Image*/
+.person_image{
+    width: 200px;        
+    margin: auto;
+} 
+.person_image img{
+    width: 100%;
+    border-radius: 200px;
+}
+/*Person Realname*/
+.person_realname{
+    text-align: center;
+    margin-top: 20px;
+    font-size: 1.8em;
+}
+/*Person Type*/
+.person_type{
+    margin: auto;
+    text-align: center;
+    width: 108px;
+    color: #2ec3e7;
+    font-weight: bold;
+}
+/*Section*/
+section{
+    padding: 30px 5%;
+    font-size: 1.2em;
+}
+.section_title{
+    font-size: 1.3em;
+    margin-bottom: 30px;
+}
+.sub_title{
+    font-weight: bold;
+    margin: 20px 0;
+}
+.duration{
+    margin: 5px 0;
+    color: #2ec3e7;
+    font-weight: bold;
+}
+/*BIO*/
+.bio_text{
+    text-align: justify;
+}
+/*Education Background*/
+#EducationBackground .sub_info{
+    text-align: justify;
+}
+/*Scientific Research*/
+.research_field span{
+    color: #2ec3e7;
+    font-size: 1.5em; 
+    margin-right: 10px;
+}
+#ScientificResearch .list-group-item{
+    border-style: none;
+    text-align: justify;
+    padding: 0;
+    margin: 20px 0;
+}
+

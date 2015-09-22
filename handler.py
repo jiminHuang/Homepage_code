@@ -60,3 +60,22 @@ class ArticleHandler(BaseHandler):
             page_title=article["article_title"], 
             article=article,
         )
+
+class PersonHandler(BaseHandler):
+    '''
+        人物页handler
+    '''
+    def get(self):
+        person = {
+            'person_realname' : 'Min Peng',
+            'person_image' : 'team_head.jpeg',
+            'person_type' : 'Teacher',
+        }
+        person["person_image"] = 'img/' + person["person_image"]
+        self.render(
+            "person.html", 
+            page_title=\
+                person['person_realname'] \
+                    +u"武汉大学互联网数据挖掘实验室",
+            person=person,
+        )

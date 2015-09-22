@@ -3,7 +3,7 @@
     <link href="{{ static_url("css/article.css") }}" rel="stylesheet">
 {% end %}
 {% block breadCrumb %}
-    <li><a href="/articles">最新动态</a></li>
+    <li><a href="/articles">News</a></li>
     <li class="active">{{article["article_title"]}}</li>
 {% end %}
 {% block contentMain %}
@@ -14,7 +14,7 @@
             <span class="article_publish_time">{{article["article_publish_time"]}}</span>
         </div>
         <div class="article_abstract">
-            <span>摘要：</span>
+            <span>Abstract:</span>
             {{article["article_abstract"]}}
         </div>
         <div class="row article_image">
@@ -28,7 +28,7 @@
         <hr/>
         <div class="article_backinfo">
             <p><span class="glyphicon glyphicon-eye-open"></span></p>
-            <p>{{article["article_viewed"]}}人已经读过了这篇文章</p>
+            <p>{{article["article_viewed"]}} people have read this article</p>
         </div>
     </div>
 {% end %}

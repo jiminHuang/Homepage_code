@@ -8,6 +8,8 @@
     handler 处理业务逻辑
 '''
 import tornado.web
+import database
+import datetime
 
 class BaseHandler(tornado.web.RequestHandler):
     '''
@@ -65,17 +67,21 @@ class PersonHandler(BaseHandler):
     '''
         人物页handler
     '''
-    def get(self):
-        person = {
-            'person_realname' : 'Min Peng',
-            'person_image' : 'team_head.jpeg',
-            'person_type' : 'Teacher',
-        }
-        person["person_image"] = 'img/' + person["person_image"]
+    def get(self, username):
+        person = database.User.get(username=username)
+        person.image = 'img/' + person.user_id + '.jpeg'
+        
+        backgrounds = database.Background.query(person.user_id)
+        for background in backgrounds:
+            background.start_time=\
+                background.start_time.strftime("%m/%Y")
+            background.end_time=\
+                background.end_time.strftime("%m/%Y")
+        person.backgrounds = backgrounds
         self.render(
             "person.html", 
             page_title=\
-                person['person_realname'] \
+                username\
                     +"- Wuhan University Internet Data Mining Laboratory",
             person=person,
         )

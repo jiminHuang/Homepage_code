@@ -3,61 +3,48 @@
     <link href="{{ static_url("css/person.css") }}" rel="stylesheet">
 {% end %}
 {% block breadCrumb %}
-    <li class="active">{{person["person_realname"]}}</li>
+    <li class="active">{{person.firstname.capitalize()}} {{person.lastname.capitalize()}}</li>
 {% end %}
 {% block contentMain %}
     <div class="person_image" id="BasicInfo">
-        <img src="{{static_url(person["person_image"])}}" />
+        <img src="{{static_url(person.image)}}" />
     </div>
-    <div class="person_realname">{{person["person_realname"]}}</div>
-    <div class="person_type">{{person["person_type"]}}</div>
+    <div class="person_realname">{{person.firstname.capitalize()}} {{person.lastname.capitalize()}}</div>
+    <div class="person_type">{{person.type}}</div>
     <hr/>
     <section id="PersonalInfo">
         <div class="section_title">PERSONAL INFORMATION</div>
         <div class="sub_title">Address</div>
         <div class="sub_info">
-            Computer School</br>
-            Wuhan University</br>
-            Wuhan, Hubei 430072</br>
-            China
+            {% raw person.address%}
         </div>
         <div class="sub_title">Phone Number</div>
         <div class="sub_info">
-            +86-18602719688
+            {{person.phone}}
         </div>
         <div class="sub_title">Email</div>
         <div class="sub_info">
-            pengm@whu.edu.cn
+            {{person.email}}
         </div>
     </section>
     <hr/>
     <section id="BIO">
         <div class="section_title">BIO</div>
         <div class="bio_text">
-            Min Peng is Professor in Computer School at Wuhan University, Wuhan, China.  She received her Ph.D. degree in Computer Software and Theory from Wuhan University in 2006.  She worked as a post-doctor from 2009 to 2010 at the Advanced Cyber-Infrastructure Laboratory, ECE Department at the University of New Mexico, USA. Her current research focus areas include information retrieval, network services and natural language process. In particular, her project and publications areas cover web information retrieval and social networks. Her work is being supported by the NSFC, NSF of Hubei and Education Office of Hubei. Dr. Peng is the recipient of the second Hubei Province Prize for Natural Sciences in 2009.  She was TPC chair of High Speed Networking workshop for IEEE INFOCOM 2011, and served as TPC member for many academic symposiums.
+            {{person.biography}}
         </div>
     </section>
     <hr/>
     <section id="EducationBackground">
         <div class="section_title">EDUCATION BACKGROUND</div>
-        <div class="sub_title">Bachelor</div>
-        <div class="duration">1990.09 - 1994.06</div>
+        {% for background in person.backgrounds %}
+        <div class="sub_title">{{background.background_type}}</div>
+        <div class="duration">{{background.start_time}} - {{background.end_time}}</div>
         <div class="sub_info">
-            Bachelor of Physics<br/>
-            Physics Department of Wuhan University
+            {{background.background_type}} of {{background.major}}<br/>
+            {{background.facility}}
         </div>
-        <div class="sub_title">Master</span></div>
-        <div class="duration">1999.09 - 2002.06</div>
-        <div class="sub_info">
-            Master of Computer Applications<br/>
-            Computer School of Wuhan University 
-        </div>
-        <div class="sub_title">Ph.D</div>
-        <div class="duration">2002.09 - 2006.06</div>
-        <div class="sub_info">
-            Ph.D of Computer Software and Theory<br/>
-            Computer School of Wuhan University
-        </div>
+        {% end %}
     </section>
     <hr/>
     <section id="WorkExperience">

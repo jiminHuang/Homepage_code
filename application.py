@@ -14,7 +14,7 @@ from settings import settings
 application = tornado.web.Application([
     (r"/", handler.MainHandler),
     (r"/articles", handler.ArticlesHandler),
-    (r"/article", handler.ArticleHandler),
+    (r"/article/(\S+)", handler.ArticleHandler),
     (r"/person/(\w+)", handler.PersonHandler),
     (r".*", handler.BaseHandler),
 ], **settings)

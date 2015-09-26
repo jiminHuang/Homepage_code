@@ -47,36 +47,29 @@
         {% end %}
     </section>
     <hr/>
+    {% if person.experiences %}
     <section id="WorkExperience">
         <div class="section_title">WORK EXPERIENCE</div>
-        <div class="sub_title">Professor</div>
-        <div class="duration">1994.07 - Present</div>
+        {% for experience in person.experiences %}
+        <div class="sub_title">{{ experience.position }}</div>
+        <div class="duration">{{ experience.start_time }} - {{experience.end_time}}</div>
         <div class="sub_info">
-            Computer School, Wuhan University
+            {{experience.facility}}
         </div>
-        <div class="sub_title">Vice Professor</div>
-        <div class="duration">2005.01 - Present</div>
-        <div class="sub_info">
-            National Engineering Research Center of Multimedia Software, Wuhan, China
-        </div>
-        <div class="sub_title">Post Doctor</div>
-        <div class="duration">2009.08 - 2011.01</div>
-        <div class="sub_info">
-            Department of Electrical and Computer Engineering, University of New Mexico, Albuquerque, NM, U.S.A
-        </div>
-        <div class="sub_title">Visiting Scholar</div>
-        <div class="duration">2006.02 - 2006.09</div>
-        <div class="sub_info">
-            Department of Electrical and Computer Engineering, City University of Hong Kong
-        </div>
+        {% end %}
     </section>
+    {% end %}
     <hr />
     <section id="ScientificResearch">
         <div class="section_title">SCIENTIFIC RESEARCH</div>
+        {% if person.interests %}
         <div class="sub_title">Interests</div>
-        <div class="research_field"><span>01</span>Information Retrieval</div>
-        <div class="research_field"><span>02</span>Natural Language Process</div>
-        <div class="research_field"><span>03</span>Network Services</div>
+            {% for interest in person.interests %}
+                <div class="research_field">
+                    {{interest.interests_name}}
+                </div>
+            {% end %}
+        {% end %}
         <div class="sub_title" id="MainPublishedPapers">Main Published Papers</div>
         <ul class="list-group">
             <li class="list-group-item">[1]. M. Peng, J. Huang, N. GhaniS. Sun, B. Wu, Y. He, W.Wen*, Micro-blogger influence analysis based on use feature, Journal of Internet Technology, ISSN: 1607-9264, Vol.14, No.2, pp.307-314, 2013.</li>

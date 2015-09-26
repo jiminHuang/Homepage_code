@@ -4,31 +4,41 @@
 {% end %}
 {% block breadCrumb %}
     <li><a href="/articles">News</a></li>
-    <li class="active">{{article["article_title"]}}</li>
+    <li class="active">{{article.title}}</li>
 {% end %}
 {% block contentMain %}
     <div class="article_wrapper">
-        <div class="article_title">{{article["article_title"]}}</div>
+        <div class="article_title">{{article.title}}</div>
         <div class="article_info">
-            <span class="article_author">{{article["article_author"]}}</span>
-            <span class="article_publish_time">{{article["article_publish_time"]}}</span>
+            <span class="article_author">
+            {% for author in article.author %}
+                {% if not isinstance(author, str) %}
+                    <a href="/person/{{author.username}}">
+                        {{author.firstname.capitalize()}} {{author.lastname.capitalize()}}
+                    </a>
+                {% else %}
+                    {{author}}
+                {% end %}
+            {% end %}
+            </span>
+            <span class="article_publish_time">{{article.publish_time}}</span>
         </div>
         <div class="article_abstract">
             <span>Abstract:</span>
-            {{article["article_abstract"]}}
+            {{article.abstract}}
         </div>
         <div class="row article_image">
             <div class="col-md-offset-1 col-md-10">
-                <img src="{{static_url(article["article_image"])}}" />
+                <img src="{{static_url(article.article_image)}}" />
             </div>
         </div>
         <div class="article_text">
-            {% raw article["article_text"] %}
+            {% raw article.text %}
         </div>
         <hr/>
         <div class="article_backinfo">
             <p><span class="glyphicon glyphicon-eye-open"></span></p>
-            <p>{{article["article_viewed"]}} people have read this article</p>
+            <p>{{article.viewed}} people have read this article</p>
         </div>
     </div>
 {% end %}

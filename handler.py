@@ -9,7 +9,7 @@
 '''
 import tornado.web
 import database
-import datetime
+import timechewer
 
 class BaseHandler(tornado.web.RequestHandler):
     '''
@@ -46,20 +46,16 @@ class ArticleHandler(BaseHandler):
     '''
         文章页handler
     '''
-    def get(self):
-        article = {
-            "article_title" : "Donec id elit non mi porta gravida at eget metus",
-            "article_author" : "Min Peng", 
-            "article_publish_time" : "2015-09-19 20:32", 
-            "article_abstract" : "Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.",
-            "article_image" : "switch_one.jpeg",
-            "article_text" : "<p>nec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p><p>nec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p><p>nec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p><p>nec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p><p>nec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p><p>nec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>",
-            "article_viewed" : 46,
-        }
-        article["article_image"] = 'img/' + article["article_image"]
+    def get(self, article_id):
+        #article 
+        article = database.Article.get(article_id)
+        if article is None:
+            self.write_error("404")
+        article.article_image = 'img/' + article.article_id + '.jpeg'
+        
         self.render(
             "article.html", 
-            page_title=article["article_title"], 
+            page_title=article.title, 
             article=article,
         )
 
@@ -68,16 +64,34 @@ class PersonHandler(BaseHandler):
         人物页handler
     '''
     def get(self, username):
+        #person 基本信息
         person = database.User.get(username=username)
         person.image = 'img/' + person.user_id + '.jpeg'
         
+        #person 教育背景
         backgrounds = database.Background.query(person.user_id)
-        for background in backgrounds:
-            background.start_time=\
-                background.start_time.strftime("%m/%Y")
-            background.end_time=\
-                background.end_time.strftime("%m/%Y")
+        if backgrounds is not None:
+            for background in backgrounds:
+                background.start_time=\
+                    timechewer.strftime_present("%m/%Y", background.start_time)
+                background.end_time=\
+                    timechewer.strftime_present("%m/%Y", background.end_time)
         person.backgrounds = backgrounds
+    
+        #person 工作经历
+        experiences = database.Experience.query(person.user_id)
+        if experiences is not None:
+            for experience in experiences:
+                experience.start_time=\
+                    timechewer.strftime_present("%m/%Y", experience.start_time)
+                experience.end_time=\
+                    timechewer.strftime_present("%m/%Y", experience.end_time)
+        person.experiences = experiences
+    
+        #person 研究方向
+        interests = database.Interests.query(person.user_id)
+        person.interests = interests
+
         self.render(
             "person.html", 
             page_title=\

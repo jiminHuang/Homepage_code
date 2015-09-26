@@ -25,25 +25,29 @@ def _get_connection(db):
         config.get_database_user(),
         config.get_database_password(),
     )
-    
 
+class TypeList(list):
+    '''
+        扩展list对象 捕获异常
+    '''
+    def __getitem__(self, index):
+        '''
+            改写默认getitem方法，索引减1并捕获异常
+        '''
+        try:
+            return super(TypeList, self).__getitem__(index-1)
+        except IndexError:
+            logging.error('Typelist Index Error')
+            logging.error('Error List: {error_list}'.format(error_list=self))
+            logging.error('Error Index: {error_index}'.format(error_index=index))
+            return 'Unknown'
+    
 class User(object):
     '''
         user表持久化
     '''
     db = 'homepage'
-    USER_TYPE = [u'Mentor', u'Doctor', u'Graduate', u'UnderGraduate']
-
-    @classmethod
-    def _user_type(cls, ptype):
-        '''
-            获得person type
-        '''
-        try:
-            return cls.USER_TYPE[ptype-1]
-        except IndexError:
-            logging.error('Person Type Index Exception')
-            return 'Person Type Exception'
+    USER_TYPE = TypeList([u'Mentor', u'Doctor', u'Graduate', u'UnderGraduate'])
 
     @classmethod
     def get(cls, user_id=None, username=None):
@@ -66,7 +70,10 @@ class User(object):
             user = username
 
         user = connection.get(sql, user)
-        user.type = cls._user_type(user.type)
+
+        if user is not None:
+            user.type = cls.USER_TYPE[user.type]
+
         return user
 
 class Background(object):
@@ -74,22 +81,14 @@ class Background(object):
         用户学历背景 background表持久化对象
     '''
     db = 'homepage'
-    BACKGROUND_TYPE = ['Bachelor', 'Master', 'Ph.D']
-    
-    @classmethod
-    def _background_type(cls, btype):
-        try:
-            return cls.BACKGROUND_TYPE[btype-1]
-        except IndexError:
-            logging.error('background type index error')
-            return 'Background Type Error' 
+    BACKGROUND_TYPE = TypeList(['Bachelor', 'Master', 'Ph.D'])
     
     @classmethod
     def query(cls, user_id):
         '''
             根据user_id 获取对应user背景
         '''
-        #user_is 为 None
+        #user_id 为 None
         if user_id is None:
             return None
         
@@ -104,7 +103,102 @@ class Background(object):
         )
         
         backgrounds = connection.query(sql, user_id)
-        for background in backgrounds:
-            background.background_type =\
-                cls._background_type(background.background_type)
+        
+        if backgrounds:
+            for background in backgrounds:
+                background.background_type =\
+                    cls.BACKGROUND_TYPE[background.background_type]
         return backgrounds 
+
+class Experience(object):
+    '''
+        工作经历 experience持久化对象
+    '''
+    db = 'homepage'
+    
+    @classmethod
+    def query(cls, user_id):
+        '''
+            根据user_id获取对应experience
+        '''
+        #user_id为None
+        if user_id is None:
+            return None
+        
+        #构建数据库连接
+        connection = _get_connection(cls.db)
+        
+        sql =\
+            (
+                'SELECT * '
+                'FROM user_experience '
+                'NATURAL JOIN experience '
+                'WHERE user_id = %s'
+            )
+        
+        return connection.query(sql, user_id)     
+
+class Interests(object):
+    '''
+        研究方向 interests持久化对象
+    '''
+    db = 'homepage'
+    
+    @classmethod
+    def query(cls, user_id):
+        '''
+            根据user_id获取对应interests
+        '''
+        #user_id为None
+        if user_id is None:
+            return None
+        
+        #构建数据库连接
+        connection = _get_connection(cls.db)
+        
+        sql =\
+            (
+                'SELECT * '
+                'FROM user_interests '
+                'NATURAL JOIN interests '
+                'WHERE user_id = %s'
+            )
+        
+        return connection.query(sql, user_id)     
+
+class Article(object):
+    '''
+        文章 article 持久化对象
+    '''
+    db = 'homepage'
+        
+    @classmethod
+    def get(cls, article_id):
+        '''
+            根据article_id获取对应文章信息
+        '''
+        #article_id 为None
+        if article_id is None:
+            return None
+        
+        #构建数据库连接
+        connection = _get_connection(cls.db)
+        
+        sql =\
+            (
+                'SELECT * '
+                'FROM article '
+                'WHERE article_id = %s'
+            )
+        
+        article = connection.get(sql, article_id)
+        
+        if article is not None:
+            article.author =\
+                [
+                    User.get(user_id = author)
+                        if User.get(user_id = author) else None 
+                            for author in article.author.split(',')
+                ]
+        return article
+                

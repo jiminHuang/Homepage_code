@@ -195,3 +195,109 @@ class TestPersistence(object):
             self.mock_db.get.return_value = None
             article = database.Article.get(1)
             assert article is None
+    
+    def test_articles_query(self):
+        #mock 构建
+        mock_article = mock.Mock()
+        mock_article.author = "1"
+        self.mock_db.query.return_value = [mock_article]
+        
+        #正常输入
+        with mock.patch.object(database.User, 'get'):
+            #article_id未提供
+            articles = database.Article.query()
+
+            self.mock_db.query.assert_called_with(
+                (
+                    'SELECT * '
+                    'FROM article  '
+                    'ORDER BY publish_time '
+                    'LIMIT 10'
+                )
+            )
+            database.User.get.assert_called_with(user_id="1")
+            assert_equal(articles, [mock_article])
+
+            #article_id提供
+            mock_article.author = "1"
+            
+            #mock 模拟article get
+            with mock.patch.object(database.Article, 'get'):
+                mock_article = mock.Mock()
+                mock_article.publish_time = 1
+                database.Article.get.return_value = mock_article
+
+                articles = database.Article.query(article_id=1)
+
+                database.Article.get.assert_called_with(1)
+                self.mock_db.query.assert_called_with(
+                    (
+                        'SELECT * '
+                        'FROM article '
+                        'WHERE publish_time > UNIX_TIMESTAMP(%s) '
+                        'ORDER BY publish_time '
+                        'LIMIT 10'
+                    ),
+                    1
+                )
+
+    def test_publisher_get(self):
+        '''
+            publisher get函数测试
+        '''
+        #publisher_id 
+        assert_raises(TypeError, database.Publisher.get)
+        
+        #publisher_id输入为空
+        publisher = database.Publisher.get(None) 
+        assert publisher is None
+        
+        #构建mock
+        mock_publisher = mock.Mock()
+        mock_publisher.type = 1
+        self.mock_db.get.return_value = mock_publisher
+        
+        #正常输入
+        publisher = database.Publisher.get(1)
+        self.mock_db.get.assert_called_with(
+            (
+                'SELECT * '
+                'FROM publisher '
+                'WHERE publisher_id = 1'
+            ),
+        )
+        assert_equal(publisher, mock_publisher)
+        assert_equal(publisher.type, database.Publisher.PUBLISHER_TYPE[1]) 
+        
+    def test_paper_get(self):
+        '''
+            paper get函数测试
+        '''
+        #article_id未输入
+        assert_raises(TypeError, database.Paper.get)
+        
+        #article_id输入为空
+        paper = database.Paper.get(None) 
+        assert paper is None
+        
+        #构建mock
+        mock_paper = mock.Mock()
+        mock_paper.publisher_id = 1
+        self.mock_db.get.return_value = mock_paper
+        
+        #正常输入
+        with mock.patch('database.Article.get'):
+            with mock.patch('database.Publisher.get'):
+                database.Article.get.return_value = mock.Mock()
+                database.Publisher.get.return_value = mock.Mock()
+                paper = database.Paper.get(1)
+                database.Article.get.assert_called_with(1)
+                database.Publisher.get.assert_called_with(1)
+                self.mock_db.get.assert_called_with(
+                    (
+                        'SELECT * '
+                        'FROM paper '
+                        'WHERE article_id = %s'
+                    ),
+                    1,
+                )

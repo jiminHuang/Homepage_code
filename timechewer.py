@@ -18,7 +18,8 @@ def strftime_present(time_format, c_time):
         return 'Present'
 
     if time_format is None\
-        or not isinstance(c_time, datetime.datetime):
+        or (not isinstance(c_time, datetime.datetime)\
+            and not isinstance(c_time, datetime.date)):
         return 'Unknown'
     
     return c_time.strftime(time_format)

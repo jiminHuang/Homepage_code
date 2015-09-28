@@ -9,150 +9,34 @@
     {% module List() %}
     <hr />
     <ul class="media-list">
+        {% for article in articles %}
         <li class="media">
             <div class="media-body">
-                <a href="article"><h4 class="article_heading">Test</h4></a>
+                <a href="article"><h4 class="article_heading">{{article.title}}</h4></a>
                 <div class="article_info">
-                    <span class="article_author">Min Peng</span>
-                    <span class="article_publish_time">2015-09-16</span>
+                    <span class="article_author">
+                        {% for author in article.author %}
+                            {% if not isinstance(author, str) %}
+                                {{author.firstname.capitalize()}} {{author.lastname.capitalize()}}
+                            {% else %}
+                                {{author}}
+                            {% end %}
+                        {% end %}
+                    </span>
+                    <span class="article_publish_time">{{article.publish_time}}</span>
                 </div> 
                 <div class="article_abstract">
-                    Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. 
+                    {{article.abstract}}
                 </div>
             </div>
             <div class="media-left">
                 <a href="#">
-                    <img class="media-object" src="{{static_url("img/switch_one.jpeg")}}" alt="...">
+                    <img class="media-object" src="{{static_url(article.article_image)}}" alt="...">
                 </a>
             </div>
         </li> 
         <hr />
-        <li class="media">
-            <div class="media-body">
-                <a href="article"><h4 class="article_heading">Test</h4></a>
-                <div class="article_info">
-                    <span class="article_author">Min Peng</span>
-                    <span class="article_publish_time">2015-09-16</span>
-                </div> 
-                <div class="article_abstract">
-                    Donec id elit non mi porta gravida at eget metus
-                </div>
-            </div>
-            <div class="media-left">
-                <a href="#">
-                    <img class="media-object" src="{{static_url("img/switch_one.jpeg")}}" alt="...">
-                </a>
-            </div>
-        </li> 
-        <hr />
-        <li class="media">
-            <div class="media-body">
-                <a href="article"><h4 class="article_heading">Test</h4></a>
-                <div class="article_info">
-                    <span class="article_author">Min Peng</span>
-                    <span class="article_publish_time">2015-09-16</span>
-                </div> 
-                <div class="article_abstract">
-                    Donec id elit non mi porta gravida at eget metus
-                </div>
-            </div>
-            <div class="media-left">
-                <a href="#">
-                    <img class="media-object" src="{{static_url("img/switch_one.jpeg")}}" alt="...">
-                </a>
-            </div>
-        </li> 
-        <hr />
-        <li class="media">
-            <div class="media-body">
-                <a href="article"><h4 class="article_heading">Test</h4></a>
-                <div class="article_info">
-                    <span class="article_author">Min Peng</span>
-                    <span class="article_publish_time">2015-09-16</span>
-                </div> 
-                <div class="article_abstract">
-                    Donec id elit non mi porta gravida at eget metus
-                </div>
-            </div>
-            <div class="media-left">
-                <a href="#">
-                    <img class="media-object" src="{{static_url("img/switch_one.jpeg")}}" alt="...">
-                </a>
-            </div>
-        </li> 
-        <hr />
-        <li class="media">
-            <div class="media-body">
-                <a href="article"><h4 class="article_heading">Test</h4></a>
-                <div class="article_info">
-                    <span class="article_author">Min Peng</span>
-                    <span class="article_publish_time">2015-09-16</span>
-                </div> 
-                <div class="article_abstract">
-                    Donec id elit non mi porta gravida at eget metus
-                </div>
-            </div>
-            <div class="media-left">
-                <a href="#">
-                    <img class="media-object" src="{{static_url("img/switch_one.jpeg")}}" alt="...">
-                </a>
-            </div>
-        </li> 
-        <hr />
-        <li class="media">
-            <div class="media-body">
-                <a href="article"><h4 class="article_heading">Test</h4></a>
-                <div class="article_info">
-                    <span class="article_author">Min Peng</span>
-                    <span class="article_publish_time">2015-09-16</span>
-                </div> 
-                <div class="article_abstract">
-                    Donec id elit non mi porta gravida at eget metus
-                </div>
-            </div>
-            <div class="media-left">
-                <a href="#">
-                    <img class="media-object" src="{{static_url("img/switch_one.jpeg")}}" alt="...">
-                </a>
-            </div>
-        </li> 
-        <hr />
-        <li class="media">
-            <div class="media-body">
-                <a href="article"><h4 class="article_heading">Test</h4></a>
-                <div class="article_info">
-                    <span class="article_author">Min Peng</span>
-                    <span class="article_publish_time">2015-09-16</span>
-                </div> 
-                <div class="article_abstract">
-                    Donec id elit non mi porta gravida at eget metus
-                </div>
-            </div>
-            <div class="media-left">
-                <a href="#">
-                    <img class="media-object" src="{{static_url("img/switch_one.jpeg")}}" alt="...">
-                </a>
-            </div>
-        </li> 
-        <hr />
-        <li class="media">
-            <div class="media-body">
-                <a href="article"><h4 class="article_heading">Test</h4></a>
-                <div class="article_info">
-                    <span class="article_author">Min Peng</span>
-                    <span class="article_publish_time">2015-09-16</span>
-                </div> 
-                <div class="article_abstract">
-                    Donec id elit non mi porta gravida at eget metus
-                </div>
-            </div>
-            <div class="media-left">
-                <a href="#">
-                    <img class="media-object" src="{{static_url("img/switch_one.jpeg")}}" alt="...">
-                </a>
-            </div>
-        </li> 
-        <hr />
+        {% end %}
     </ul>
     <div class="list_loading_more btn btn-default">
         Load More 

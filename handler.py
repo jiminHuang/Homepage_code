@@ -40,7 +40,14 @@ class ArticlesHandler(BaseHandler):
         文章列表页handler
     '''
     def get(self):
-        self.render("articles.html", page_title=u"News - Wuhan University Internet Data Mining Laboratory")
+        articles = database.Article.query()
+        for article in articles:
+            article.article_image = 'img/' + article.article_id + '.jpeg'
+        self.render(
+            "articles.html",
+            page_title=u"News - Wuhan University Internet Data Mining Laboratory",
+            articles=articles,
+        )
 
 class ArticleHandler(BaseHandler):
     '''
@@ -98,4 +105,28 @@ class PersonHandler(BaseHandler):
                 username\
                     +"- Wuhan University Internet Data Mining Laboratory",
             person=person,
+        )
+
+class PaperHandler(BaseHandler):
+    '''
+        论文页handler
+    '''
+    def get(self, article_id):
+        paper = database.Paper.get(article_id)
+        paper.publish_year = timechewer.strftime_present("%Y", paper.publish_year)
+        if paper.paper_url is None:
+            paper.pdf_available = True
+            paper.paper_url =\
+                ''.join(
+                    'paper/',
+                    paper.article_id,
+                    '.pdf',    
+                )
+        else:
+            paper.pdf_available = False
+
+        self.render(
+            "paper.html",
+            page_title=paper.title,
+            paper=paper,
         )

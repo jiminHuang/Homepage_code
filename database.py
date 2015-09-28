@@ -197,8 +197,110 @@ class Article(object):
             article.author =\
                 [
                     User.get(user_id = author)
-                        if User.get(user_id = author) else None 
+                        if User.get(user_id = author) else author
                             for author in article.author.split(',')
                 ]
         return article
-                
+    
+    @classmethod 
+    def query(cls, article_id=None):
+        #构建数据库连接
+        connection = _get_connection(cls.db)
+        
+        sql =\
+            (
+                'SELECT * '
+                'FROM article'
+            )
+        
+        article = cls.get(article_id)
+        
+        sql =\
+            ' '.join((
+                sql,
+                'WHERE publish_time > UNIX_TIMESTAMP(%s)'\
+                    if article is not None else '',
+                'ORDER BY publish_time',
+                'LIMIT 10',
+            ))
+        
+        if article is not None:
+            articles = connection.query(sql, article.publish_time)
+        else:
+            articles = connection.query(sql)
+        
+        for article in articles:
+            article.author =\
+                [
+                    User.get(user_id = author)
+                        if User.get(user_id = author) else None 
+                            for author in article.author.split(',')
+                ]
+        
+        return articles
+    
+class Publisher(object):
+    '''
+        出版 Publisher表持久化对象
+    '''
+    db = 'homepage'
+    PUBLISHER_TYPE = TypeList(['Meeting', 'Journal'])
+    
+    @classmethod
+    def get(cls, publisher_id):
+        '''
+            publisher get方法
+        '''
+        if publisher_id is None:
+            return None
+        
+        sql =\
+            (
+                'SELECT * '
+                'FROM publisher '
+                'WHERE publisher_id = {publisher_id}'
+            ).format(publisher_id=publisher_id)
+        
+        connection = _get_connection(cls.db)
+        
+        publisher = connection.get(sql)
+        publisher.type = cls.PUBLISHER_TYPE[publisher.type]
+        
+        return publisher
+
+class Paper(object):
+    '''
+        论文 Paper表持久化对象
+    '''
+    db = 'homepage'
+    
+    @classmethod
+    def get(cls, article_id):
+        '''
+            paper get方法
+        '''
+        if article_id is None:
+            return None
+        
+        paper = Article.get(article_id)
+        if paper is None:
+            return None
+
+        sql =\
+            (
+                'SELECT * '
+                'FROM paper '
+                'WHERE article_id = %s'
+            )
+        
+        connection = _get_connection(cls.db)
+        
+        paper_info = connection.get(sql, article_id)
+        
+        if paper_info is None:
+            return None
+        
+        paper.update(paper_info)
+        
+        paper.publisher = Publisher.get(paper_info.publisher_id)
+        return paper

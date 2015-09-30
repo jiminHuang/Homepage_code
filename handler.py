@@ -10,6 +10,7 @@
 import tornado.web
 import database
 import timechewer
+import imagechewer
 
 class BaseHandler(tornado.web.RequestHandler):
     '''
@@ -33,7 +34,33 @@ class MainHandler(BaseHandler):
         首页handler
     '''
     def get(self):
-        self.render("index.html", page_title="Wuhan University Internet Data Mining Labratory")
+        articles = database.Article.query()
+        for article in articles:
+            article.article_image = imagechewer.static_image(article.article_id)
+            article.abstract = article.abstract[:255] + '...'
+        
+        papers = database.Paper.query()
+        if papers:
+            papers = papers[:3] 
+            for paper in papers:
+                paper.publish_year = timechewer.strftime_present("%Y", paper.publish_year)
+                paper.author =\
+                    [
+                        database.Article.author(author)
+                            for author in paper.author.split(",")
+                    ]
+        
+        persons = database.User.query()
+        for person in persons:
+            person.image = imagechewer.static_image(person.user_id)
+
+        self.render(
+            "index.html",
+            page_title="Wuhan University Internet Data Mining Labratory",
+            articles=articles,    
+            papers=papers,
+            persons=persons,
+        )
 
 class ArticlesHandler(BaseHandler):
     '''
@@ -42,7 +69,12 @@ class ArticlesHandler(BaseHandler):
     def get(self):
         articles = database.Article.query()
         for article in articles:
-            article.article_image = 'img/' + article.article_id + '.jpeg'
+            article.article_image = imagechewer.static_image(article.article_id)
+            article.author =\
+                [
+                    database.Article.author(author)\
+                        for author in article.author.split(",")
+                ]
         self.render(
             "articles.html",
             page_title=u"News - Wuhan University Internet Data Mining Laboratory",
@@ -58,7 +90,12 @@ class ArticleHandler(BaseHandler):
         article = database.Article.get(article_id)
         if article is None:
             self.write_error("404")
-        article.article_image = 'img/' + article.article_id + '.jpeg'
+        article.article_image = imagechewer.static_image(article.article_id)
+        article.author =\
+            [
+                database.Article.author(author)\
+                    for author in article.author.split(",")
+            ]
         
         self.render(
             "article.html", 
@@ -73,7 +110,9 @@ class PersonHandler(BaseHandler):
     def get(self, username):
         #person 基本信息
         person = database.User.get(username=username)
-        person.image = 'img/' + person.user_id + '.jpeg'
+        if person is None:
+            self.write_error("404")
+        person.image = imagechewer.static_image(person.user_id)
         
         #person 教育背景
         backgrounds = database.Background.query(person.user_id)
@@ -98,6 +137,17 @@ class PersonHandler(BaseHandler):
         #person 研究方向
         interests = database.Interests.query(person.user_id)
         person.interests = interests
+        
+        #person 论文
+        papers = database.Paper.query_in_user(person.user_id)
+        for paper in papers:
+            paper.publish_year = timechewer.strftime_present("%Y", paper.publish_year)
+            paper.author =\
+                [
+                    database.Article.author(author)
+                        for author in paper.author.split(",")
+                ]
+        person.papers = papers
 
         self.render(
             "person.html", 
@@ -105,6 +155,7 @@ class PersonHandler(BaseHandler):
                 username\
                     +"- Wuhan University Internet Data Mining Laboratory",
             person=person,
+            publisher_type=database.Publisher.PUBLISHER_TYPE,
         )
 
 class PaperHandler(BaseHandler):
@@ -113,15 +164,31 @@ class PaperHandler(BaseHandler):
     '''
     def get(self, article_id):
         paper = database.Paper.get(article_id)
+        if paper is None:
+            self.write_error(404)
+
+        paper.images = database.PaperImage.query(article_id)
+        if paper.images:
+            paper.images =\
+                [
+                    imagechewer.static_image('paper/' + str(image.image_id), image.suffix)
+                        for image in paper.images
+                ]
+        
         paper.publish_year = timechewer.strftime_present("%Y", paper.publish_year)
+        paper.author =\
+            [
+                database.Article.author(author)
+                    for author in paper.author.split(",")
+            ]
         if paper.paper_url is None:
             paper.pdf_available = True
             paper.paper_url =\
-                ''.join(
+                ''.join((
                     'paper/',
                     paper.article_id,
                     '.pdf',    
-                )
+                ))
         else:
             paper.pdf_available = False
 
@@ -129,4 +196,39 @@ class PaperHandler(BaseHandler):
             "paper.html",
             page_title=paper.title,
             paper=paper,
+        )
+
+class ResearchHandler(BaseHandler):
+    '''
+        Research页 handler
+    '''
+    def get(self):
+        papers = database.Paper.query()
+        if not papers:
+            self.write_error("404")
+        for paper in papers:
+
+            paper.publish_year =\
+                timechewer.strftime_present("%Y", paper.publish_year)
+
+            paper.author =\
+                [
+                    database.Article.author(author)
+                        for author in paper.author.split(",")
+                ]
+            
+            paper.abstract = paper.abstract[:255] + '...'
+
+            paper.images = database.PaperImage.query(paper.article_id)
+            if paper.images:
+                paper.images =\
+                    [
+                        imagechewer.static_image('paper/' + str(image.image_id), image.suffix)
+                            for image in paper.images
+                    ]
+        
+        self.render(
+            "research.html",
+            page_title="Research-WUIDML",
+            papers=papers,
         )

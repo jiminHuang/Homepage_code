@@ -14,9 +14,6 @@ import logging
 from datetime import datetime
 
 def test_strftime_present():
-    '''
-        测试加入了present检测的strftime
-    '''
     #异常输入
     assert_raises(TypeError, timechewer.strftime_present)
     assert_raises(TypeError, timechewer.strftime_present, 1)

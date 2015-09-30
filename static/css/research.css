@@ -1,0 +1,16 @@
+.article_heading{
+    font-size: 1.8em;
+}
+.article_author{
+    padding-right:5px;
+}
+.article_user{
+    color: #2ec3ce;
+}
+.article_publish_time{
+    color: #888;
+}
+.article_abstract{
+    padding: 10px 0;
+    text-align: justify;
+}

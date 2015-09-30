@@ -13,12 +13,10 @@ import database
 import torndb
 import mock
 import logging
+import copy
 
 @mock.patch.object(logging, "error")
 def test_typelist_getitem(mock_logging_error):
-    '''
-        测试Typelist list扩展类的取方法
-    '''
     example = database.TypeList([1])
     
     #越界异常
@@ -46,9 +44,6 @@ class TestPersistence(object):
         self.mock_connection.return_value = self.mock_db
 
     def test_user_get(self):
-        '''
-            测试user get函数
-        '''
         #user_id未输入
         user = database.User.get()
         assert user is None
@@ -71,11 +66,18 @@ class TestPersistence(object):
         self.mock_db.get.return_value = None
         user = database.User.get(username=1)
         assert user is None
+    
+    def test_user_query(self):
+        #mock构建
+        mock_user = mock.Mock()
+        self.mock_db.query.return_value = [mock_user]
+        
+        #正常输入
+        users = database.User.query()
+        self.mock_db.query.assert_called_with('SELECT * FROM user WHERE type != 6')
+        assert_equal(users, [mock_user])
 
     def test_background_query(self):
-        '''
-            测试background query函数 异常输入
-        '''
         #user_id未输入
         assert_raises(TypeError, database.Background.query)
 
@@ -107,9 +109,6 @@ class TestPersistence(object):
         assert_equal(backgrounds, [])
         
     def test_experience_query(self):
-        '''
-            测试experience query函数 异常输入
-        '''
         #user_id未输入
         assert_raises(TypeError, database.Experience.query)
 
@@ -135,9 +134,6 @@ class TestPersistence(object):
         assert_equal(experiences, [mock_experience])
     
     def test_interests_query(self):
-        '''
-            测试interests query函数
-        '''
         #user_id未输入
         assert_raises(TypeError, database.Interests.query)
 
@@ -163,9 +159,6 @@ class TestPersistence(object):
         assert_equal(interests, [mock_interests])
         
     def test_article_get(self):
-        '''
-            测试article get函数
-        '''
         #article_id未输入
         assert_raises(TypeError, database.Article.get)
         
@@ -179,72 +172,78 @@ class TestPersistence(object):
         self.mock_db.get.return_value = mock_article
         
         #正常输入
-        with mock.patch.object(database.User, 'get'):
-            article = database.Article.get(1)
-            self.mock_db.get.assert_called_with(
-                (
-                    'SELECT * '
-                    'FROM article '
-                    'WHERE article_id = %s'
-                ),
-                1
-            )
-            database.User.get.assert_called_with(user_id="1")
-            assert_equal(article, mock_article)
-            #article未找到
-            self.mock_db.get.return_value = None
-            article = database.Article.get(1)
-            assert article is None
+        article = database.Article.get(1)
+        self.mock_db.get.assert_called_with(
+            (
+                'SELECT * '
+                'FROM article '
+                'WHERE article_id = %s'
+            ),
+            1
+        )
+        assert_equal(article, mock_article)
     
     def test_articles_query(self):
         #mock 构建
         mock_article = mock.Mock()
-        mock_article.author = "1"
         self.mock_db.query.return_value = [mock_article]
         
         #正常输入
-        with mock.patch.object(database.User, 'get'):
-            #article_id未提供
-            articles = database.Article.query()
+        #article_id未提供
+        articles = database.Article.query()
 
+        self.mock_db.query.assert_called_with(
+            (
+                'SELECT * '
+                'FROM article '
+                'WHERE type = 1 '
+                'ORDER BY publish_time '
+                'LIMIT 10'
+            )
+        )
+        assert_equal(articles, [mock_article])
+
+        #article_id提供
+        #mock 模拟article get
+        with mock.patch.object(database.Article, 'get'):
+            mock_article = mock.Mock()
+            mock_article.publish_time = 1
+            database.Article.get.return_value = mock_article
+
+            articles = database.Article.query(article_id=1)
+
+            database.Article.get.assert_called_with(1)
             self.mock_db.query.assert_called_with(
                 (
                     'SELECT * '
-                    'FROM article  '
+                    'FROM article '
+                    'WHERE type = 1 '
+                    'AND publish_time > UNIX_TIMESTAMP(%s) '
                     'ORDER BY publish_time '
                     'LIMIT 10'
-                )
+                ),
+                1
             )
-            database.User.get.assert_called_with(user_id="1")
-            assert_equal(articles, [mock_article])
-
-            #article_id提供
-            mock_article.author = "1"
-            
-            #mock 模拟article get
-            with mock.patch.object(database.Article, 'get'):
-                mock_article = mock.Mock()
-                mock_article.publish_time = 1
-                database.Article.get.return_value = mock_article
-
-                articles = database.Article.query(article_id=1)
-
-                database.Article.get.assert_called_with(1)
-                self.mock_db.query.assert_called_with(
-                    (
-                        'SELECT * '
-                        'FROM article '
-                        'WHERE publish_time > UNIX_TIMESTAMP(%s) '
-                        'ORDER BY publish_time '
-                        'LIMIT 10'
-                    ),
-                    1
-                )
+    
+    def test_article_author(self):
+        #author未输入
+        assert_raises(TypeError, database.Article.author)
+        
+        #author为None或空
+        assert database.Article.author(None) is None
+    
+        #author正常输入
+        with mock.patch("database.User.get"):
+            #author为内置user
+            database.User.get.return_value = 2
+            author = database.Article.author(1)
+            assert_equal(author, 2)
+            #author非内置user
+            database.User.get.return_value = None
+            author = database.Article.author(1)
+            assert_equal(author, 1)
 
     def test_publisher_get(self):
-        '''
-            publisher get函数测试
-        '''
         #publisher_id 
         assert_raises(TypeError, database.Publisher.get)
         
@@ -254,7 +253,7 @@ class TestPersistence(object):
         
         #构建mock
         mock_publisher = mock.Mock()
-        mock_publisher.type = 1
+        mock_publisher.publisher_type = 1
         self.mock_db.get.return_value = mock_publisher
         
         #正常输入
@@ -267,12 +266,9 @@ class TestPersistence(object):
             ),
         )
         assert_equal(publisher, mock_publisher)
-        assert_equal(publisher.type, database.Publisher.PUBLISHER_TYPE[1]) 
+        assert_equal(publisher.publisher_type, database.Publisher.PUBLISHER_TYPE[1]) 
         
     def test_paper_get(self):
-        '''
-            paper get函数测试
-        '''
         #article_id未输入
         assert_raises(TypeError, database.Paper.get)
         
@@ -282,22 +278,160 @@ class TestPersistence(object):
         
         #构建mock
         mock_paper = mock.Mock()
-        mock_paper.publisher_id = 1
         self.mock_db.get.return_value = mock_paper
         
         #正常输入
-        with mock.patch('database.Article.get'):
-            with mock.patch('database.Publisher.get'):
-                database.Article.get.return_value = mock.Mock()
-                database.Publisher.get.return_value = mock.Mock()
-                paper = database.Paper.get(1)
-                database.Article.get.assert_called_with(1)
-                database.Publisher.get.assert_called_with(1)
-                self.mock_db.get.assert_called_with(
-                    (
-                        'SELECT * '
-                        'FROM paper '
-                        'WHERE article_id = %s'
-                    ),
-                    1,
+        paper = database.Paper.get(1)
+        self.mock_db.get.assert_called_with(
+            (
+                'SELECT * '
+                'FROM article '
+                'NATURAL JOIN paper '
+                'NATURAL JOIN publisher '
+                'WHERE article_id = %s'
+            ),
+            1,
+        )
+        assert_equal(paper, mock_paper)
+    
+    def test_paper_query(self):
+        #构建mock
+        mock_paper = mock.Mock()
+        mock_paper.publish_year = 1
+        mock_paper.article_id = 1
+        self.mock_db.query.return_value = [mock_paper]
+        
+        #正常输入
+        with mock.patch('database.Paper.get'):
+            #article_id未输入
+            papers = database.Paper.query() 
+            self.mock_db.query.assert_called_with(
+                (
+                    'SELECT * '
+                    'FROM article '
+                    'NATURAL JOIN paper '
+                    'NATURAL JOIN publisher '
+                    'WHERE article.type = 2 '
+                    'ORDER BY publish_year '
+                    'LIMIT 10'
                 )
+            )
+            assert_equal(papers, [mock_paper])
+            #article_id已输入
+            #提供的article_id 可以得到对应paper
+            database.Paper.get.return_value = mock_paper
+            papers = database.Paper.query(1)
+            self.mock_db.query.assert_called_with(
+                (
+                    'SELECT * '
+                    'FROM article '
+                    'NATURAL JOIN paper '
+                    'NATURAL JOIN publisher '
+                    'WHERE article.type = 2 '
+                    'AND article_id != %s '
+                    'AND publish_year >= unix_timestamp(%s) '
+                    'ORDER BY publish_year '
+                    'LIMIT 10'
+                ),
+                mock_paper.article_id,
+                mock_paper.publish_year,
+            )
+            database.Paper.get.assert_called_with(1)
+            #不可以得到
+            database.Paper.get.return_value = None
+            papers = database.Paper.query(1)
+            assert papers is None
+          
+    def test_paper_query_in_user(self):
+        #user_id未输入
+        assert_raises(TypeError, database.Paper.query_in_user)
+        
+        #user_id输入为None
+        assert database.Paper.query_in_user(None) is None
+        
+        #构建mock
+        mock_paper = mock.Mock()
+        self.mock_db.query.return_value = [mock_paper]
+        
+        #正常输入
+        papers = database.Paper.query_in_user(1)
+        self.mock_db.query.assert_called_with(
+            (
+                'SELECT * '
+                'FROM article '
+                'NATURAL JOIN paper '
+                'NATURAL JOIN publisher '
+                'WHERE type = 2 '
+                'AND author LIKE %s '
+                'ORDER BY publisher_type DESC'
+            ),
+            '%1%',
+        )
+        assert_equal(papers, [mock_paper])
+    
+    def test_paper_insert(self):
+        #构造输入
+        insert = {
+            'title' : 'test',
+            'author' : 'test',
+            'abstract' : 'test',
+            'publisher_id' : 1,
+            'start_page' : 1,
+            'end_page' : 1,
+            'volume' : 1,
+            'number' : 1,
+            'publish_year' : '2010-01-01',
+            'paper_url' : 'http',
+        }
+        request_value = [
+            'title', 
+            'author', 
+            'abstract', 
+            'publisher_id', 
+            'start_page',
+            'end_page',
+            'publish_year',
+        ]
+        
+        #异常输入
+        for value in request_value:
+            #需求值未给出
+            mock_insert = copy.deepcopy(insert)
+            mock_insert.pop(value)
+            assert_equal(database.Paper.insert(**mock_insert), False)
+            #需求值为None
+            mock_insert = copy.deepcopy(insert)
+            mock_insert[value] = None
+            assert_equal(database.Paper.insert(**mock_insert), False)
+    
+        #正常输入
+        assert_equal(database.Paper.insert(**insert), True)
+        
+        #异常捕获
+        self.mock_db.execute.side_effect = Exception('test')
+        with mock.patch('logging.error'):
+            assert_equal(database.Paper.insert(**insert), False)
+            logging.error.assert_called_with('test')
+
+    def test_paper_image_query(self):
+        #article_id未输入
+        assert_raises(TypeError, database.PaperImage.query)
+        
+        #article_id为None
+        assert database.PaperImage.query(None) is None
+        
+        #构造mock
+        mock_image = mock.Mock()
+        self.mock_db.query.return_value = mock_image
+        
+        #正常输入
+        image = database.PaperImage.query(1)
+        self.mock_db.query.assert_called_with(
+            (
+                'SELECT * '
+                'FROM paper_image '
+                'WHERE article_id = %s'
+            ),
+            1
+        )
+        assert_equal(image, mock_image)

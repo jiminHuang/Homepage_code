@@ -11,6 +11,7 @@
 import torndb
 import config
 import logging
+import hashlib
 
 def _get_connection(db):
     '''
@@ -75,6 +76,15 @@ class User(object):
             user.type = cls.USER_TYPE[user.type]
 
         return user
+    
+    @classmethod
+    def query(cls):
+        '''
+            首页 user列表 query方法
+        '''
+        connection = _get_connection(cls.db)
+        
+        return connection.query('SELECT * FROM user WHERE type != 6')
 
 class Background(object):
     '''
@@ -191,16 +201,7 @@ class Article(object):
                 'WHERE article_id = %s'
             )
         
-        article = connection.get(sql, article_id)
-        
-        if article is not None:
-            article.author =\
-                [
-                    User.get(user_id = author)
-                        if User.get(user_id = author) else author
-                            for author in article.author.split(',')
-                ]
-        return article
+        return connection.get(sql, article_id)
     
     @classmethod 
     def query(cls, article_id=None):
@@ -210,41 +211,42 @@ class Article(object):
         sql =\
             (
                 'SELECT * '
-                'FROM article'
+                'FROM article '
+                'WHERE type = 1 '
             )
         
         article = cls.get(article_id)
         
         sql =\
-            ' '.join((
+            ''.join((
                 sql,
-                'WHERE publish_time > UNIX_TIMESTAMP(%s)'\
+                'AND publish_time > UNIX_TIMESTAMP(%s) '\
                     if article is not None else '',
-                'ORDER BY publish_time',
+                'ORDER BY publish_time ',
                 'LIMIT 10',
             ))
         
-        if article is not None:
-            articles = connection.query(sql, article.publish_time)
-        else:
-            articles = connection.query(sql)
+        return connection.query(sql)\
+            if article is None else\
+                connection.query(sql, article.publish_time)
+    
+    @classmethod
+    def author(cls, author):
+        #author 为None
+        if author is None:
+            return None
         
-        for article in articles:
-            article.author =\
-                [
-                    User.get(user_id = author)
-                        if User.get(user_id = author) else None 
-                            for author in article.author.split(',')
-                ]
-        
-        return articles
+        author = author.strip()
+        #author正常输入
+        user = User.get(author)
+        return user if user is not None else author
     
 class Publisher(object):
     '''
         出版 Publisher表持久化对象
     '''
     db = 'homepage'
-    PUBLISHER_TYPE = TypeList(['Meeting', 'Journal'])
+    PUBLISHER_TYPE = TypeList(['Journal', 'Conference'])
     
     @classmethod
     def get(cls, publisher_id):
@@ -264,7 +266,7 @@ class Publisher(object):
         connection = _get_connection(cls.db)
         
         publisher = connection.get(sql)
-        publisher.type = cls.PUBLISHER_TYPE[publisher.type]
+        publisher.publisher_type = cls.PUBLISHER_TYPE[publisher.publisher_type]
         
         return publisher
 
@@ -282,25 +284,183 @@ class Paper(object):
         if article_id is None:
             return None
         
-        paper = Article.get(article_id)
-        if paper is None:
-            return None
-
         sql =\
             (
                 'SELECT * '
-                'FROM paper '
+                'FROM article '
+                'NATURAL JOIN paper '
+                'NATURAL JOIN publisher '
                 'WHERE article_id = %s'
             )
         
         connection = _get_connection(cls.db)
         
-        paper_info = connection.get(sql, article_id)
+        return connection.get(sql, article_id)
         
-        if paper_info is None:
+    @classmethod
+    def query(cls, article_id=None):
+        '''
+            paper query方法
+        '''
+        sql =\
+            (
+                'SELECT * '
+                'FROM article '
+                'NATURAL JOIN paper '
+                'NATURAL JOIN publisher '
+                'WHERE article.type = 2 '
+            )
+        
+        sql_order =\
+            (
+                'ORDER BY publish_year '
+                'LIMIT 10'
+            )
+        
+        connection = _get_connection(cls.db)
+
+        if article_id is None:
+            return connection.query(sql+sql_order)
+        else:
+            article = cls.get(article_id)
+            if article is None:
+                return None
+            return connection.query(
+                ''.join((
+                    sql,
+                    'AND article_id != %s ',
+                    'AND publish_year >= unix_timestamp(%s) ',
+                    sql_order,
+                )),
+                article_id,
+                article.publish_year,
+            )
+    
+    @classmethod
+    def query_in_user(cls, user_id):
+        if user_id is None:
             return None
         
-        paper.update(paper_info)
+        connection = _get_connection(cls.db)
         
-        paper.publisher = Publisher.get(paper_info.publisher_id)
-        return paper
+        #构建模糊查询表达式
+        user_id =\
+            ''.join((
+                '%',
+                str(user_id),
+                '%',
+            ))
+        
+        sql = (
+            'SELECT * '
+            'FROM article '
+            'NATURAL JOIN paper '
+            'NATURAL JOIN publisher '
+            'WHERE type = 2 '
+            'AND author LIKE %s '
+            'ORDER BY publisher_type DESC'
+        )
+        
+        return connection.query(sql, user_id)
+    
+    @classmethod
+    def insert(cls, **kwargs):
+        '''
+            论文插入方法 
+        '''
+        request_values = [
+            'title', 
+            'author', 
+            'abstract', 
+            'publisher_id', 
+            'start_page',
+            'end_page',
+            'publish_year',
+        ]
+        
+        for value in request_values:
+            if kwargs.get(value, None) is None:
+                return False
+        
+        connection = _get_connection(cls.db)
+
+        article_id = hashlib.md5(kwargs['title']).hexdigest()
+
+        sql =\
+            (
+                'INSERT INTO article '
+                'VALUE('
+                '%s, %s, now(), null, null, null, %s, 2, 0, %s)'
+            )
+        
+        try:
+            connection.execute(
+                sql,
+                article_id,
+                kwargs['author'],
+                kwargs['abstract'],
+                kwargs['title'],
+            )
+        except Exception, e:
+            logging.error('paper insert error in article: ' + str(e))
+            return False
+        
+        if kwargs.get('volume', None) is None:
+            kwargs['volume'] = 'null'
+        
+        if kwargs.get('number', None) is None:
+            kwargs['number'] = 'null'
+        
+        sql =\
+            (
+                'INSERT INTO paper '
+                'VALUE(%s, '
+                '{publisher_id}, '
+                '{volume}, '
+                '{number}, '
+                '{start_page}, '
+                '{end_page}, %s, %s)'
+            ).format(
+                publisher_id=kwargs['publisher_id'],
+                volume=kwargs['volume'],
+                number=kwargs['number'],
+                start_page=kwargs['start_page'],
+                end_page=kwargs['end_page'],
+            )
+        try:
+            connection.execute(
+                sql, 
+                article_id, 
+                kwargs['publish_year'],
+                kwargs.get('paper_url', None),
+            )
+        except Exception, e:
+            logging.error('paper insert error in paper: ' + str(e))
+            return False
+        
+        return True
+    
+class PaperImage(object):
+    '''
+        论文图片 paperimage表持久化对象
+    '''
+    db = 'homepage'
+
+    @classmethod
+    def query(cls, article_id):
+        '''
+            获取对应article_id的images
+        '''
+        if article_id is None:
+            return None
+        
+        sql =\
+            (
+                'SELECT * '
+                'FROM paper_image '
+                'WHERE article_id = %s'
+            )
+        
+        connection = _get_connection(cls.db)
+        
+        return connection.query(sql, article_id)

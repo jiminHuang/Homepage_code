@@ -89,25 +89,32 @@ section{
     min-height: 300px;
     background-color:#ebf4ec;
 }
-#Papers a{
-    text-align: center;
-}
 #Papers .row{
     padding: 0 100px;
 }
+#Papers .row>div{
+    text-align: center;
+}
 .paper_wrapper{
     background-color: #fff;
+    min-height: 300px;
 }
 .paper_text{
-    color: #333;
-    padding-bottom: 20px;
+    padding: 10px 10px;
 }
 .paper_title_wrapper{
     background-color: #2ec3e7;
 }
-.paper_title{
+.paper_title a{
     font-size: 1.2em;
     color: #000;
+}
+.paper_title a:hover{
+    color: #2ec3e7;
+    text-decoration: none;
+}
+.paper_writer a{
+    color: #2ec3e7;
 }
 .paper_date{
     font-size: 1.9em;
@@ -117,9 +124,6 @@ section{
 .paper_publisher{
     font-size: 0.9em;
     color: #888;
-}
-.paper_text:hover{
-    text-decoration: none;
 }
 /*Projects*/
 #Projects{

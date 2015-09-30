@@ -14,36 +14,22 @@
 
     <!-- Wrapper for slides -->
     <div class="carousel-inner" role="listbox">
-        <div class="item active">
+        {% for article in articles[:3] %}
+        <div class="item {% if articles.index(article) == 0 %} active {%end%}">
             <div class="col-md-6 carousel_img">
-                <img src="{{static_url("img/switch_one.jpeg")}}" alt="...">
+                <img src="{{static_url(article.article_image)}}" alt="...">
             </div>
             <div class="col-md-6 carousel_text">
-                <div class="carousel_title">Test</div> 
-                <div class="carousel_intro">Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </div> 
-                <div class="carousel_link"><a class="btn btn-default">Learn More</a></div>
+                <div class="carousel_title">{{article.title}}</div> 
+                <div class="carousel_intro">{{article.abstract}}</div> 
+                <div class="carousel_link">
+                    <a class="btn btn-default" href="/article/{{article.article_id}}">
+                        Learn More
+                    </a>
+                </div>
             </div>
         </div>
-        <div class="item">
-            <div class="col-md-6 carousel_img">
-                <img src="{{static_url("img/switch_two.jpeg")}}" alt="...">
-            </div>
-            <div class="col-md-6 carousel_text">
-                <div class="carousel_title">Test</div> 
-                <div class="carousel_intro">Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </div> 
-                <div class="carousel_link"><a class="btn btn-default">Learn More</a></div>
-            </div>
-        </div>
-        <div class="item">
-            <div class="col-md-6 carousel_img">
-                <img src="{{static_url("img/switch_three.jpeg")}}" alt="...">
-            </div>
-            <div class="col-md-6 carousel_text">
-                <div class="carousel_title">Test</div> 
-                <div class="carousel_intro">Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </div> 
-                <div class="carousel_link"><a class="btn btn-default">Learn More</a></div>
-            </div>
-        </div>
+        {%end%}
     </div>
 
     <!-- Controls -->
@@ -71,51 +57,35 @@
     <div class="container">
         <div class="section_title">Research</div>
         <div class="row">
-            <a href="#">
+            {% for paper in papers %}
                 <div class="col-md-4">
                     <div class="paper_wrapper">
+                        <div class="paper_title_wrapper">
+                            <p class="paper_date">{{paper.publish_year}}</p>
+                        </div>
                         <div class="paper_text">
-                            <div class="paper_title_wrapper">
-                                <p class="paper_date">09/07</p>
-                            </div>
-                            <p class="paper_title">Title</p>
-                            <p class="paper_writer">Author1, Author2, Author3</p>
-                            <p class="paper_publisher">Meeting</p>
+                            <p class="paper_title">
+                                <a href="/paper/{{paper.article_id}}">{{paper.title}}</a>
+                            </p>
+                            <p class="paper_writer">
+                                {%for author in paper.author%}
+                                    <span>
+                                    {% if not isinstance(author, basestring) %}
+                                        <a href="/person/{{author.username}}">{{author.firstname[0].capitalize()}} {{author.lastname.capitalize()}}</a>
+                                    {%else%}
+                                        {{author}}
+                                    {%end%}
+                                    </span>
+                                {%end%}
+                            </p>
+                            <p class="paper_publisher">{{paper.publisher_name}}</p>
                         </div>
                     </div>
                 </div>
-            </a> 
-            <a href="#">
-                <div class="col-md-4">
-                    <div class="paper_wrapper">
-                        <div class="paper_text">
-                            <div class="paper_title_wrapper">
-                                <p class="paper_date">09/07</p>
-                            </div>
-                            <p class="paper_title">Title</p>
-                            <p class="paper_writer">Author1, Author2, Author3</p>
-                            <p class="paper_publisher">Meeting</p>
-                        </div>
-                    </div>
-                </div>
-            </a> 
-            <a href="#">
-                <div class="col-md-4">
-                    <div class="paper_wrapper">
-                        <div class="paper_text">
-                            <div class="paper_title_wrapper">
-                                <p class="paper_date">09/07</p>
-                            </div>
-                            <p class="paper_title">Title</p>
-                            <p class="paper_writer">Author1, Author2, Author3</p>
-                            <p class="paper_publisher">Meeting</p>
-                        </div>
-                    </div>
-                </div>
-            </a> 
+            {%end%}
         </div>
         <div class="section_link">
-            <div class="btn btn-default">Learn More</div>
+            <a class="btn btn-default" href="/research">Learn More</a>
         </div>
     </div>
 </section>
@@ -198,68 +168,13 @@
     </div>
         <div class="team_view">
             <div class="row">
+                {%for person in persons%}
                 <div class="col-md-2">
-                    <a href="person">
-                        <img src="{{static_url("img/team_head.jpeg")}}" />
+                    <a href="/person/{{person.username}}">
+                        <img src="{{static_url(person.image)}}" />
                     </a>
                 </div>
-                <div class="col-md-2">
-                    <a href="person">
-                        <img src="{{static_url("img/team_head.jpeg")}}" />
-                    </a>
-                </div>
-                <div class="col-md-2">
-                    <a href="person">
-                        <img src="{{static_url("img/team_head.jpeg")}}" />
-                    </a>
-                </div>
-                <div class="col-md-2">
-                    <a href="person">
-                        <img src="{{static_url("img/team_head.jpeg")}}" />
-                    </a>
-                </div>
-                <div class="col-md-2">
-                    <a href="person">
-                        <img src="{{static_url("img/team_head.jpeg")}}" />
-                    </a>
-                </div>
-                <div class="col-md-2">
-                    <a href="person">
-                        <img src="{{static_url("img/team_head.jpeg")}}" />
-                    </a>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-2">
-                    <a href="person">
-                        <img src="{{static_url("img/team_head.jpeg")}}" />
-                    </a>
-                </div>
-                <div class="col-md-2">
-                    <a href="person">
-                        <img src="{{static_url("img/team_head.jpeg")}}" />
-                    </a>
-                </div>
-                <div class="col-md-2">
-                    <a href="person">
-                        <img src="{{static_url("img/team_head.jpeg")}}" />
-                    </a>
-                </div>
-                <div class="col-md-2">
-                    <a href="person">
-                        <img src="{{static_url("img/team_head.jpeg")}}" />
-                    </a>
-                </div>
-                <div class="col-md-2">
-                    <a href="person">
-                        <img src="{{static_url("img/team_head.jpeg")}}" />
-                    </a>
-                </div>
-                <div class="col-md-2">
-                    <a href="person">
-                        <img src="{{static_url("img/team_head.jpeg")}}" />
-                    </a>
-                </div>
+                {%end%}
             </div>
         </div>
 </section>

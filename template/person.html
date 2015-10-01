@@ -28,12 +28,14 @@
         </div>
     </section>
     <hr/>
+    {% if person.biography %}
     <section id="BIO">
         <div class="section_title">BIO</div>
         <div class="bio_text">
             {{person.biography}}
         </div>
     </section>
+    {%end%}
     <hr/>
     <section id="EducationBackground">
         <div class="section_title">EDUCATION BACKGROUND</div>

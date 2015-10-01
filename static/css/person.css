@@ -1,11 +1,13 @@
 /*Person Image*/
 .person_image{
     width: 200px;        
+    height: 200px;
+    overflow: hidden;
     margin: auto;
+    border-radius: 200px;
 } 
 .person_image img{
-    width: 100%;
-    border-radius: 200px;
+    width: 200px;
 }
 /*Person Realname*/
 .person_realname{

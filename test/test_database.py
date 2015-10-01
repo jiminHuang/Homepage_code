@@ -480,3 +480,43 @@ class TestPersistence(object):
             ),
         )
         assert_equal(project, mock_project)
+
+    def test_project_query(self):
+        #构造mock
+        mock_project = mock.Mock()
+        mock_project.start_time = 'test'
+        self.mock_db.query.return_value = [mock_project]
+        
+        #project_id未输入
+        projects = database.Project.query()
+        self.mock_db.query.assert_called_with((
+            'SELECT * '
+            'FROM project '
+            'NATURAL JOIN project_item '
+            'NATURAL JOIN item '
+            'ORDER BY start_time '
+            'LIMIT 10'
+        ))
+        assert_equal(projects, [mock_project])
+        
+        #project_id输入
+        with mock.patch('database.Project.get'):
+            #找到对应project
+            database.Project.get.return_value = mock_project
+            projects = database.Project.query(1)
+            database.Project.get.assert_called_with(1)
+            self.mock_db.query.assert_called_with((
+                'SELECT * '
+                'FROM project '
+                'NATURAL JOIN project_item '
+                'NATURAL JOIN item '
+                'WHERE start_time >= unix_timestamp(%s) '
+                'AND project_id != 1 '
+                'ORDER BY start_time '
+                'LIMIT 10'
+            ), 'test')
+            assert_equal(projects, [mock_project])
+            #未找到对应project
+            database.Project.get.return_value = None
+            projects = database.Project.query(1)
+            assert projects is None

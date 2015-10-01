@@ -15,6 +15,7 @@ application = tornado.web.Application([
     (r"/", handler.MainHandler),
     (r"/articles", handler.ArticlesHandler),
     (r"/research", handler.ResearchHandler),
+    (r"/projects", handler.ProjectsHandler),
     (r"/article/(\S+)", handler.ArticleHandler),
     (r"/person/(\w+)", handler.PersonHandler),
     (r"/paper/(\S+)", handler.PaperHandler),

@@ -143,6 +143,8 @@ section{
 }
 #Projects .project_wrapper{
     padding: 30px 0;
+    background-color: #333;
+    text-align: center;
 }
 .projects_img{
     margin:0 auto;
@@ -156,13 +158,18 @@ section{
 .projects_text{
     padding: 15px;
 }
+.projects_text div{
+    margin: 10px 0;
+}
 .projects_title{
-    text-align: center;
     font-size: 1.2em;
     margin-bottom: 10px;
 }
-.projects_intro{
-    padding: 5px 15px;
+.projects_title a{
+    color: #2ec3e7;
+}
+#Projects .item{
+    font-weight: bold;
 }
 /*Team*/
 #Team{

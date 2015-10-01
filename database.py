@@ -513,3 +513,37 @@ class Project(object):
         connection = _get_connection(cls.db)
         
         return connection.get(sql)
+    
+    @classmethod
+    def query(cls, project_id=None):
+        '''
+            获取10数量的project信息
+        '''
+        sql =\
+            (
+                'SELECT * '
+                'FROM project '
+                'NATURAL JOIN project_item '
+                'NATURAL JOIN item '
+            )
+        
+        sql_suffix =\
+            (
+                'ORDER BY start_time '
+                'LIMIT 10'
+            )
+        
+        connection = _get_connection(cls.db)
+        
+        if project_id is None:
+            return connection.query(sql+sql_suffix)
+        else:
+            project = cls.get(project_id)
+            if project is None:
+                return None
+            where =\
+                (
+                    'WHERE start_time >= unix_timestamp(%s) '
+                    'AND project_id != {project_id} '
+                ).format(project_id=project_id)
+            return connection.query(sql+where+sql_suffix, project.start_time)

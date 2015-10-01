@@ -92,63 +92,27 @@
 
 <section id="Projects">
     <div class="container">
-        <div class="section_title">Service</div>
+        <div class="section_title">Projects</div>
         <div class="row">
-            <a href="#">
-                <div class="col-md-3">
-                    <div class="project_wrapper">
-                        <div class="projects_img">
-                            <img src="{{static_url("img/project_logo.png")}}" />
+            {% for project in projects %}
+            <div class="col-md-3">
+                <div class="project_wrapper">
+                    <div class="projects_img">
+                        <img src="{{static_url(project.project_image)}}" />
+                    </div>
+                    <div class="projects_text">
+                        <div class="projects_title">
+                            <a href="/project/{{project.project_id}}">{{project.project_name}}</a>
                         </div>
-                        <div class="projects_text">
-                            <div class="projects_title">Project 1</div>
-                            <div class="projects_intro">Vestibulum id ligula porta felis euismod semper.</div>
-                        </div>
+                        <div class="duration">{{project.start_time}} - {{project.end_time}}</div>
+                        <div class="item">{{project.item_name}}</div>
                     </div>
                 </div>
-            </a>
-            <a href="#">
-                <div class="col-md-3">
-                    <div class="project_wrapper">
-                        <div class="projects_img">
-                            <img src="{{static_url("img/project_logo.png")}}" />
-                        </div>
-                        <div class="projects_text">
-                            <div class="projects_title">Project 1</div>
-                            <div class="projects_intro">Vestibulum id ligula porta felis euismod semper.</div>
-                        </div>
-                    </div>
-                </div>
-            </a>
-            <a href="#">
-                <div class="col-md-3">
-                    <div class="project_wrapper">
-                        <div class="projects_img">
-                            <img src="{{static_url("img/project_logo.png")}}" />
-                        </div>
-                        <div class="projects_text">
-                            <div class="projects_title">Project 1</div>
-                            <div class="projects_intro">Vestibulum id ligula porta felis euismod semper.</div>
-                        </div>
-                    </div>
-                </div>
-            </a>
-            <a href="#">
-                <div class="col-md-3">
-                    <div class="project_wrapper">
-                        <div class="projects_img">
-                            <img src="{{static_url("img/project_logo.png")}}" />
-                        </div>
-                        <div class="projects_text">
-                            <div class="projects_title">Project 1</div>
-                            <div class="projects_intro">Vestibulum id ligula porta felis euismod semper.</div>
-                        </div>
-                    </div>
-                </div>
-            </a>
+            </div>
+            {%end%}
         </div>
         <div class="section_link">
-            <div class="btn btn-default">Learn More</div>
+            <a class="btn btn-default" href="/projects">Learn More</a>
         </div>
     </div> 
 </section>

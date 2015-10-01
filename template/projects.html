@@ -1,0 +1,40 @@
+{% extends "main.html" %}
+{% block css %}
+    <link href="{{ static_url("css/projects.css") }}" rel="stylesheet">
+{% end %}
+{% block breadCrumb %}
+    <li class="active">Projects</li>
+{% end %}
+{% block contentMain %}
+    {% module List() %}
+    <hr />
+    <ul class="media-list">
+        {% for project in projects %}
+        <li class="media">
+            <div class="media-body">
+                <a href="/project/{{project.project_id}}"><h4 class="project_heading">{{project.project_name}}</h4></a>
+                <div class="project_info">
+                    {% for user in project.users %}
+                    <span class="project_user">
+                        <a href="/person/{{user.username}}">
+                            {{user.firstname.capitalize()}} {{user.lastname.capitalize()}}
+                        </a>
+                    </span>
+                    {% end %}
+                </div> 
+                <div class="duration">{{project.start_time}} - {{project.end_time}}</div>
+                <div class="item">{{project.item_name}}</div>
+            </div>
+            <div class="media-left">
+                <a href="#">
+                    <img class="media-object" src="{{static_url(project.project_image)}}" alt="...">
+                </a>
+            </div>
+        </li> 
+        <hr />
+        {% end %}
+    </ul>
+    <div class="list_loading_more btn btn-default">
+        Load More 
+    </div>
+{% end %}

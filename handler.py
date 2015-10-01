@@ -50,6 +50,21 @@ class MainHandler(BaseHandler):
                             for author in paper.author.split(",")
                     ]
         
+        projects = database.Project.query()
+        if projects:
+            projects = projects[:3]
+            for project in projects:
+                project.users = database.User.query_in_project(project.project_id)
+                project.project_image = imagechewer.static_image(project.project_id)
+
+                project.start_time =\
+                    timechewer.strftime_present("%m/%Y", project.start_time)
+
+                project.end_time =\
+                    timechewer.strftime_present("%m/%Y", project.end_time)
+                
+                project.introduction = project.introduction[:255] + '...'
+        
         persons = database.User.query()
         for person in persons:
             person.image = imagechewer.static_image(person.user_id)
@@ -59,6 +74,7 @@ class MainHandler(BaseHandler):
             page_title="Wuhan University Internet Data Mining Labratory",
             articles=articles,    
             papers=papers,
+            projects=projects,
             persons=persons,
         )
 
@@ -260,6 +276,33 @@ class ProjectHandler(BaseHandler):
         
         self.render(
             "project.html",
-            page_title="Project-WUIDML",
+            page_title=project.project_name+"-WUIDML",
             project=project,
         )
+
+class ProjectsHandler(BaseHandler):
+    '''
+        项目列表页handler
+    '''
+    def get(self):
+        projects = database.Project.query()
+        if not projects:
+            self.write_error("404")
+        
+        for project in projects:
+            project.users = database.User.query_in_project(project.project_id)
+            project.project_image = imagechewer.static_image(project.project_id)
+
+            project.start_time =\
+                timechewer.strftime_present("%m/%Y", project.start_time)
+
+            project.end_time =\
+                timechewer.strftime_present("%m/%Y", project.end_time)
+        
+        self.render(
+            "projects.html",
+            page_title="Projects-WUIDML",
+            projects=projects,
+        )
+        
+        

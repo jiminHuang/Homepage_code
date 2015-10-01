@@ -76,7 +76,28 @@ class TestPersistence(object):
         users = database.User.query()
         self.mock_db.query.assert_called_with('SELECT * FROM user WHERE type != 6')
         assert_equal(users, [mock_user])
-
+    
+    def test_user_query_in_project(self):
+        #project_id未输入
+        assert_raises(TypeError, database.User.query_in_project)
+        
+        #project_id输入为None
+        assert database.User.query_in_project(None) is None
+        
+        #mock构建
+        mock_user = mock.Mock()
+        self.mock_db.query.return_value = [mock_user]
+        
+        #正常输入
+        users = database.User.query_in_project(1)
+        self.mock_db.query.assert_called_with(
+            'SELECT * '
+            'FROM user_project '
+            'NATURAL JOIN user '
+            'WHERE project_id = 1'
+        )
+        assert_equal(users, [mock_user])
+        
     def test_background_query(self):
         #user_id未输入
         assert_raises(TypeError, database.Background.query)
@@ -236,12 +257,12 @@ class TestPersistence(object):
         with mock.patch("database.User.get"):
             #author为内置user
             database.User.get.return_value = 2
-            author = database.Article.author(1)
+            author = database.Article.author('test')
             assert_equal(author, 2)
             #author非内置user
             database.User.get.return_value = None
-            author = database.Article.author(1)
-            assert_equal(author, 1)
+            author = database.Article.author('test')
+            assert_equal(author, 'test')
 
     def test_publisher_get(self):
         #publisher_id 
@@ -411,7 +432,7 @@ class TestPersistence(object):
         self.mock_db.execute.side_effect = Exception('test')
         with mock.patch('logging.error'):
             assert_equal(database.Paper.insert(**insert), False)
-            logging.error.assert_called_with('test')
+            logging.error.assert_called_with('paper insert error in article: test')
 
     def test_paper_image_query(self):
         #article_id未输入
@@ -435,3 +456,27 @@ class TestPersistence(object):
             1
         )
         assert_equal(image, mock_image)
+
+    def test_project_get(self):
+        #project_id未输入
+        assert_raises(TypeError, database.Project.get)
+        
+        #project_id为None
+        assert database.Project.get(None) is None
+        
+        #构造mock
+        mock_project = mock.Mock() 
+        self.mock_db.get.return_value = mock_project
+        
+        #正常输入
+        project = database.Project.get(1)
+        self.mock_db.get.assert_called_with(
+            (
+                'SELECT * '
+                'FROM project '
+                'NATURAL JOIN project_item '
+                'NATURAL JOIN item '
+                'WHERE project_id = 1'
+            ),
+        )
+        assert_equal(project, mock_project)

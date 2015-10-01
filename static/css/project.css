@@ -1,0 +1,44 @@
+.project_name{
+    text-align: center;
+    font-size: 2.2em;
+}
+section{
+    padding: 20px 0;
+}
+.section_title{
+    font-size: 1.8em;
+    margin: 20px 0;
+}
+#BasicInfo{
+    text-align: center;
+}
+.duration{
+    color: #777;
+    margin: 20px 0;
+}
+.item{
+    margin: 20px 0;
+    font-weight: bold;
+}
+.participator{
+    margin: 20px 0;
+}
+.participator .image_wrapper{
+    width:80px;
+    height: 80px;
+    overflow: hidden;
+    border-radius: 80px;
+    margin: auto;
+}
+.participator .image_wrapper img{
+    width: 80px;
+}
+.participator .username{
+    margin: 10px 0;    
+}
+.participator .username a{
+    color: #2ec3e7;
+}
+#Intro p{
+    text-align: justify;
+}

@@ -232,3 +232,34 @@ class ResearchHandler(BaseHandler):
             page_title="Research-WUIDML",
             papers=papers,
         )
+
+class ProjectHandler(BaseHandler):
+    '''
+        项目页handler
+    '''
+    
+    def get(self, project_id):
+        project = database.Project.get(project_id)
+        
+        if project is None:
+            self.write_error("404")
+        
+        project.users = database.User.query_in_project(project_id)
+        
+        if not project.users:
+            self.write_error("404")
+        
+        for user in project.users:
+            user.image = imagechewer.static_image(user.user_id)
+
+        project.start_time =\
+            timechewer.strftime_present("%m/%Y", project.start_time)
+
+        project.end_time =\
+            timechewer.strftime_present("%m/%Y", project.end_time)
+        
+        self.render(
+            "project.html",
+            page_title="Project-WUIDML",
+            project=project,
+        )

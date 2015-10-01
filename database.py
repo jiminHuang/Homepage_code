@@ -85,6 +85,27 @@ class User(object):
         connection = _get_connection(cls.db)
         
         return connection.query('SELECT * FROM user WHERE type != 6')
+    
+    @classmethod
+    def query_in_project(cls, project_id):
+        '''
+            获取project_id相关user
+        '''
+        if project_id is None:
+            return None
+        
+        connection = _get_connection(cls.db)
+        
+        sql =\
+            (
+                'SELECT * '
+                'FROM user_project '
+                'NATURAL JOIN user '
+                'WHERE project_id = {project_id}'
+            ).format(project_id=project_id)
+        
+        return connection.query(sql)
+        
 
 class Background(object):
     '''
@@ -464,3 +485,31 @@ class PaperImage(object):
         connection = _get_connection(cls.db)
         
         return connection.query(sql, article_id)
+
+class Project(object):
+    '''
+        项目 project表持久化对象
+    '''
+    db = 'homepage'
+    PROJECT_TYPE = TypeList(['academic', 'application'])
+    
+    @classmethod
+    def get(cls, project_id):
+        '''
+            获取对应project_id的项目信息
+        '''
+        if project_id is None:
+            return None
+        
+        sql=\
+            (
+                'SELECT * '
+                'FROM project '
+                'NATURAL JOIN project_item '
+                'NATURAL JOIN item '
+                'WHERE project_id = {project_id}'
+            ).format(project_id=project_id)
+        
+        connection = _get_connection(cls.db)
+        
+        return connection.get(sql)

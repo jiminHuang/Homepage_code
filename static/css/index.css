@@ -193,7 +193,11 @@ section{
 .team_view .col-md-2{
     padding: 0;
 }
-.team_view img{
+.team_view .image_wrapper{
     width: 100%;
     height: 226px;
+    overflow: hidden;
+}
+.team_view img{
+    width: 100%;
 }

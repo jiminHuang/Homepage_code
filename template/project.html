@@ -10,7 +10,11 @@
     <div class="project_name">{{project.project_name}}</div>
     <hr/>
     <section id="BasicInfo">
-        <div class="item">{{project.item_name}}</div>
+        {% for item in project.item %}
+        <div class="item">
+            {{item.item_name}} 
+        </div>
+        {%end%}
         <div class="duration">{{project.start_time}} - {{project.end_time}}</div>
         <div class="row participator">
             {% for user in project.users %}

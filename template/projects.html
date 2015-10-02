@@ -23,7 +23,11 @@
                     {% end %}
                 </div> 
                 <div class="duration">{{project.start_time}} - {{project.end_time}}</div>
-                <div class="item">{{project.item_name}}</div>
+                <div class="item">
+                    {% for item in project.item %}
+                    {{item.item_name}} 
+                    {% end %}
+                </div>
             </div>
             <div class="media-left">
                 <a href="#">

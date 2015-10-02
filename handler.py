@@ -161,6 +161,16 @@ class PersonHandler(BaseHandler):
                         for author in paper.author.split(",")
                 ]
         person.papers = papers
+        
+        #person 项目
+        projects = database.Project.query_in_user(person.user_id)
+        for project in projects:
+            project.start_time =\
+                timechewer.strftime_present("%m/%Y", project.start_time)
+
+            project.end_time =\
+                timechewer.strftime_present("%m/%Y", project.end_time)
+        person.projects = projects
 
         self.render(
             "person.html", 

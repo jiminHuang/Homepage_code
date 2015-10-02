@@ -7,10 +7,10 @@
     <li class="active">{{project.project_name}}</li>
 {% end %}
 {% block contentMain %}
+    <div class="project_name">{{project.project_name}}</div>
     <div class="project_image">
         <img src="{{static_url(project.project_image)}}" />
     </div>
-    <div class="project_name">{{project.project_name}}</div>
     <hr/>
     <section id="BasicInfo">
         {% for item in project.item %}

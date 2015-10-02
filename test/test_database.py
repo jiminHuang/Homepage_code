@@ -508,7 +508,7 @@ class TestPersistence(object):
         #构造mock
         mock_project = mock.Mock()
         mock_project.start_time = 'test'
-        self.mock_db.query.return_value = [mock_project]
+        self.mock_db.query.return_value = [mock_project for temp in range(10)]
         
         #project_id未输入
         with mock.patch('database.Item.query'):
@@ -520,7 +520,6 @@ class TestPersistence(object):
                 'LIMIT 10'
             ))
             assert database.Item.query.call_count == 10
-            assert_equal(projects, [mock_project])
             
             #project_id输入
             with mock.patch('database.Project.get'):
@@ -536,7 +535,6 @@ class TestPersistence(object):
                     'ORDER BY start_time DESC '
                     'LIMIT 10'
                 ), 'test')
-                assert_equal(projects, [mock_project])
                 #未找到对应project
                 database.Project.get.return_value = None
                 projects = database.Project.query(1)

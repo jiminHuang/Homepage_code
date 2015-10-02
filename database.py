@@ -486,6 +486,29 @@ class PaperImage(object):
         
         return connection.query(sql, article_id)
 
+class Item(object):
+    '''
+        项目类型 item表持久化对象
+    '''
+    db = 'homepage'
+    
+    @classmethod
+    def query(cls, project_id):
+        if project_id is None:
+            return None
+        
+        connection = _get_connection(cls.db)
+        
+        sql =\
+            (
+                'SELECT * '
+                'FROM project_item '
+                'NATURAL JOIN item '
+                'WHERE project_id = {project_id}'
+            ).format(project_id=project_id)
+
+        return connection.query(sql)
+
 class Project(object):
     '''
         项目 project表持久化对象

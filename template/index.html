@@ -105,11 +105,11 @@
                             <a href="/project/{{project.project_id}}">{{project.project_name}}</a>
                         </div>
                         <div class="duration">{{project.start_time}} - {{project.end_time}}</div>
+                        {% for item in project.item %}
                         <div class="item">
-                            {% for item in project.item %}
                             {{item.item_name}}
-                            {% end %}
                         </div>
+                        {% end %}
                     </div>
                 </div>
             </div>

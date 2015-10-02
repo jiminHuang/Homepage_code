@@ -63,7 +63,8 @@ class MainHandler(BaseHandler):
                 project.end_time =\
                     timechewer.strftime_present("%m/%Y", project.end_time)
                 
-                project.introduction = project.introduction[:255] + '...'
+                project.introduction = project.introduction[:255] + '...'\
+                    if project.introduction else ''
         
         persons = database.User.query()
         for person in persons:

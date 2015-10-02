@@ -58,3 +58,6 @@ target/
 
 #ini
 *.ini
+
+#vim
+*.swp

@@ -101,7 +101,8 @@ class User(object):
                 'SELECT * '
                 'FROM user_project '
                 'NATURAL JOIN user '
-                'WHERE project_id = {project_id}'
+                'WHERE project_id = {project_id} '
+                'ORDER BY role'
             ).format(project_id=project_id)
         
         return connection.query(sql)

@@ -549,18 +549,18 @@ class TestPersistence(object):
         
         #构建mock
         mock_project = mock.Mock()
-        self.mock_db.query.return_value = [mock_project]
-        
+        self.mock_db.query.return_value = [mock_project]        
+
         #user_id正常输入
-        projects = database.Project.query_in_user(1)
-        self.mock_db.query.assert_called_with(
-            (
-                'SELECT * '
-                'FROM user_project '
-                'NATURAL JOIN project '
-                'WHERE user_id = %s '
-                'ORDER BY start_time DESC'
-            ),
-            1
-        )
-        assert_equal(projects, [mock_project])
+        with mock.patch('database.Item.query'):
+            projects = database.Project.query_in_user(1)
+            self.mock_db.query.assert_called_with(
+                (
+                    'SELECT * '
+                    'FROM user_project '
+                    'NATURAL JOIN project '
+                    'WHERE user_id = %s '
+                    'ORDER BY start_time DESC'
+                ),
+                1
+            )

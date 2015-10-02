@@ -597,4 +597,10 @@ class Project(object):
                 'ORDER BY start_time DESC'
             )
 
-        return connection.query(sql, user_id)
+        projects = connection.query(sql, user_id)
+        
+        for project in projects:
+            if project is not None:
+                project.item = Item.query(project.project_id)
+        
+        return projects

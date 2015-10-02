@@ -520,3 +520,28 @@ class TestPersistence(object):
             database.Project.get.return_value = None
             projects = database.Project.query(1)
             assert projects is None
+    
+    def test_project_query_in_user(self):
+        #user_id未输入
+        assert_raises(TypeError, database.Project.query_in_user)
+        
+        #user_id为None
+        assert database.Project.query_in_user(None) is None
+        
+        #构建mock
+        mock_project = mock.Mock()
+        self.mock_db.query.return_value = mock_project
+        
+        #user_id正常输入
+        projects = database.Project.query_in_user(1)
+        self.mock_db.query.assert_called_with(
+            (
+                'SELECT * '
+                'FROM user_project '
+                'NATURAL JOIN project '
+                'WHERE user_id = %s '
+                'ORDER BY start_time DESC'
+            ),
+            1
+        )
+        assert_equal(projects, [mock_project])

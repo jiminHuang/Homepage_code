@@ -456,6 +456,29 @@ class TestPersistence(object):
             1
         )
         assert_equal(image, mock_image)
+    
+    def test_item_query(self):
+        #project_id未输入
+        assert_raises(TypeError, database.Project.get)
+        
+        #project_id为None
+        assert database.Project.get(None) is None
+        
+        #构造mock
+        mock_item= mock.Mock()
+        self.mock_db.query.return_value = [mock_item]
+        
+        #正常输入
+        items = database.Item.query(1)
+        self.mock_db.query.assert_called_with(
+            (
+                'SELECT * '
+                'FROM project_item '
+                'NATURAL JOIN item '
+                'WHERE project_id = 1'
+            )
+        )
+        assert_equal(items, [mock_item])
 
     def test_project_get(self):
         #project_id未输入
@@ -469,57 +492,53 @@ class TestPersistence(object):
         self.mock_db.get.return_value = mock_project
         
         #正常输入
-        project = database.Project.get(1)
-        self.mock_db.get.assert_called_with(
-            (
-                'SELECT * '
-                'FROM project '
-                'NATURAL JOIN project_item '
-                'NATURAL JOIN item '
-                'WHERE project_id = 1'
-            ),
-        )
-        assert_equal(project, mock_project)
+        with mock.patch('database.Item.query'):
+            project = database.Project.get(1)
+            database.Item.query.assert_called_with(1)
+            self.mock_db.get.assert_called_with(
+                (
+                    'SELECT * '
+                    'FROM project '
+                    'WHERE project_id = 1'
+                ),
+            )
+            assert_equal(project, mock_project)
 
     def test_project_query(self):
         #构造mock
         mock_project = mock.Mock()
         mock_project.start_time = 'test'
-        self.mock_db.query.return_value = [mock_project]
+        self.mock_db.query.return_value = [mock_project for temp in range(10)]
         
         #project_id未输入
-        projects = database.Project.query()
-        self.mock_db.query.assert_called_with((
-            'SELECT * '
-            'FROM project '
-            'NATURAL JOIN project_item '
-            'NATURAL JOIN item '
-            'ORDER BY start_time DESC '
-            'LIMIT 10'
-        ))
-        assert_equal(projects, [mock_project])
-        
-        #project_id输入
-        with mock.patch('database.Project.get'):
-            #找到对应project
-            database.Project.get.return_value = mock_project
-            projects = database.Project.query(1)
-            database.Project.get.assert_called_with(1)
+        with mock.patch('database.Item.query'):
+            projects = database.Project.query()
             self.mock_db.query.assert_called_with((
                 'SELECT * '
                 'FROM project '
-                'NATURAL JOIN project_item '
-                'NATURAL JOIN item '
-                'WHERE start_time >= unix_timestamp(%s) '
-                'AND project_id != 1 '
                 'ORDER BY start_time DESC '
                 'LIMIT 10'
-            ), 'test')
-            assert_equal(projects, [mock_project])
-            #未找到对应project
-            database.Project.get.return_value = None
-            projects = database.Project.query(1)
-            assert projects is None
+            ))
+            assert database.Item.query.call_count == 10
+            
+            #project_id输入
+            with mock.patch('database.Project.get'):
+                #找到对应project
+                database.Project.get.return_value = mock_project
+                projects = database.Project.query(1)
+                database.Project.get.assert_called_with(1)
+                self.mock_db.query.assert_called_with((
+                    'SELECT * '
+                    'FROM project '
+                    'WHERE start_time >= unix_timestamp(%s) '
+                    'AND project_id != 1 '
+                    'ORDER BY start_time DESC '
+                    'LIMIT 10'
+                ), 'test')
+                #未找到对应project
+                database.Project.get.return_value = None
+                projects = database.Project.query(1)
+                assert projects is None
     
     def test_project_query_in_user(self):
         #user_id未输入

@@ -486,6 +486,29 @@ class PaperImage(object):
         
         return connection.query(sql, article_id)
 
+class Item(object):
+    '''
+        项目类型 item表持久化对象
+    '''
+    db = 'homepage'
+    
+    @classmethod
+    def query(cls, project_id):
+        if project_id is None:
+            return None
+        
+        connection = _get_connection(cls.db)
+        
+        sql =\
+            (
+                'SELECT * '
+                'FROM project_item '
+                'NATURAL JOIN item '
+                'WHERE project_id = {project_id}'
+            ).format(project_id=project_id)
+
+        return connection.query(sql)
+
 class Project(object):
     '''
         项目 project表持久化对象
@@ -505,14 +528,17 @@ class Project(object):
             (
                 'SELECT * '
                 'FROM project '
-                'NATURAL JOIN project_item '
-                'NATURAL JOIN item '
                 'WHERE project_id = {project_id}'
             ).format(project_id=project_id)
         
         connection = _get_connection(cls.db)
         
-        return connection.get(sql)
+        project = connection.get(sql)
+        
+        if project is not None:
+            project.item = Item.query(project_id)
+
+        return project
     
     @classmethod
     def query(cls, project_id=None):
@@ -523,8 +549,6 @@ class Project(object):
             (
                 'SELECT * '
                 'FROM project '
-                'NATURAL JOIN project_item '
-                'NATURAL JOIN item '
             )
         
         sql_suffix =\
@@ -536,7 +560,7 @@ class Project(object):
         connection = _get_connection(cls.db)
         
         if project_id is None:
-            return connection.query(sql+sql_suffix)
+            projects = connection.query(sql+sql_suffix)
         else:
             project = cls.get(project_id)
             if project is None:
@@ -546,7 +570,13 @@ class Project(object):
                     'WHERE start_time >= unix_timestamp(%s) '
                     'AND project_id != {project_id} '
                 ).format(project_id=project_id)
-            return connection.query(sql+where+sql_suffix, project.start_time)
+            projects = connection.query(sql+where+sql_suffix, project.start_time)
+        
+        for project in projects:
+            if project is not None:
+                project.item = Item.query(project.project_id)
+        
+        return projects
     
     @classmethod
     def query_in_user(cls,user_id):

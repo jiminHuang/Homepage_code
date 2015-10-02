@@ -54,7 +54,8 @@ class MainHandler(BaseHandler):
         if projects:
             projects = projects[:4]
             for project in projects:
-                project.project_image = imagechewer.static_image(project.project_id)
+                project.project_image =\
+                    imagechewer.static_image('/project'+project.project_id)
 
                 project.start_time =\
                     timechewer.strftime_present("%m/%Y", project.start_time)
@@ -300,7 +301,10 @@ class ProjectsHandler(BaseHandler):
         if projects:
             for project in projects:
                 project.users = database.User.query_in_project(project.project_id)
-                project.project_image = imagechewer.static_image(project.project_id)
+                project.project_image =\
+                    imagechewer.static_image(
+                        '/project'+project.project_id
+                    )
 
                 project.start_time =\
                     timechewer.strftime_present("%m/%Y", project.start_time)

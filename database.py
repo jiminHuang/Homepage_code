@@ -528,14 +528,17 @@ class Project(object):
             (
                 'SELECT * '
                 'FROM project '
-                'NATURAL JOIN project_item '
-                'NATURAL JOIN item '
                 'WHERE project_id = {project_id}'
             ).format(project_id=project_id)
         
         connection = _get_connection(cls.db)
         
-        return connection.get(sql)
+        project = connection.get(sql)
+        
+        if project is not None:
+            project.item = Item.query(project_id)
+
+        return project
     
     @classmethod
     def query(cls, project_id=None):

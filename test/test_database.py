@@ -456,6 +456,29 @@ class TestPersistence(object):
             1
         )
         assert_equal(image, mock_image)
+    
+    def test_item_query(self):
+        #project_id未输入
+        assert_raises(TypeError, database.Project.get)
+        
+        #project_id为None
+        assert database.Project.get(None) is None
+        
+        #构造mock
+        mock_item= mock.Mock()
+        self.mock_db.query.return_value = [mock_item]
+        
+        #正常输入
+        items = database.Item.query(1)
+        self.mock_db.query.assert_called_with(
+            (
+                'SELECT * '
+                'FROM project_item '
+                'NATURAL JOIN item '
+                'WHERE project_id = 1'
+            )
+        )
+        assert_equal(items, [mock_item])
 
     def test_project_get(self):
         #project_id未输入

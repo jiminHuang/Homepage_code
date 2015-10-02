@@ -549,8 +549,9 @@ class Project(object):
             (
                 'SELECT * '
                 'FROM project '
-            )
-        
+                'WHERE NOT ISNULL(project_null) '
+            )        
+
         sql_suffix =\
             (
                 'ORDER BY start_time DESC '
@@ -567,7 +568,7 @@ class Project(object):
                 return None
             where =\
                 (
-                    'WHERE start_time >= unix_timestamp(%s) '
+                    'AND start_time >= unix_timestamp(%s) '
                     'AND project_id != {project_id} '
                 ).format(project_id=project_id)
             projects = connection.query(sql+where+sql_suffix, project.start_time)

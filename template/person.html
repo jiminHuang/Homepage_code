@@ -102,7 +102,11 @@
                             <td>
                                 <a href="/project/{{project.project_id}}">{{project.project_name}}</a>
                             </td>
-                            <td>{{project.item_name}}</td>
+                            <td>
+                                {% for item in project.item %}
+                                {{item.item_name}}
+                                {%end%}
+                            </td>
                             <td>{{project.start_time}}-{{project.end_time}}</td>
                         </tr>
                     {%end%}

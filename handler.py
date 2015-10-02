@@ -270,7 +270,7 @@ class ProjectHandler(BaseHandler):
         
         if project.project_null is None:
             self.write_error("404")
-        
+
         project.users = database.User.query_in_project(project_id)
         
         if not project.users:
@@ -284,6 +284,11 @@ class ProjectHandler(BaseHandler):
 
         project.end_time =\
             timechewer.strftime_present("%m/%Y", project.end_time)
+
+        project.project_image =\
+            imagechewer.static_image(
+                'project/'+str(project.project_id)
+            )
         
         self.render(
             "project.html",

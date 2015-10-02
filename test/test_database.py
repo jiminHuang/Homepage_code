@@ -530,7 +530,7 @@ class TestPersistence(object):
         
         #构建mock
         mock_project = mock.Mock()
-        self.mock_db.query.return_value = mock_project
+        self.mock_db.query.return_value = [mock_project]
         
         #user_id正常输入
         projects = database.Project.query_in_user(1)

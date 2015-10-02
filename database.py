@@ -547,3 +547,24 @@ class Project(object):
                     'AND project_id != {project_id} '
                 ).format(project_id=project_id)
             return connection.query(sql+where+sql_suffix, project.start_time)
+    
+    @classmethod
+    def query_in_user(cls,user_id):
+        '''
+            得到与user_id相关的全部projects
+        '''
+        if user_id is None:
+            return None
+        
+        connection = _get_connection(cls.db)
+        
+        sql =\
+            (
+                'SELECT * '
+                'FROM user_project '
+                'NATURAL JOIN project '
+                'WHERE user_id = %s '
+                'ORDER BY start_time DESC'
+            )
+
+        return connection.query(sql, user_id)

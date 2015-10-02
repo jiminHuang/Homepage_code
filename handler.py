@@ -54,7 +54,6 @@ class MainHandler(BaseHandler):
         if projects:
             projects = projects[:3]
             for project in projects:
-                project.users = database.User.query_in_project(project.project_id)
                 project.project_image = imagechewer.static_image(project.project_id)
 
                 project.start_time =\
@@ -62,8 +61,6 @@ class MainHandler(BaseHandler):
 
                 project.end_time =\
                     timechewer.strftime_present("%m/%Y", project.end_time)
-                
-                project.introduction = project.introduction[:255] + '...'
         
         persons = database.User.query()
         for person in persons:

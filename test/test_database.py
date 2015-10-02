@@ -494,7 +494,7 @@ class TestPersistence(object):
             'FROM project '
             'NATURAL JOIN project_item '
             'NATURAL JOIN item '
-            'ORDER BY start_time '
+            'ORDER BY start_time DESC '
             'LIMIT 10'
         ))
         assert_equal(projects, [mock_project])
@@ -512,7 +512,7 @@ class TestPersistence(object):
                 'NATURAL JOIN item '
                 'WHERE start_time >= unix_timestamp(%s) '
                 'AND project_id != 1 '
-                'ORDER BY start_time '
+                'ORDER BY start_time DESC '
                 'LIMIT 10'
             ), 'test')
             assert_equal(projects, [mock_project])

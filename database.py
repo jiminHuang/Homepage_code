@@ -514,7 +514,7 @@ class Project(object):
         项目 project表持久化对象
     '''
     db = 'homepage'
-    PROJECT_TYPE = TypeList(['academic', 'application'])
+    PROJECT_TYPE = TypeList(['academic', 'application', 'null'])
     
     @classmethod
     def get(cls, project_id):
@@ -549,7 +549,8 @@ class Project(object):
             (
                 'SELECT * '
                 'FROM project '
-            )
+                'WHERE project_type != {null_type} '
+            ).format(null_type=cls.PROJECT_TYPE.index('null')+1)
         
         sql_suffix =\
             (
@@ -567,7 +568,7 @@ class Project(object):
                 return None
             where =\
                 (
-                    'WHERE start_time >= unix_timestamp(%s) '
+                    'AND start_time >= unix_timestamp(%s) '
                     'AND project_id != {project_id} '
                 ).format(project_id=project_id)
             projects = connection.query(sql+where+sql_suffix, project.start_time)

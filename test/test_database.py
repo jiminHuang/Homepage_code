@@ -516,8 +516,8 @@ class TestPersistence(object):
             self.mock_db.query.assert_called_with((
                 'SELECT * '
                 'FROM project '
+                'WHERE project_type != 3 '
                 'ORDER BY start_time DESC '
-                'WHERE project_type != 3'
                 'LIMIT 10'
             ))
             assert database.Item.query.call_count == 10

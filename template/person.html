@@ -72,14 +72,15 @@
                 </div>
             {% end %}
         {% end %}
+        {% if person.papers %}
         <div class="sub_title" id="MainPublishedPapers">Main Published Papers</div>
         {% for type in publisher_type %}
+        {% set type_list = [ p for p in person.papers if p.publisher_type == publisher_type.index(type)+1]%}
             <div class="para_title">{{type}}</div>
             <div class="table-responsive">
                 <table class="table papers" id="{{type}}">
                     <tbody>
-                        {%for paper in person.papers %}
-                            {% if paper.publisher_type == publisher_type.index(type) + 1 %}
+                        {%for paper in type_list%}
                             <tr>
                                 <td>
                                     <a href="/paper/{{paper.article_id}}">{{paper.title}}</a>
@@ -87,12 +88,13 @@
                                 <td>{{paper.publisher_name}}</td>
                                 <td>{{paper.publish_year}}</td>
                             </tr>
-                            {% end %}
                         {%end%}
                     </tbody>
                 </table>
             </div>
         {%end%}
+        {% end %}
+        {% if person.projects %}
         <div class="sub_title" id="MainItemsandResearch">Main Items and Research</div>
         <div class="table-responsive">
             <table class="table papers">
@@ -118,6 +120,8 @@
                 </tbody>
             </table>
         </div>
+        {% end %}
+        {% if person.prizes %}
         <div class="sub_title" id="ResearchPrize">Research Prize</div>
         <div class="table-responsive">
             <table class="table papers">
@@ -137,14 +141,34 @@
                 </tbody>
             </table>
         </div>
-        <div class="sub_title" id="Others">专利、软著</div>
-        <ul class="list-group">
-            <li class="list-group-item">[1]. 彭敏, 武斌, 汪清, 黄佳佳, 代心媛. 一种社交网络重要目标及社区群体识别方法, 2012,中国（国家发明专利），201210514421.7</li>
-            <li class="list-group-item">[2]. 彭敏, 武斌, 汪清. 微博猎手系统, （软件著作权）, 2013年1月</li>
-            <li class="list-group-item">[3]. 彭敏, 周李, 张泰玮. 木马分类管理系统, （软件著作权）, 2013年1月</li>
-            <li class="list-group-item">[4]. 任延珍, 黄轩, 彭敏. 图像数字指纹追踪方法, 2011, 中国（国家发明专利）, 武汉大学, CN201110278906.6</li>
-            <li class="list-group-item">[5]. 胡瑞敏, 任延珍, 彭敏. 数字指纹生成和跟踪方法, 2008, 中国（国家发明专利）, CN200810047646.X</li>
-        </ul>
+        {% end %}
+        {% if person.proprietaries %}
+        <div class="sub_title" id="Others">Main Patents and Copyrights</div>
+        {% for type in proprietary_type %}
+        {% set type_list = [p for p in person.proprietaries if p.proprietary_type == proprietary_type.index(type)+1]%}
+        {% if type_list %}
+        <div class="para_title">{{type}}</div>
+        <div class="table-responsive">
+            <table class="table papers">
+                <tbody>
+                    {%for proprietary in type_list %}
+                        <tr>
+                            <td>
+                                {{proprietary.proprietary_name}}
+                            </td>
+                            <td>
+                                {{proprietary.proprietary_facility}}
+                            </td>
+                            <td>{{proprietary.proprietary_no}}</td>
+                            <td>{{proprietary.proprietary_time}}</td>
+                        </tr>
+                    {%end%}
+                </tbody>
+            </table>
+        </div>
+        {% end %}
+        {% end %}
+        {% end %}
     </section>
     <hr />
 {% end %}

@@ -181,6 +181,14 @@ class PersonHandler(BaseHandler):
             if not prize.prize_facility:
                 prize.prize_facility = '' 
         person.prizes = prizes
+        
+        #person 专利/软著
+        proprietaries = database.Proprietary.query_in_user(person.user_id)
+        for proprietary in proprietaries:
+            proprietary.proprietary_time =\
+                timechewer.strftime_present("%Y", proprietary.proprietary_time)
+        
+        person.proprietaries = proprietaries
 
         self.render(
             "person.html", 
@@ -189,6 +197,7 @@ class PersonHandler(BaseHandler):
                     +"- Wuhan University Internet Data Mining Laboratory",
             person=person,
             publisher_type=database.Publisher.PUBLISHER_TYPE,
+            proprietary_type=database.Proprietary.PROPRIETARY_TYPE,
         )
 
 class PaperHandler(BaseHandler):

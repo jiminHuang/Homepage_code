@@ -570,10 +570,10 @@ class TestPersistence(object):
     
     def test_prize_query_in_user(self):
         #user_id未输入
-        assert_raises(TypeError, database.Project.query_in_user)
+        assert_raises(TypeError, database.Prize.query_in_user)
         
         #user_id为None
-        assert database.Project.query_in_user(None) is None
+        assert database.Prize.query_in_user(None) is None
         
         #构建mock
         mock_prize = mock.Mock()
@@ -592,3 +592,28 @@ class TestPersistence(object):
             1
         )
         assert_equal(prizes, [mock_prize])
+    
+    def test_proprietary_query_in_user(self):
+        #user_id未输入
+        assert_raises(TypeError, database.Proprietary.query_in_user)
+        
+        #user_id为None
+        assert database.Proprietary.query_in_user(None) is None
+        
+        #构建mock
+        mock_proprietary = mock.Mock()
+        self.mock_db.query.return_value = [mock_proprietary]        
+        
+        #正常输入
+        proprietaries = database.Proprietary.query_in_user(1)
+        self.mock_db.query.assert_called_with(
+            (
+                'SELECT * '
+                'FROM user_proprietary '
+                'NATURAL JOIN proprietary '
+                'WHERE user_id = %s '
+                'ORDER BY proprietary_time DESC'
+            ),
+            1
+        )
+        assert_equal(proprietaries, [mock_proprietary])

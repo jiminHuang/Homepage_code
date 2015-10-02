@@ -633,3 +633,36 @@ class Prize(object):
             )
 
         return connection.query(sql, user_id)
+
+class Proprietary(object):
+    '''
+        专利或软著 proprietary持久化对象
+    '''
+    db = 'homepage'
+    PROPRIETARY_TYPE = TypeList(
+        [
+            'National Invention Patents(CHINA)',
+            'National Software Copyright(CHINA)'
+        ]
+    )
+    
+    @classmethod
+    def query_in_user(cls, user_id): 
+        '''
+            根据user_id得到对应奖项
+        '''
+        if user_id is None:
+            return None
+        
+        connection = _get_connection(cls.db)
+        
+        sql =\
+            (
+                'SELECT * '
+                'FROM user_proprietary '
+                'NATURAL JOIN proprietary '
+                'WHERE user_id = %s '
+                'ORDER BY proprietary_time DESC'
+            )
+
+        return connection.query(sql, user_id)

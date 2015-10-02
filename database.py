@@ -529,7 +529,7 @@ class Project(object):
         
         sql_suffix =\
             (
-                'ORDER BY start_time '
+                'ORDER BY start_time DESC '
                 'LIMIT 10'
             )
         

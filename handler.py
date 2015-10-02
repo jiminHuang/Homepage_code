@@ -52,7 +52,7 @@ class MainHandler(BaseHandler):
         
         projects = database.Project.query()
         if projects:
-            projects = projects[:3]
+            projects = projects[:4]
             for project in projects:
                 project.project_image = imagechewer.static_image(project.project_id)
 

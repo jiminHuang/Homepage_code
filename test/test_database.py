@@ -516,7 +516,7 @@ class TestPersistence(object):
             self.mock_db.query.assert_called_with((
                 'SELECT * '
                 'FROM project '
-                'WHERE project_null != null '
+                'WHERE NOT ISNULL(project_null) '
                 'ORDER BY start_time DESC '
                 'LIMIT 10'
             ))
@@ -531,7 +531,7 @@ class TestPersistence(object):
                 self.mock_db.query.assert_called_with((
                     'SELECT * '
                     'FROM project '
-                    'WHERE project_null != null '
+                    'WHERE NOT ISNULL(project_null) '
                     'AND start_time >= unix_timestamp(%s) '
                     'AND project_id != 1 '
                     'ORDER BY start_time DESC '

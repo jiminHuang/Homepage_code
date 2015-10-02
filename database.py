@@ -380,7 +380,7 @@ class Paper(object):
             'NATURAL JOIN publisher '
             'WHERE type = 2 '
             'AND author LIKE %s '
-            'ORDER BY publish_year'
+            'ORDER BY publish_year DESC'
         )
         
         return connection.query(sql, user_id)

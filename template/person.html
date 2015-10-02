@@ -94,20 +94,21 @@
             </div>
         {%end%}
         <div class="sub_title" id="MainItemsandResearch">Main Items and Research</div>
-        <ul class="list-group">
-            <li class="list-group-item">[1]. “社会网络的主题演化分析与传播趋势预测研究”，国家自然科学基金，2015.1-2019.12</li>
-            <li class="list-group-item">[2]. The Research on Query-focused Update Multi-document Summarization Based on Feedback Ranking Framework F-Rank, National Nature Science Fundation of China, 1/2010-12/2013</li>
-            <li class="list-group-item">[3]. 基于压缩感知的社交网络主题提取与演化分析，深圳市战略新兴产业发展专项资金项目，深圳市科技创新委员会基础研究项目，批准号：JCYJ20130401160028799，2013.10-2015.8.30 </li>
-            <li class="list-group-item">[4]. 移动音频编解码基础理论与关键技术，国家自然科学基金重点项目，2009.1-2012.12 </li>
-            <li class="list-group-item">[5]. 面向中文文本信息融合的句子排序研究，国家自然科学基金，2008，01－2010，12 </li>
-            <li class="list-group-item">[6]. The Research and Application of Web Page Documents Summarization Based on Graph Model, Natural Science Fundation of Hubei Province, 1/2009-12/2010.</li>
-            <li class="list-group-item">[7]. The Research and Development of Real-time Streaming Media Stream Platform Based on P2P, The Industry-Academy-Research Cooperation Fundation of Hubei Provincial Education Department, 1/2009-12/2010.</li>
-            <li class="list-group-item">[8]. The Research on Update Summarization Oriented by Keywords Query, Research Fundation of Wuhan University, 1/2010-12/2012.</li>
-            <li class="list-group-item">[9]. The Research on Self-adaptive Service Strategies Mechanism in Ubiquitous Computing Environment, Open Fund of the National Key Laboratory of Software Engineering,  1/2009-12/2011</li>
-            <li class="list-group-item">[10]. Continuations and Kernel Stack Sharing ，2008 Windows Core Curriculum Development Project, Asia Research Centre of Microsoft Co., 3/2008- 3/2009.</li>
-            <li class="list-group-item">[11]. Feature Extraction Based on Multi-Feature Integration for Handwritten Chinese Character Recognition, Asia Research Centre of Microsoft Co., 4/2008-4/2009.</li>
-            <li class="list-group-item">[12]. The Research on Key Technologies and Performance Analysis of Dynamic Web Services Combination, National 863 Project, 1/2008－12/2009.</li>
-        </ul>
+        <div class="table-responsive">
+            <table class="table papers">
+                <tbody>
+                    {%for project in person.projects %}
+                        <tr>
+                            <td>
+                                <a href="/project/{{project.project_id}}">{{project.project_name}}</a>
+                            </td>
+                            <td>{{project.item_name}}</td>
+                            <td>{{project.start_time}}-{{project.end_time}}</td>
+                        </tr>
+                    {%end%}
+                </tbody>
+            </table>
+        </div>
         <div class="sub_title" id="ResearchPrize">Research Prize</div>
         <ul class="list-group">
             <li class="list-group-item">[1]. “可信软件的构造方法与技术”，湖北省科技进步一等奖，项目主持人，2014</li>

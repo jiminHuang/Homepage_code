@@ -163,7 +163,7 @@ class PersonHandler(BaseHandler):
         person.papers = papers
         
         #person 项目
-        projects = database.Projects.query_in_user(person.user_id)
+        projects = database.Project.query_in_user(person.user_id)
         for project in projects:
             project.start_time =\
                 timechewer.strftime_present("%m/%Y", project.start_time)

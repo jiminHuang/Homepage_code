@@ -267,6 +267,9 @@ class ProjectHandler(BaseHandler):
         if project is None:
             self.write_error("404")
         
+        if project.project_null is None:
+            self.write_error("404")
+        
         project.users = database.User.query_in_project(project_id)
         
         if not project.users:
@@ -293,18 +296,17 @@ class ProjectsHandler(BaseHandler):
     '''
     def get(self):
         projects = database.Project.query()
-        if not projects:
-            self.write_error("404")
         
-        for project in projects:
-            project.users = database.User.query_in_project(project.project_id)
-            project.project_image = imagechewer.static_image(project.project_id)
+        if projects:
+            for project in projects:
+                project.users = database.User.query_in_project(project.project_id)
+                project.project_image = imagechewer.static_image(project.project_id)
 
-            project.start_time =\
-                timechewer.strftime_present("%m/%Y", project.start_time)
+                project.start_time =\
+                    timechewer.strftime_present("%m/%Y", project.start_time)
 
-            project.end_time =\
-                timechewer.strftime_present("%m/%Y", project.end_time)
+                project.end_time =\
+                    timechewer.strftime_present("%m/%Y", project.end_time)
         
         self.render(
             "projects.html",

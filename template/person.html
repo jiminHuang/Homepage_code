@@ -100,7 +100,11 @@
                     {%for project in person.projects %}
                         <tr>
                             <td>
+                                {% if project.project_null is not None %}
                                 <a href="/project/{{project.project_id}}">{{project.project_name}}</a>
+                                {% else %}
+                                {{project.project_name}}
+                                {%end%}
                             </td>
                             <td>
                                 {% for item in project.item %}

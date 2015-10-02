@@ -514,7 +514,7 @@ class Project(object):
         项目 project表持久化对象
     '''
     db = 'homepage'
-    PROJECT_TYPE = TypeList(['academic', 'application', 'null'])
+    PROJECT_TYPE = TypeList(['academic', 'application'])
     
     @classmethod
     def get(cls, project_id):
@@ -549,9 +549,9 @@ class Project(object):
             (
                 'SELECT * '
                 'FROM project '
-                'WHERE project_type != {null_type} '
-            ).format(null_type=cls.PROJECT_TYPE.index('null')+1)
-        
+                'WHERE project_null != null '
+            )        
+
         sql_suffix =\
             (
                 'ORDER BY start_time DESC '

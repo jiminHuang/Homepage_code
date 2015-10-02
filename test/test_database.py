@@ -94,7 +94,8 @@ class TestPersistence(object):
             'SELECT * '
             'FROM user_project '
             'NATURAL JOIN user '
-            'WHERE project_id = 1'
+            'WHERE project_id = 1 '
+            'ORDER BY role'
         )
         assert_equal(users, [mock_user])
         

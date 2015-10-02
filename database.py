@@ -606,3 +606,30 @@ class Project(object):
                 project.item = Item.query(project.project_id)
         
         return projects
+
+class Prize(object):
+    '''
+        奖项 prize持久化对象
+    '''
+    db = 'homepage'
+
+    @classmethod
+    def query_in_user(cls, user_id): 
+        '''
+            根据user_id得到对应奖项
+        '''
+        if user_id is None:
+            return None
+        
+        connection = _get_connection(cls.db)
+        
+        sql =\
+            (
+                'SELECT * '
+                'FROM user_prize '
+                'NATURAL JOIN prize '
+                'WHERE user_id = %s '
+                'ORDER BY prize_year DESC'
+            )
+
+        return connection.query(sql, user_id)

@@ -119,11 +119,24 @@
             </table>
         </div>
         <div class="sub_title" id="ResearchPrize">Research Prize</div>
-        <ul class="list-group">
-            <li class="list-group-item">[1]. “可信软件的构造方法与技术”，湖北省科技进步一等奖，项目主持人，2014</li>
-            <li class="list-group-item">[2]. “The Research and Implement of the Key Technologies in the Process of Web Information Accessing, Analysis and Measurement”. Hubei Prize for Natural Sciences (Second Prize)</li>
-            <li class="list-group-item">[3]. F. Xu, T. Das, M. Peng, N. Ghani, “Evaluation of Post-Fault Restoration Strategies in Multi-Domain Networks,” IEEE ANTS 2010, Bombay, India, December 2010, Best Paper Award. </li>
-        </ul>
+        <div class="table-responsive">
+            <table class="table papers">
+                <tbody>
+                    {%for prize in person.prizes %}
+                        <tr>
+                            <td>
+                                {{prize.prize_name}}
+                            </td>
+                            <td>
+                                {{prize.prize_ontology}}
+                            </td>
+                            <td>{{prize.prize_facility}}</td>
+                            <td>{{prize.prize_year}}</td>
+                        </tr>
+                    {%end%}
+                </tbody>
+            </table>
+        </div>
         <div class="sub_title" id="Others">专利、软著</div>
         <ul class="list-group">
             <li class="list-group-item">[1]. 彭敏, 武斌, 汪清, 黄佳佳, 代心媛. 一种社交网络重要目标及社区群体识别方法, 2012,中国（国家发明专利），201210514421.7</li>

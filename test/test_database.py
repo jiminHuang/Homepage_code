@@ -567,3 +567,28 @@ class TestPersistence(object):
                 ),
                 1
             )
+    
+    def test_prize_query_in_user(self):
+        #user_id未输入
+        assert_raises(TypeError, database.Project.query_in_user)
+        
+        #user_id为None
+        assert database.Project.query_in_user(None) is None
+        
+        #构建mock
+        mock_prize = mock.Mock()
+        self.mock_db.query.return_value = [mock_prize]        
+        
+        #正常输入
+        prizes = database.Prize.query_in_user(1)
+        self.mock_db.query.assert_called_with(
+            (
+                'SELECT * '
+                'FROM user_prize '
+                'NATURAL JOIN prize '
+                'WHERE user_id = %s '
+                'ORDER BY prize_year DESC'
+            ),
+            1
+        )
+        assert_equal(prizes, [mock_prize])

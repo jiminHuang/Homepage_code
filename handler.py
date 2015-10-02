@@ -172,6 +172,15 @@ class PersonHandler(BaseHandler):
             project.end_time =\
                 timechewer.strftime_present("%m/%Y", project.end_time)
         person.projects = projects
+        
+        #person 奖项
+        prizes = database.Prize.query_in_user(person.user_id)
+        for prize in prizes:
+            prize.prize_year =\
+                timechewer.strftime_present("%Y", prize.prize_year)
+            if not prize.prize_facility:
+                prize.prize_facility = '' 
+        person.prizes = prizes
 
         self.render(
             "person.html", 

@@ -549,7 +549,7 @@ class Project(object):
             (
                 'SELECT * '
                 'FROM project '
-                'WHERE project_null != null '
+                'WHERE NOT ISNULL(project_null) '
             )        
 
         sql_suffix =\

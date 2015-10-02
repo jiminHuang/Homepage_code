@@ -492,17 +492,17 @@ class TestPersistence(object):
         self.mock_db.get.return_value = mock_project
         
         #正常输入
-        project = database.Project.get(1)
-        self.mock_db.get.assert_called_with(
-            (
-                'SELECT * '
-                'FROM project '
-                'NATURAL JOIN project_item '
-                'NATURAL JOIN item '
-                'WHERE project_id = 1'
-            ),
-        )
-        assert_equal(project, mock_project)
+        with mock.patch('database.Item.query'):
+            project = database.Project.get(1)
+            database.Item.query.assert_called_with(1)
+            self.mock_db.get.assert_called_with(
+                (
+                    'SELECT * '
+                    'FROM project '
+                    'WHERE project_id = 1'
+                ),
+            )
+            assert_equal(project, mock_project)
 
     def test_project_query(self):
         #构造mock

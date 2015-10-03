@@ -19,12 +19,12 @@ def _get_connection(db):
     '''
     return torndb.Connection(
         ":".join(
-            [config.get_database_address(),
-            config.get_database_port()]
+            [config.Config.MYSQL_ADDRESS,
+            config.Config.MYSQL_PORT]
         ),
         db,
-        config.get_database_user(),
-        config.get_database_password(),
+        config.Config.MYSQL_USER,
+        config.Config.MYSQL_PASSWD,
     )
 
 class TypeList(list):

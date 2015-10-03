@@ -2,28 +2,27 @@
 #
 # Author: jimin.huang
 #
-# Created Time: 2015年09月22日 星期二 21时46分02秒
+# Created Time: 2015年10月03日 星期六 20时13分05秒
 #
-'''
-    配置变量的测试文件
-'''
-
-from nose.tools import *
 import config
+import os
+from nose.tools import *
+import mock
+import ConfigParser
 
-def test_get_database_address():
-    address = config.get_database_address()
-    assert address is not None
-
-def test_get_database_port():
-    port = config.get_database_port()
-    assert port is not None
-
-
-def test_get_database_user():
-    user = config.get_database_user()
-    assert user is not None
-
-def test_get_database_password():
-    password = config.get_database_password()
-    assert password is not None
+@mock.patch('os.environ')
+def test_getattr(mock_os):
+    #环境变量可获取
+    mock_os.return_value = 'test'
+    assert_equal(config.Config.TEST_CONFIG, 'test')
+    mock_os.assert_called_with('TEST_CONFIG')
+    
+    #环境变量不可获取
+    mock_os.return_value = None
+    #config中不存在
+    assert_equal(config.Config.TEST_CONFIG, None)
+    mock_os.assert_called_with('TEST_CONFIG')
+    #config中存在
+    with mock.patch('ConfigParser.SafeConfigParser.get'):
+        ConfigParser.SafeConfigParser.get.return_value = 'test'
+        assert_equal(config.Config.TEST_CONFIG, 'test')

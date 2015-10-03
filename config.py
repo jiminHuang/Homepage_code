@@ -37,15 +37,15 @@ class _Config(object):
             使得先在环境中后在config文件中搜索
         '''
 
-        if os.environ(attr) is not None:
-            return os.environ(attr)
+        if os.environ.get(attr, None) is not None:
+            return os.environ.get(attr)
         
         try:
             return self._config.get(CONFIG_SETTINGS.get(attr, None), attr)
         except Exception:
             return None
 
-    def get_local_position(position):
+    def get_local_position(self, position):
         '''
             获取当前位置
         '''

@@ -1,0 +1,71 @@
+{% extends "main.html" %}
+{% block css %}
+    <link href="{{ static_url("css/paper.css") }}" rel="stylesheet">
+{% end %}
+{% block breadCrumb %}
+    <li><a href="/research">Research</a></li>
+    <li class="active">{{paper.title}}</li>
+{% end %}
+{% block contentMain %}
+    <div class="paper_title">
+        {{paper.title}}
+    </div>
+    <hr/>
+    <section id="BasicInfo">
+        <div class="section_title">INFO</div>
+        <div class="paper_author">
+            <div class="subtitle">AUTHOR</div>
+            <ul class="list-inline">
+                {%for author in paper.author %}
+                    <li>
+                    {%if not isinstance(author, basestring)%}
+                        <a href="/person/{{author.username}}">
+                            {{list(author.firstname)[0].capitalize()}}.  {{author.lastname.capitalize()}}
+                        </a>
+                    {%else%}
+                        {{author}}
+                    {%end%}
+                    </li>
+                {%end%}
+            </ul>
+        </div>
+        <div class="paper_publisher">
+            <div class="subtitle">PUBLISHED IN</div>
+            <div class="publisher_info">
+                {{paper.publisher_name}}
+            </div>
+        </div>
+        <div class="paper_publish_year">
+            <div class="subtitle">PUBLISH YEAR</div>
+            <div class="publish_year">{{paper.publish_year}}</div>
+        </div>
+        {%if paper.publisher_type == 1%}
+            <div>
+                <div class="subtitle">VOLUME</div>
+                <div>{{paper.volume}}</div>
+            </div>
+            {% if paper.number %}
+                <div>
+                    <div class="subtitle">NO</div>
+                    <div>{{paper.number}}</div>
+                </div>
+            {%end%}
+        {%end%}
+        <div class="paper_page">
+            <div class="subtitle">PAGE</div>
+            <div class="publish_page">{{paper.start_page}}-{{paper.end_page}}</div>
+                
+        </div>
+    </section>
+    <hr/>
+    <section id="Abstract">
+        <div class="section_title">ABSTRACT</div>
+        <div class="abstract">{{paper.abstract}}</div>
+    </section>
+    <hr/>
+    <section id="Download">
+        <a class="btn btn-default" href="{{static_url(paper.paper_url) if paper.pdf_available else paper.paper_url}}">
+            DOWNLOAD
+        </a>
+    </section>
+{%end%}

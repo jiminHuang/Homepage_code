@@ -1,0 +1,44 @@
+{% extends "main.html" %}
+{% block css %}
+    <link href="{{ static_url("css/project.css") }}" rel="stylesheet">
+{% end %}
+{% block breadCrumb %}
+    <li><a href="/projects">Project</a></li>
+    <li class="active">{{project.project_name}}</li>
+{% end %}
+{% block contentMain %}
+    <div class="project_name">{{project.project_name}}</div>
+    <div class="project_image">
+        <img src="{{static_url(project.project_image)}}" />
+    </div>
+    <hr/>
+    <section id="BasicInfo">
+        {% for item in project.item %}
+        <div class="item">
+            {{item.item_name}} 
+        </div>
+        {%end%}
+        <div class="duration">{{project.start_time}} - {{project.end_time}}</div>
+        <div class="row participator">
+            {% for user in project.users %}
+            <div class="col-md-3 col-sm-6">
+                <div class="image_wrapper">
+                    <img src="{{static_url(user.image)}}" />
+                </div>
+                <div class="username">
+                    <a href="/person/{{user.username}}">
+                        {{user.firstname.capitalize()}} {{user.lastname.capitalize()}}
+                    </a>
+                </div>
+            </div>
+            {%end%}
+        </div>
+    </section>
+    <hr/>
+    <section id="Intro">
+        <div class="section_title">INTRODUCTION</div>
+        {% if project.introduction %}
+            <p>{{project.introduction}}</p>
+        {%end%}
+    </section>
+{% end %}

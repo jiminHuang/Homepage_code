@@ -1,11 +1,13 @@
 /*Person Image*/
 .person_image{
     width: 200px;        
+    height: 200px;
+    overflow: hidden;
     margin: auto;
+    border-radius: 200px;
 } 
 .person_image img{
-    width: 100%;
-    border-radius: 200px;
+    width: 200px;
 }
 /*Person Realname*/
 .person_realname{
@@ -24,14 +26,19 @@
 /*Section*/
 section{
     padding: 30px 5%;
-    font-size: 1.2em;
 }
 .section_title{
-    font-size: 1.3em;
-    margin-bottom: 30px;
+    font-size: 1.6em;
+    margin-bottom: 60px;
 }
 .sub_title{
     font-weight: bold;
+    margin-top: 40px;
+    margin-bottom: 30px;
+    font-size: 1.2em;
+}
+.para_title{
+    font-size: 1.2em;
     margin: 20px 0;
 }
 .duration{
@@ -59,4 +66,7 @@ section{
     padding: 0;
     margin: 20px 0;
 }
-
+.papers td a{
+    color: #2ec3e7;
+    font-weight: bold;
+}

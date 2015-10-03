@@ -4,17 +4,17 @@ li.media{
 .media-body{
     padding-right: 40px;
 }
-.media-body a, a:hover{
+.media-body>a, .media-body>a:hover{
     color: #333;
     text-decoration: none;
 }
 .media-left a>img{
     width: 200px;
-    height: 150px;
+    height: 180px;
 }
 .list_loading_more{
     margin: auto;
     margin-top: 50px;
-    width: 82px;
+    width: 120px;
     display: block;
 }

@@ -1,39 +1,41 @@
 {% extends "main.html" %}
 {% block css %}
-    <link href="{{ static_url("css/articles.css") }}" rel="stylesheet">
+    <link href="{{ static_url("css/research.css") }}" rel="stylesheet">
 {% end %}
 {% block breadCrumb %}
-    <li class="active">News</li>
+    <li class="active">Research</li>
 {% end %}
 {% block contentMain %}
     {% module List() %}
     <hr />
     <ul class="media-list">
-        {% for article in articles %}
+        {% for paper in papers %}
         <li class="media">
             <div class="media-body">
-                <a href="/article/{{article.article_id}}"><h4 class="article_heading">{{article.title}}</h4></a>
+                <a href="/paper/{{paper.article_id}}"><h4 class="article_heading">{{paper.title}}</h4></a>
                 <div class="article_info">
-                    {% for author in article.author %}
-                    <span class="article_author">
+                    {% for author in paper.author %}
+                        <span class="article_author">
                         {% if not isinstance(author, basestring) %}
-                            <a href="/person/{{author.username}}">
+                            <a class="article_user" href="/person/{{author.username}}">
                                 {{author.firstname.capitalize()}} {{author.lastname.capitalize()}}
                             </a>
                         {% else %}
                             {{author}}
                         {% end %}
-                    </span>
+                        </span>
                     {% end %}
-                    <span class="article_publish_time">{{article.publish_time}}</span>
+                    <span class="article_publish_time">{{paper.publish_year}}</span>
                 </div> 
                 <div class="article_abstract">
-                    {{article.abstract}}
+                    {{paper.abstract}}
                 </div>
             </div>
             <div class="media-left">
                 <a href="#">
-                    <img class="media-object" src="{{static_url(article.article_image)}}" alt="...">
+                    {%if paper.images %}
+                    <img class="media-object" src="{{static_url(paper.images[0])}}" alt="...">
+                    {%end%}
                 </a>
             </div>
         </li> 

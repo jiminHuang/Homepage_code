@@ -44,11 +44,7 @@ class MainHandler(BaseHandler):
             papers = papers[:3] 
             for paper in papers:
                 paper.publish_year = timechewer.strftime_present("%Y", paper.publish_year)
-                paper.author =\
-                    [
-                        database.Article.author(author)
-                            for author in paper.author.split(",")
-                    ]
+                paper.author = database.Article.authors(paper.author)
         
         projects = database.Project.query()
         if projects:
@@ -84,11 +80,7 @@ class ArticlesHandler(BaseHandler):
         articles = database.Article.query()
         for article in articles:
             article.article_image = imagechewer.static_image(article.article_id)
-            article.author =\
-                [
-                    database.Article.author(author)\
-                        for author in article.author.split(",")
-                ]
+            article.author = database.Article.authors(article.author)
         self.render(
             "articles.html",
             page_title=u"News - Wuhan University Internet Data Mining Laboratory",
@@ -105,11 +97,7 @@ class ArticleHandler(BaseHandler):
         if article is None:
             self.write_error("404")
         article.article_image = imagechewer.static_image(article.article_id)
-        article.author =\
-            [
-                database.Article.author(author)\
-                    for author in article.author.split(",")
-            ]
+        article.author = database.Article.authors(article.author)
         
         self.render(
             "article.html", 
@@ -156,11 +144,7 @@ class PersonHandler(BaseHandler):
         papers = database.Paper.query_in_user(person.user_id)
         for paper in papers:
             paper.publish_year = timechewer.strftime_present("%Y", paper.publish_year)
-            paper.author =\
-                [
-                    database.Article.author(author)
-                        for author in paper.author.split(",")
-                ]
+            paper.author = database.Article.authors(paper.author)
         person.papers = papers
         
         #person 项目
@@ -206,33 +190,27 @@ class PaperHandler(BaseHandler):
     '''
     def get(self, article_id):
         paper = database.Paper.get(article_id)
+
         if paper is None:
             self.write_error(404)
 
-        paper.images = database.PaperImage.query(article_id)
-        if paper.images:
-            paper.images =\
-                [
-                    imagechewer.static_image('paper/' + str(image.image_id), image.suffix)
-                        for image in paper.images
-                ]
+        paper.publish_year =\
+            timechewer.strftime_present(
+                "%Y",
+                paper.publish_year
+            )
+
+        paper.author = database.Article.authors(paper.author)
         
-        paper.publish_year = timechewer.strftime_present("%Y", paper.publish_year)
-        paper.author =\
-            [
-                database.Article.author(author)
-                    for author in paper.author.split(",")
-            ]
         if paper.paper_url is None:
-            paper.pdf_available = True
-            paper.paper_url =\
-                ''.join((
-                    'paper/',
-                    paper.article_id,
-                    '.pdf',    
-                ))
-        else:
-            paper.pdf_available = False
+            paper.pdf_url =\
+                ''.join(
+                    (
+                        'paper/',
+                        paper.article_id,
+                        '.pdf',
+                    )
+                )
 
         self.render(
             "paper.html",
@@ -253,11 +231,7 @@ class ResearchHandler(BaseHandler):
             paper.publish_year =\
                 timechewer.strftime_present("%Y", paper.publish_year)
 
-            paper.author =\
-                [
-                    database.Article.author(author)
-                        for author in paper.author.split(",")
-                ]
+            paper.author = database.Article.authors(paper.author)
             
             paper.abstract = paper.abstract[:255] + '...'
 

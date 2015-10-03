@@ -263,6 +263,15 @@ class Article(object):
         user = User.get(author)
         return user if user is not None else author
     
+    @classmethod
+    def authors(cls, author):
+        #author 为None
+        if author is None:
+            return None
+        
+        #author正常输入
+        return [ cls.author(user) for user in author.split(',') ] 
+    
 class Publisher(object):
     '''
         出版 Publisher表持久化对象
@@ -311,13 +320,20 @@ class Paper(object):
                 'SELECT * '
                 'FROM article '
                 'NATURAL JOIN paper '
-                'NATURAL JOIN publisher '
                 'WHERE article_id = %s'
             )
         
         connection = _get_connection(cls.db)
         
-        return connection.get(sql, article_id)
+        paper = connection.get(sql, article_id)
+        
+        if paper is not None:
+            if paper.in_press is None:
+                paper.publisher = Publisher.get(paper.publisher_id)
+            else:
+                paper.title += '(In Press)'
+        
+        return paper
         
     @classmethod
     def query(cls, article_id=None):
@@ -335,7 +351,7 @@ class Paper(object):
         
         sql_order =\
             (
-                'ORDER BY publish_year '
+                'ORDER BY publish_year DESC '
                 'LIMIT 10'
             )
         

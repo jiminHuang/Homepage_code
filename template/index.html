@@ -71,7 +71,7 @@
                                 {%for author in paper.author%}
                                     <span>
                                     {% if not isinstance(author, basestring) %}
-                                        <a href="/person/{{author.username}}">{{author.firstname[0].capitalize()}} {{author.lastname.capitalize()}}</a>
+                                        <a href="/person/{{author.username}}">{{author.firstname.capitalize()}} {{author.lastname.capitalize()}}</a>
                                     {%else%}
                                         {{author}}
                                     {%end%}

@@ -264,7 +264,23 @@ class TestPersistence(object):
             database.User.get.return_value = None
             author = database.Article.author('test')
             assert_equal(author, 'test')
+    
+    def test_article_authors(self):
+        #author未输入
+        assert_raises(TypeError, database.Article.authors)
+        
+        #author为None或空
+        assert database.Article.authors(None) is None
+        
+        #构建mock
+        mock_author = mock.Mock()
 
+        #author正常输入
+        with mock.patch("database.Article.author"):
+            database.Article.author.return_value = mock_author
+            assert_equal(database.Article.authors('1'), [mock_author])
+            database.Article.author.assert_called_with('1')
+             
     def test_publisher_get(self):
         #publisher_id 
         assert_raises(TypeError, database.Publisher.get)
@@ -300,21 +316,34 @@ class TestPersistence(object):
         
         #构建mock
         mock_paper = mock.Mock()
+        mock_paper.publisher_id = 1
+        mock_paper.title = 'test'
+        mock_paper.in_press = None
         self.mock_db.get.return_value = mock_paper
         
         #正常输入
-        paper = database.Paper.get(1)
-        self.mock_db.get.assert_called_with(
-            (
-                'SELECT * '
-                'FROM article '
-                'NATURAL JOIN paper '
-                'NATURAL JOIN publisher '
-                'WHERE article_id = %s'
-            ),
-            1,
-        )
-        assert_equal(paper, mock_paper)
+        with mock.patch('database.Publisher.get'):
+            #paper正常返回
+            paper = database.Paper.get(1)
+            database.Publisher.get.assert_called_with(1)
+            self.mock_db.get.assert_called_with(
+                (
+                    'SELECT * '
+                    'FROM article '
+                    'NATURAL JOIN paper '
+                    'WHERE article_id = %s'
+                ),
+                1,
+            )
+            #paper in press
+            mock_paper.in_press = True
+            paper = database.Paper.get(1)
+            assert_equal(paper, mock_paper)
+            assert_equal(paper.title, 'test(In Press)')
+            #paper 返回为None
+            self.mock_db.get.return_value = None
+            paper = database.Paper.get(1)
+            assert paper is None
     
     def test_paper_query(self):
         #构建mock
@@ -334,7 +363,7 @@ class TestPersistence(object):
                     'NATURAL JOIN paper '
                     'NATURAL JOIN publisher '
                     'WHERE article.type = 2 '
-                    'ORDER BY publish_year '
+                    'ORDER BY publish_year DESC '
                     'LIMIT 10'
                 )
             )
@@ -352,7 +381,7 @@ class TestPersistence(object):
                     'WHERE article.type = 2 '
                     'AND article_id != %s '
                     'AND publish_year >= unix_timestamp(%s) '
-                    'ORDER BY publish_year '
+                    'ORDER BY publish_year DESC '
                     'LIMIT 10'
                 ),
                 mock_paper.article_id,

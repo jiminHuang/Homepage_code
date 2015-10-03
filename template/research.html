@@ -10,7 +10,7 @@
     <hr />
     <ul class="media-list">
         {% for paper in papers %}
-        <li class="media">
+        <li class="media" data-id="{{paper.article_id}}">
             <div class="media-body">
                 <a href="/paper/{{paper.article_id}}"><h4 class="article_heading">{{paper.title}}</h4></a>
                 <div class="article_info">

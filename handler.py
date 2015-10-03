@@ -247,6 +247,9 @@ class ResearchHandler(BaseHandler):
             page_title="Research-WUIDML",
             papers=papers,
         )
+    
+    def post(self):
+        print self.get_argument("last_element") 
 
 class ProjectHandler(BaseHandler):
     '''

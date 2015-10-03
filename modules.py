@@ -18,6 +18,9 @@ class ListModule(tornado.web.UIModule):
     
     def css_files(self):
         return "/static/css/list.css"
+    
+    def javascript_files(self):
+        return "/static/js/list.js"
 
 class SinglePageModule(tornado.web.UIModule):
     '''

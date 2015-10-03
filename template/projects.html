@@ -10,7 +10,7 @@
     <hr />
     <ul class="media-list">
         {% for project in projects %}
-        <li class="media">
+        <li class="media" data-id="{{project.project_id}}">
             <div class="media-body">
                 <a href="/project/{{project.project_id}}"><h4 class="project_heading">{{project.project_name}}</h4></a>
                 <div class="project_info">

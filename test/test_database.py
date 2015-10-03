@@ -334,7 +334,7 @@ class TestPersistence(object):
                     'NATURAL JOIN paper '
                     'NATURAL JOIN publisher '
                     'WHERE article.type = 2 '
-                    'ORDER BY publish_year '
+                    'ORDER BY publish_year DESC '
                     'LIMIT 10'
                 )
             )
@@ -352,7 +352,7 @@ class TestPersistence(object):
                     'WHERE article.type = 2 '
                     'AND article_id != %s '
                     'AND publish_year >= unix_timestamp(%s) '
-                    'ORDER BY publish_year '
+                    'ORDER BY publish_year DESC '
                     'LIMIT 10'
                 ),
                 mock_paper.article_id,

@@ -335,7 +335,7 @@ class Paper(object):
         
         sql_order =\
             (
-                'ORDER BY publish_year '
+                'ORDER BY publish_year DESC '
                 'LIMIT 10'
             )
         

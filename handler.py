@@ -9,8 +9,7 @@
 '''
 import tornado.web
 import database
-import timechewer
-import imagechewer
+import chewer
 
 class BaseHandler(tornado.web.RequestHandler):
     '''
@@ -36,14 +35,14 @@ class MainHandler(BaseHandler):
     def get(self):
         articles = database.Article.query()
         for article in articles:
-            article.article_image = imagechewer.static_image(article.article_id)
-            article.abstract = article.abstract[:255] + '...'
+            article.article_image = chewer.static_image(article.article_id)
+            article.abstract = chewer.text_cutter(article.abstract, 255)
         
         papers = database.Paper.query()
         if papers:
             papers = papers[:3] 
             for paper in papers:
-                paper.publish_year = timechewer.strftime_present("%Y", paper.publish_year)
+                paper.publish_year = chewer.strftime_present("%Y", paper.publish_year)
                 paper.author = database.Article.authors(paper.author)
         
         projects = database.Project.query()
@@ -51,17 +50,17 @@ class MainHandler(BaseHandler):
             projects = projects[:4]
             for project in projects:
                 project.project_image =\
-                    imagechewer.static_image('project/'+str(project.project_id))
+                    chewer.static_image('project/'+str(project.project_id))
 
                 project.start_time =\
-                    timechewer.strftime_present("%m/%Y", project.start_time)
+                    chewer.strftime_present("%m/%Y", project.start_time)
 
                 project.end_time =\
-                    timechewer.strftime_present("%m/%Y", project.end_time)
+                    chewer.strftime_present("%m/%Y", project.end_time)
         
         persons = database.User.query()
         for person in persons:
-            person.image = imagechewer.static_image(person.user_id)
+            person.image = chewer.static_image(person.user_id)
 
         self.render(
             "index.html",
@@ -79,7 +78,7 @@ class ArticlesHandler(BaseHandler):
     def get(self):
         articles = database.Article.query()
         for article in articles:
-            article.article_image = imagechewer.static_image(article.article_id)
+            article.article_image = chewer.static_image(article.article_id)
             article.author = database.Article.authors(article.author)
         self.render(
             "articles.html",
@@ -96,7 +95,7 @@ class ArticleHandler(BaseHandler):
         article = database.Article.get(article_id)
         if article is None:
             self.write_error("404")
-        article.article_image = imagechewer.static_image(article.article_id)
+        article.article_image = chewer.static_image(article.article_id)
         article.author = database.Article.authors(article.author)
         
         self.render(
@@ -114,16 +113,16 @@ class PersonHandler(BaseHandler):
         person = database.User.get(username=username)
         if person is None:
             self.write_error("404")
-        person.image = imagechewer.static_image(person.user_id)
+        person.image = chewer.static_image(person.user_id)
         
         #person 教育背景
         backgrounds = database.Background.query(person.user_id)
         if backgrounds is not None:
             for background in backgrounds:
                 background.start_time=\
-                    timechewer.strftime_present("%m/%Y", background.start_time)
+                    chewer.strftime_present("%m/%Y", background.start_time)
                 background.end_time=\
-                    timechewer.strftime_present("%m/%Y", background.end_time)
+                    chewer.strftime_present("%m/%Y", background.end_time)
         person.backgrounds = backgrounds
     
         #person 工作经历
@@ -131,9 +130,9 @@ class PersonHandler(BaseHandler):
         if experiences is not None:
             for experience in experiences:
                 experience.start_time=\
-                    timechewer.strftime_present("%m/%Y", experience.start_time)
+                    chewer.strftime_present("%m/%Y", experience.start_time)
                 experience.end_time=\
-                    timechewer.strftime_present("%m/%Y", experience.end_time)
+                    chewer.strftime_present("%m/%Y", experience.end_time)
         person.experiences = experiences
     
         #person 研究方向
@@ -143,7 +142,7 @@ class PersonHandler(BaseHandler):
         #person 论文
         papers = database.Paper.query_in_user(person.user_id)
         for paper in papers:
-            paper.publish_year = timechewer.strftime_present("%Y", paper.publish_year)
+            paper.publish_year = chewer.strftime_present("%Y", paper.publish_year)
             paper.author = database.Article.authors(paper.author)
         person.papers = papers
         
@@ -151,17 +150,17 @@ class PersonHandler(BaseHandler):
         projects = database.Project.query_in_user(person.user_id)
         for project in projects:
             project.start_time =\
-                timechewer.strftime_present("%m/%Y", project.start_time)
+                chewer.strftime_present("%m/%Y", project.start_time)
 
             project.end_time =\
-                timechewer.strftime_present("%m/%Y", project.end_time)
+                chewer.strftime_present("%m/%Y", project.end_time)
         person.projects = projects
         
         #person 奖项
         prizes = database.Prize.query_in_user(person.user_id)
         for prize in prizes:
             prize.prize_year =\
-                timechewer.strftime_present("%Y", prize.prize_year)
+                chewer.strftime_present("%Y", prize.prize_year)
             if not prize.prize_facility:
                 prize.prize_facility = '' 
         person.prizes = prizes
@@ -170,7 +169,7 @@ class PersonHandler(BaseHandler):
         proprietaries = database.Proprietary.query_in_user(person.user_id)
         for proprietary in proprietaries:
             proprietary.proprietary_time =\
-                timechewer.strftime_present("%Y", proprietary.proprietary_time)
+                chewer.strftime_present("%Y", proprietary.proprietary_time)
         
         person.proprietaries = proprietaries
 
@@ -195,7 +194,7 @@ class PaperHandler(BaseHandler):
             self.write_error(404)
 
         paper.publish_year =\
-            timechewer.strftime_present(
+            chewer.strftime_present(
                 "%Y",
                 paper.publish_year
             )
@@ -229,17 +228,17 @@ class ResearchHandler(BaseHandler):
         for paper in papers:
 
             paper.publish_year =\
-                timechewer.strftime_present("%Y", paper.publish_year)
+                chewer.strftime_present("%Y", paper.publish_year)
 
             paper.author = database.Article.authors(paper.author)
             
-            paper.abstract = paper.abstract[:255] + '...'
+            paper.abstract = chewer.text_cutter(paper.abstract, 255)
 
             paper.images = database.PaperImage.query(paper.article_id)
             if paper.images:
                 paper.images =\
                     [
-                        imagechewer.static_image('paper/' + str(image.image_id), image.suffix)
+                        chewer.static_image('paper/' + str(image.image_id), image.suffix)
                             for image in paper.images
                     ]
         
@@ -269,16 +268,16 @@ class ProjectHandler(BaseHandler):
             self.write_error("404")
         
         for user in project.users:
-            user.image = imagechewer.static_image(user.user_id)
+            user.image = chewer.static_image(user.user_id)
 
         project.start_time =\
-            timechewer.strftime_present("%m/%Y", project.start_time)
+            chewer.strftime_present("%m/%Y", project.start_time)
 
         project.end_time =\
-            timechewer.strftime_present("%m/%Y", project.end_time)
+            chewer.strftime_present("%m/%Y", project.end_time)
 
         project.project_image =\
-            imagechewer.static_image(
+            chewer.static_image(
                 'project/'+str(project.project_id)
             )
         
@@ -299,15 +298,15 @@ class ProjectsHandler(BaseHandler):
             for project in projects:
                 project.users = database.User.query_in_project(project.project_id)
                 project.project_image =\
-                    imagechewer.static_image(
+                    chewer.static_image(
                         'project/'+str(project.project_id)
                     )
 
                 project.start_time =\
-                    timechewer.strftime_present("%m/%Y", project.start_time)
+                    chewer.strftime_present("%m/%Y", project.start_time)
 
                 project.end_time =\
-                    timechewer.strftime_present("%m/%Y", project.end_time)
+                    chewer.strftime_present("%m/%Y", project.end_time)
         
         self.render(
             "projects.html",

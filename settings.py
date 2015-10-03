@@ -9,7 +9,6 @@ import config
 
 settings = {
     'debug' : True, #调试选项，开启后每一次源文件的更改将会自动重启服务器(而不需要手动操作)
-    'xsrf_cookies' : True,
     'login_url' : '/login', 
     'cookie_secret' : config.Config.COOKIE_SECRET, 
     'static_path' : config.Config.get_local_position('static'),

@@ -5,7 +5,7 @@ $(document).ready(function(){
                 "#",
                 {
                     last_element : $("li.media").data("id"), 
-                    _xsrf : getCookie("xsrf"),
+                    _xsrf : getCookie("_xsrf"),
                 },
                 function(data){
                     alert(data);

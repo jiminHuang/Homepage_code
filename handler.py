@@ -249,7 +249,7 @@ class ResearchHandler(BaseHandler):
         )
     
     def post(self):
-        print self.get_argument("last_element") 
+        self.write(self.get_argument("last_element"))
 
 class ProjectHandler(BaseHandler):
     '''

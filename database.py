@@ -263,6 +263,15 @@ class Article(object):
         user = User.get(author)
         return user if user is not None else author
     
+    @classmethod
+    def authors(cls, author):
+        #author 为None
+        if author is None:
+            return None
+        
+        #author正常输入
+        return [ cls.author(user) for user in author.split(',') ] 
+    
 class Publisher(object):
     '''
         出版 Publisher表持久化对象

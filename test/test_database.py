@@ -264,7 +264,23 @@ class TestPersistence(object):
             database.User.get.return_value = None
             author = database.Article.author('test')
             assert_equal(author, 'test')
+    
+    def test_article_authors(self):
+        #author未输入
+        assert_raises(TypeError, database.Article.authors)
+        
+        #author为None或空
+        assert database.Article.authors(None) is None
+        
+        #构建mock
+        mock_author = mock.Mock()
 
+        #author正常输入
+        with mock.patch("database.Article.author"):
+            database.Article.author.return_value = mock_author
+            assert_equal(database.Article.authors('1'), [mock_author])
+            database.Article.author.assert_called_with('1')
+             
     def test_publisher_get(self):
         #publisher_id 
         assert_raises(TypeError, database.Publisher.get)

@@ -20,7 +20,7 @@
                     <li>
                     {%if not isinstance(author, basestring)%}
                         <a href="/person/{{author.username}}">
-                            {{list(author.firstname)[0].capitalize()}}.  {{author.lastname.capitalize()}}
+                            {{author.firstname.capitalize()}} {{author.lastname.capitalize()}}
                         </a>
                     {%else%}
                         {{author}}
@@ -29,42 +29,56 @@
                 {%end%}
             </ul>
         </div>
+        {% if paper.get('publisher', None) %}
         <div class="paper_publisher">
             <div class="subtitle">PUBLISHED IN</div>
             <div class="publisher_info">
-                {{paper.publisher_name}}
+                {{paper.publisher.publisher_name}}
             </div>
         </div>
+        {% end %}
+        {% if paper.publish_year %}
         <div class="paper_publish_year">
             <div class="subtitle">PUBLISH YEAR</div>
             <div class="publish_year">{{paper.publish_year}}</div>
         </div>
-        {%if paper.publisher_type == 1%}
+        {% end %}
+        {% if paper.volume %}
             <div>
                 <div class="subtitle">VOLUME</div>
                 <div>{{paper.volume}}</div>
             </div>
-            {% if paper.number %}
-                <div>
-                    <div class="subtitle">NO</div>
-                    <div>{{paper.number}}</div>
-                </div>
-            {%end%}
+        {% end %}
+        {% if paper.number %}
+            <div>
+                <div class="subtitle">NO</div>
+                <div>{{paper.number}}</div>
+            </div>
         {%end%}
+        {% if paper.start_page and paper.end_page %}
         <div class="paper_page">
             <div class="subtitle">PAGE</div>
             <div class="publish_page">{{paper.start_page}}-{{paper.end_page}}</div>
                 
         </div>
+        {% end %}
     </section>
     <hr/>
+    {% if paper.abstract %}
     <section id="Abstract">
         <div class="section_title">ABSTRACT</div>
         <div class="abstract">{{paper.abstract}}</div>
     </section>
     <hr/>
+    {% end %}
     <section id="Download">
-        <a class="btn btn-default" href="{{static_url(paper.paper_url) if paper.pdf_available else paper.paper_url}}">
+        {% if paper.in_press is not None %}
+            <a class="btn btn-default disabled">
+        {% elif paper.paper_url %}
+            <a class="btn btn-default" href="{{paper.paper_url}}">
+        {% else %}
+            <a class="btn btn-default" href="{{static_url(paper.pdf_url)}}">
+        {% end %}
             DOWNLOAD
         </a>
     </section>

@@ -311,13 +311,20 @@ class Paper(object):
                 'SELECT * '
                 'FROM article '
                 'NATURAL JOIN paper '
-                'NATURAL JOIN publisher '
                 'WHERE article_id = %s'
             )
         
         connection = _get_connection(cls.db)
         
-        return connection.get(sql, article_id)
+        paper = connection.get(sql, article_id)
+        
+        if paper is not None:
+            if paper.in_press is None:
+                paper.publisher = Publisher.get(paper.publisher_id)
+            else:
+                paper.title += '(In Press)'
+        
+        return paper
         
     @classmethod
     def query(cls, article_id=None):

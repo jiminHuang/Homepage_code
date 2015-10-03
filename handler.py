@@ -206,33 +206,31 @@ class PaperHandler(BaseHandler):
     '''
     def get(self, article_id):
         paper = database.Paper.get(article_id)
+
         if paper is None:
             self.write_error(404)
 
-        paper.images = database.PaperImage.query(article_id)
-        if paper.images:
-            paper.images =\
-                [
-                    imagechewer.static_image('paper/' + str(image.image_id), image.suffix)
-                        for image in paper.images
-                ]
-        
-        paper.publish_year = timechewer.strftime_present("%Y", paper.publish_year)
+        paper.publish_year =\
+            timechewer.strftime_present(
+                "%Y",
+                paper.publish_year
+            )
+
         paper.author =\
             [
                 database.Article.author(author)
                     for author in paper.author.split(",")
             ]
+        
         if paper.paper_url is None:
-            paper.pdf_available = True
-            paper.paper_url =\
-                ''.join((
-                    'paper/',
-                    paper.article_id,
-                    '.pdf',    
-                ))
-        else:
-            paper.pdf_available = False
+            paper.pdf_url =\
+                ''.join(
+                    (
+                        'paper/',
+                        paper.article_id,
+                        '.pdf',
+                    )
+                )
 
         self.render(
             "paper.html",

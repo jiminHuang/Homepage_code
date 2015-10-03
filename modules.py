@@ -32,40 +32,9 @@ class SinglePageModule(tornado.web.UIModule):
     def css_files(self):
         return "/static/css/single.css"
 
-class PersonIndicatorModule(tornado.web.UIModule):
+class ResearchListItemModule(tornado.web.UIModule):
     '''
-        用户页右侧悬浮
+        Research页列表项模块
     '''
-    def render(self):
-        return \
-        '''
-            <div id="PersonIndicator">
-                <div><a href="#BasicInfo">Basic</a></div>
-                <div><a href="#PersonalInfo">Personal</a></div>
-                <div><a href="#BIO">BIO</a></div>
-                <div><a href="#EducationBackground">Education</a></div>
-                <div><a href="#WorkExperience">Experience</a></div>
-                <div><a href="#ScientificResearch">Research</a></div>
-                <div><a href="#MainPublishedPapers">Papers</a></div>
-                <div><a href="#MainItemsandResearch">Items</a></div>
-                <div><a href="#ResearchPrize">Prize</a></div>
-                <div><a href="#Others">Others</a></div>
-            </div>
-        '''
-    
-    def embedded_css(self):
-        return \
-        '''
-            #PersonIndicator{
-                position: fixed;
-                bottom: 25px;
-                right: 15%;
-            }
-            #PersonIndicator a, a:hover, a:focus{
-                text-decoration: none;
-                color: #333;
-            }
-        '''
-    
-    
-   
+    def render(self, paper):
+        return self.render_string('module/researchItem.html', paper=paper)

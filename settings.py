@@ -16,7 +16,7 @@ settings = {
     'ui_modules' : {
         'List' : modules.ListModule,
         'SinglePage' : modules.SinglePageModule,
-        'PersonIndicator' : modules.PersonIndicatorModule,
+        'ResearchItem' : modules.ResearchListItemModule,
     }
     #'log_file_prefix': '8888.log',
 }

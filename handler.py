@@ -249,7 +249,45 @@ class ResearchHandler(BaseHandler):
         )
     
     def post(self):
-        self.write(self.get_argument("last_element"))
+        query_num = self.get_argument('query_num', None)
+        if query_num is None:
+            self.write('failed')
+            return None
+        papers = database.Paper.query(int(query_num))
+    
+        write_str = ''
+        
+        for paper in papers:
+
+            paper.publish_year =\
+                chewer.strftime_present("%Y", paper.publish_year)
+
+            paper.author = database.Article.authors(paper.author)
+            
+            paper.abstract = chewer.text_cutter(paper.abstract, 255)
+
+            paper.images = database.PaperImage.query(paper.article_id)
+            if paper.images:
+                paper.images =\
+                    [
+                        chewer.static_image('paper/' + str(image.image_id), image.suffix)
+                            for image in paper.images
+                    ]
+            
+            write_str = ''.join(
+                (
+                    write_str,
+                    self.render_string(
+                        'module/researchItem.html',
+                        paper=paper
+                    )
+                )
+            )
+        
+        load_more = '-1' if len(papers) < 10 else str(int(query_num)+1)
+
+        self.write({'write_str':write_str,'load_more':load_more})
+        
 
 class ProjectHandler(BaseHandler):
     '''

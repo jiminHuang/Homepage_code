@@ -353,45 +353,34 @@ class TestPersistence(object):
         self.mock_db.query.return_value = [mock_paper]
         
         #正常输入
-        with mock.patch('database.Paper.get'):
-            #article_id未输入
-            papers = database.Paper.query() 
-            self.mock_db.query.assert_called_with(
-                (
-                    'SELECT * '
-                    'FROM article '
-                    'NATURAL JOIN paper '
-                    'NATURAL JOIN publisher '
-                    'WHERE article.type = 2 '
-                    'ORDER BY publish_year DESC '
-                    'LIMIT 10'
-                )
+        #article_id未输入
+        papers = database.Paper.query() 
+        self.mock_db.query.assert_called_with(
+            (
+                'SELECT * '
+                'FROM article '
+                'NATURAL JOIN paper '
+                'NATURAL JOIN publisher '
+                'WHERE article.type = 2 '
+                'ORDER BY publish_year DESC '
+                'LIMIT 0, 10'
             )
-            assert_equal(papers, [mock_paper])
-            #article_id已输入
-            #提供的article_id 可以得到对应paper
-            database.Paper.get.return_value = mock_paper
-            papers = database.Paper.query(1)
-            self.mock_db.query.assert_called_with(
-                (
-                    'SELECT * '
-                    'FROM article '
-                    'NATURAL JOIN paper '
-                    'NATURAL JOIN publisher '
-                    'WHERE article.type = 2 '
-                    'AND article_id != %s '
-                    'AND publish_year >= unix_timestamp(%s) '
-                    'ORDER BY publish_year DESC '
-                    'LIMIT 10'
-                ),
-                mock_paper.article_id,
-                mock_paper.publish_year,
-            )
-            database.Paper.get.assert_called_with(1)
-            #不可以得到
-            database.Paper.get.return_value = None
-            papers = database.Paper.query(1)
-            assert papers is None
+        )
+        assert_equal(papers, [mock_paper])
+        #article_id已输入
+        #提供的article_id 可以得到对应paper
+        papers = database.Paper.query(2)
+        self.mock_db.query.assert_called_with(
+            (
+                'SELECT * '
+                'FROM article '
+                'NATURAL JOIN paper '
+                'NATURAL JOIN publisher '
+                'WHERE article.type = 2 '
+                'ORDER BY publish_year DESC '
+                'LIMIT 10, 20'
+            ),
+        )
           
     def test_paper_query_in_user(self):
         #user_id未输入

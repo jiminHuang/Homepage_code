@@ -336,10 +336,13 @@ class Paper(object):
         return paper
         
     @classmethod
-    def query(cls, article_id=None):
+    def query(cls, query_num=1):
         '''
             paper query方法
         '''
+        
+        query_num = query_num if query_num >= 1 else 1
+        
         sql =\
             (
                 'SELECT * '
@@ -347,32 +350,16 @@ class Paper(object):
                 'NATURAL JOIN paper '
                 'NATURAL JOIN publisher '
                 'WHERE article.type = 2 '
-            )
-        
-        sql_order =\
-            (
                 'ORDER BY publish_year DESC '
-                'LIMIT 10'
+                'LIMIT {query_start}, {query_end}'
+            ).format(
+                query_start=(query_num-1)*10,
+                query_end=query_num*10,
             )
         
         connection = _get_connection(cls.db)
 
-        if article_id is None:
-            return connection.query(sql+sql_order)
-        else:
-            article = cls.get(article_id)
-            if article is None:
-                return None
-            return connection.query(
-                ''.join((
-                    sql,
-                    'AND article_id != %s ',
-                    'AND publish_year >= unix_timestamp(%s) ',
-                    sql_order,
-                )),
-                article_id,
-                article.publish_year,
-            )
+        return connection.query(sql)
     
     @classmethod
     def query_in_user(cls, user_id):

@@ -28,15 +28,8 @@
                     <span class="article_publish_time">{{paper.publish_year}}</span>
                 </div> 
                 <div class="article_abstract">
-                    {{paper.abstract}}
+                    {% if paper.abstract %}{{paper.abstract}}{% end %}
                 </div>
-            </div>
-            <div class="media-left">
-                <a href="#">
-                    {%if paper.images %}
-                    <img class="media-object" src="{{static_url(paper.images[0])}}" alt="...">
-                    {%end%}
-                </a>
             </div>
         </li> 
         <hr />

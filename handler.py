@@ -280,7 +280,7 @@ class ProjectHandler(BaseHandler):
             self.write_error("404")
 
         project = database.Project.chew(project)
-        project.users = [database.chew(user) for user in project.users]
+        project.users = [database.User.chew(user) for user in project.users]
 
         self.render(
             "project.html",

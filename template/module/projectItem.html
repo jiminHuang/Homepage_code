@@ -5,7 +5,7 @@
             {% for user in project.users %}
             <span class="project_user">
                 <a href="/person/{{user.username}}">
-                    {{user.firstname.capitalize()}} {{user.lastname.capitalize()}}
+                    {{user.english_name}}
                 </a>
             </span>
             {% end %}

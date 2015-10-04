@@ -19,6 +19,8 @@ settings = {
         'ResearchItem' : modules.ResearchListItemModule,
         'ArticleItem' : modules.ArticleListItemModule,
         'ProjectItem' : modules.ProjectListItemModule,
+        'TeamSelector' : modules.TeamSelectorModule,
+        'TeamMember' : modules.TeamMemberModule,
     }
     #'log_file_prefix': '8888.log',
 }

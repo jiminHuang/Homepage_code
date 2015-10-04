@@ -28,6 +28,11 @@ def test_typelist_getitem(mock_logging_error):
     #正常输入
     assert_equal(example[1], 1)
 
+def test_typelist_index():
+    example = database.TypeList([1])
+
+    #正常输入
+    assert_equal(example.index(1), 1)
 
 class TestPersistence(object):
     '''
@@ -74,8 +79,23 @@ class TestPersistence(object):
         self.mock_db.query.return_value = [mock_user]
         
         #正常输入
+        #request_type未输入
         users = database.User.query()
-        self.mock_db.query.assert_called_with('SELECT * FROM user WHERE type != 6')
+        self.mock_db.query.assert_called_with((
+            'SELECT * '
+            'FROM user '
+            'WHERE type != {visitor_type} '
+            'ORDER BY type DESC'
+        ).format(visitor_type=database.User.USER_TYPE.index('Visitor')))
+        assert_equal(users, [mock_user])
+        
+        #request_type输入
+        users = database.User.query(1)
+        self.mock_db.query.assert_called_with((
+            'SELECT * '
+            'FROM user '
+            'WHERE type = 1'
+        ))
         assert_equal(users, [mock_user])
     
     def test_user_query_in_project(self):
@@ -99,6 +119,24 @@ class TestPersistence(object):
             'ORDER BY role'
         )
         assert_equal(users, [mock_user])
+    
+    def test_user_chew(self):
+        #user未输入
+        assert_raises(TypeError, database.User.chew)
+        
+        #user输入为None
+        assert database.User.chew(None) is None
+        
+        #mock构建
+        mock_user = mock.Mock()
+        mock_user.user_id = '1'
+        mock_user.firstname = 'test'
+        mock_user.lastname = 'test'
+        
+        #正常输入
+        user = database.User.chew(mock_user)
+        assert_equal(user.image, 'img/1.jpeg')
+        assert_equal(user.english_name, 'Test Test')
         
     def test_background_query(self):
         #user_id未输入
@@ -235,9 +273,12 @@ class TestPersistence(object):
         #author正常输入
         with mock.patch("database.User.get"):
             #author为内置user
-            database.User.get.return_value = 2
-            author = database.Article.author('test')
-            assert_equal(author, 2)
+            with mock.patch("database.User.chew"):
+                database.User.get.return_value = 2
+                database.User.chew.return_value = 2
+                author = database.Article.author('test')
+                assert_equal(author, 2)
+                database.User.chew.assert_called_with(2)
             #author非内置user
             database.User.get.return_value = None
             author = database.Article.author('test')

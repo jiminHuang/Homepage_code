@@ -123,30 +123,21 @@
 
 <section id="Team">
     <div class="container">
+        {% module TeamSelector() %}
         <div class="section_title">Team</div>
         <div class="team_selection">
             <ul class="list-inline">
                 <li class="active"><span>All</span></li>
-                <li><span>Mentor</span></li>
-                <li><span>Doctor</span></li>
-                <li><span>Graduate</span></li>
-                <li><span>Ungraduate</span></li>
+                {% for user_type in user_types %}
+                <li><span>{{user_type}}</span></li>
+                {% end %}
             </ul>
         </div>
     </div>
         <div class="team_view">
             <div class="row">
                 {%for person in persons%}
-                <div class="col-md-2">
-                    <div class="person_cover">
-                        {{person.firstname.capitalize()}} {{person.lastname.capitalize()}}
-                    </div>
-                    <div class="image_wrapper">
-                        <a href="/person/{{person.username}}">
-                            <img src="{{static_url(person.image)}}" />
-                        </a>
-                    </div>
-                </div>
+                    {% module TeamMember(person) %}
                 {%end%}
             </div>
         </div>

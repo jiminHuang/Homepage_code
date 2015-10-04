@@ -74,6 +74,27 @@ class ArticlesHandler(BaseHandler):
             articles=articles,
         )
     
+    def post(self):
+        query_num = self.get_argument('query_num', None)
+
+        if query_num is None:
+            self.write('failed')
+            return None
+
+        articles = database.Article.query(int(query_num))
+    
+        write_str =\
+            ''.join((
+                self.render_string(
+                    'module/articleItem.html',
+                    article=database.Article.chew(article),
+                ) for article in articles
+            ))
+        
+        load_more = '-1' if len(articles) < 10 else str(int(query_num)+1)
+
+        self.write({'write_str':write_str,'load_more':load_more})
+    
 class ArticleHandler(BaseHandler):
     '''
         文章页handler

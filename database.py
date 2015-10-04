@@ -227,7 +227,10 @@ class Article(object):
         return connection.get(sql, article_id)
     
     @classmethod 
-    def query(cls, article_id=None):
+    def query(cls, query_num=1):
+        
+        query_num = query_num if query_num >= 1 else 1
+        
         #构建数据库连接
         connection = _get_connection(cls.db)
         
@@ -236,22 +239,14 @@ class Article(object):
                 'SELECT * '
                 'FROM article '
                 'WHERE type = 1 '
+                'ORDER BY publish_time DESC '
+                'LIMIT {start_num}, {end_num}'
+            ).format(
+                start_num=(query_num-1)*10,
+                end_num=query_num*10,
             )
         
-        article = cls.get(article_id)
-        
-        sql =\
-            ''.join((
-                sql,
-                'AND publish_time > UNIX_TIMESTAMP(%s) '\
-                    if article is not None else '',
-                'ORDER BY publish_time ',
-                'LIMIT 10',
-            ))
-        
-        return connection.query(sql)\
-            if article is None else\
-                connection.query(sql, article.publish_time)
+        return connection.query(sql)
     
     @classmethod
     def author(cls, author):

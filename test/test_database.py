@@ -212,7 +212,6 @@ class TestPersistence(object):
         self.mock_db.query.return_value = [mock_article]
         
         #正常输入
-        #article_id未提供
         articles = database.Article.query()
 
         self.mock_db.query.assert_called_with(
@@ -220,34 +219,12 @@ class TestPersistence(object):
                 'SELECT * '
                 'FROM article '
                 'WHERE type = 1 '
-                'ORDER BY publish_time '
-                'LIMIT 10'
+                'ORDER BY publish_time DESC '
+                'LIMIT 0, 10'
             )
         )
         assert_equal(articles, [mock_article])
 
-        #article_id提供
-        #mock 模拟article get
-        with mock.patch.object(database.Article, 'get'):
-            mock_article = mock.Mock()
-            mock_article.publish_time = 1
-            database.Article.get.return_value = mock_article
-
-            articles = database.Article.query(article_id=1)
-
-            database.Article.get.assert_called_with(1)
-            self.mock_db.query.assert_called_with(
-                (
-                    'SELECT * '
-                    'FROM article '
-                    'WHERE type = 1 '
-                    'AND publish_time > UNIX_TIMESTAMP(%s) '
-                    'ORDER BY publish_time '
-                    'LIMIT 10'
-                ),
-                1
-            )
-    
     def test_article_author(self):
         #author未输入
         assert_raises(TypeError, database.Article.author)

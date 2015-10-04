@@ -18,6 +18,7 @@ settings = {
         'SinglePage' : modules.SinglePageModule,
         'ResearchItem' : modules.ResearchListItemModule,
         'ArticleItem' : modules.ArticleListItemModule,
+        'ProjectItem' : modules.ProjectListItemModule,
     }
     #'log_file_prefix': '8888.log',
 }

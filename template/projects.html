@@ -8,34 +8,9 @@
 {% block contentMain %}
     {% module List() %}
     <hr />
-    <ul class="media-list">
+    <ul class="media-list" data-load="{% if len(projects) < 10 %}-1{%else%}2{% end %}">
         {% for project in projects %}
-        <li class="media" data-id="{{project.project_id}}">
-            <div class="media-body">
-                <a href="/project/{{project.project_id}}"><h4 class="project_heading">{{project.project_name}}</h4></a>
-                <div class="project_info">
-                    {% for user in project.users %}
-                    <span class="project_user">
-                        <a href="/person/{{user.username}}">
-                            {{user.firstname.capitalize()}} {{user.lastname.capitalize()}}
-                        </a>
-                    </span>
-                    {% end %}
-                </div> 
-                <div class="duration">{{project.start_time}} - {{project.end_time}}</div>
-                <div class="item">
-                    {% for item in project.item %}
-                    {{item.item_name}} 
-                    {% end %}
-                </div>
-            </div>
-            <div class="media-left">
-                <a href="#">
-                    <img class="media-object" src="{{static_url(project.project_image)}}" alt="...">
-                </a>
-            </div>
-        </li> 
-        <hr />
+            {% module ProjectItem(project) %}
         {% end %}
     </ul>
     <div class="list_loading_more btn btn-default">

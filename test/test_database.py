@@ -545,39 +545,16 @@ class TestPersistence(object):
     def test_project_query(self):
         #构造mock
         mock_project = mock.Mock()
-        mock_project.start_time = 'test'
-        self.mock_db.query.return_value = [mock_project for temp in range(10)]
+        self.mock_db.query.return_value = [mock_project]
         
-        #project_id未输入
-        with mock.patch('database.Item.query'):
-            projects = database.Project.query()
-            self.mock_db.query.assert_called_with((
-                'SELECT * '
-                'FROM project '
-                'WHERE NOT ISNULL(project_null) '
-                'ORDER BY start_time DESC '
-                'LIMIT 10'
-            ))
-            
-            #project_id输入
-            with mock.patch('database.Project.get'):
-                #找到对应project
-                database.Project.get.return_value = mock_project
-                projects = database.Project.query(1)
-                database.Project.get.assert_called_with(1)
-                self.mock_db.query.assert_called_with((
-                    'SELECT * '
-                    'FROM project '
-                    'WHERE NOT ISNULL(project_null) '
-                    'AND start_time >= unix_timestamp(%s) '
-                    'AND project_id != 1 '
-                    'ORDER BY start_time DESC '
-                    'LIMIT 10'
-                ), 'test')
-                #未找到对应project
-                database.Project.get.return_value = None
-                projects = database.Project.query(1)
-                assert projects is None
+        projects = database.Project.query()
+        self.mock_db.query.assert_called_with((
+            'SELECT * '
+            'FROM project '
+            'WHERE NOT ISNULL(project_null) '
+            'ORDER BY start_time DESC '
+            'LIMIT 0, 10'
+        ))
     
     def test_project_query_in_user(self):
         #user_id未输入

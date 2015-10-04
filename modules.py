@@ -45,3 +45,10 @@ class ArticleListItemModule(tornado.web.UIModule):
     '''
     def render(self, article):
         return self.render_string('module/articleItem.html', article=article)
+
+class ProjectListItemModule(tornado.web.UIModule):
+    '''
+        项目列表页列表项模块
+    '''
+    def render(self, project):
+        return self.render_string('module/projectItem.html', project=project)

@@ -566,37 +566,28 @@ class Project(object):
         return connection.get(sql)
         
     @classmethod
-    def query(cls, project_id=None):
+    def query(cls, query_num=1):
         '''
             获取10数量的project信息
         '''
+        
+        query_num = query_num if query_num >= 1 else 1
+        
         sql =\
             (
                 'SELECT * '
                 'FROM project '
                 'WHERE NOT ISNULL(project_null) '
-            )        
-
-        sql_suffix =\
-            (
                 'ORDER BY start_time DESC '
-                'LIMIT 10'
+                'LIMIT {start_num}, {end_num}'
+            ).format(
+                start_num=(query_num-1)*10,
+                end_num=query_num*10,
             )
         
         connection = _get_connection(cls.db)
         
-        if project_id is None:
-            return connection.query(sql+sql_suffix)
-        else:
-            project = cls.get(project_id)
-            if project is None:
-                return None
-            where =\
-                (
-                    'AND start_time >= unix_timestamp(%s) '
-                    'AND project_id != {project_id} '
-                ).format(project_id=project_id)
-            return connection.query(sql+where+sql_suffix, project.start_time)
+        return connection.query(sql)
     
     @classmethod
     def query_in_user(cls,user_id):

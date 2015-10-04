@@ -636,10 +636,13 @@ class TestPersistence(object):
         
         with mock.patch('database.Item.query'),\
             mock.patch('database.User.query_in_project'),\
-            mock.patch('chewer.strftime_present'):
+            mock.patch('chewer.strftime_present'),\
+            mock.patch('database.User.chew'):
+            database.User.query_in_project.return_value = [1]
             project = database.Project.chew(mock_project)
             database.Item.query.assert_called_with(1)
             database.User.query_in_project.assert_called_with(1)
+            database.User.chew.assert_called_with(1)
             chewer.strftime_present.assert_called_with('%m/%Y', '2015-01-01')
             assert_equal(mock_project.project_image, 'img/project/1.jpeg')
     

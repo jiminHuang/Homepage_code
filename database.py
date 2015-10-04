@@ -648,6 +648,7 @@ class Project(object):
         project.item = Item.query(project.project_id)
 
         project.users = User.query_in_project(project.project_id)
+        project.users = [User.chew(user) for user in project.users]
         project.project_image =\
             chewer.static_image(
                 'project/'+str(project.project_id)

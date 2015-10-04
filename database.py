@@ -93,7 +93,7 @@ class User(object):
         where_clause =\
             (
                 'WHERE type != {visitor_type} '
-                'ORDER BY type DESC'
+                'ORDER BY type'
             ).format(visitor_type=User.USER_TYPE.index("Visitor"))\
             if request_type is None\
                 else 'WHERE type = {request_type}'.format(

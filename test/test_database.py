@@ -85,7 +85,7 @@ class TestPersistence(object):
             'SELECT * '
             'FROM user '
             'WHERE type != {visitor_type} '
-            'ORDER BY type DESC'
+            'ORDER BY type'
         ).format(visitor_type=database.User.USER_TYPE.index('Visitor')))
         assert_equal(users, [mock_user])
         

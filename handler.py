@@ -44,7 +44,7 @@ class MainHandler(BaseHandler):
         
         projects = database.Project.query()
         if projects:
-            projects = projects[:4]
+            projects = projects[:2]
             projects = [database.Project.chew(project) for project in projects]
         
         persons = database.User.query()

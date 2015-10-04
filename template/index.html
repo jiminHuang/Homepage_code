@@ -138,6 +138,9 @@
             <div class="row">
                 {%for person in persons%}
                 <div class="col-md-2">
+                    <div class="person_cover">
+                        {{person.firstname.capitalize()}} {{person.lastname.capitalize()}}
+                    </div>
                     <div class="image_wrapper">
                         <a href="/person/{{person.username}}">
                             <img src="{{static_url(person.image)}}" />

@@ -193,8 +193,26 @@ section{
 }
 .team_view .col-md-2{
     padding: 0;
+    position: relative
+}
+.team_view .person_cover{
+    position: absolute;
+    width: 100%;
+    height: 226px;
+    line-height: 226px;
+    text-align: center;
+    z-index: 1000;
+    font-size: 1.4em;
+    color: #fff;
+    background-color: #333;
+    opacity: 0.7;
+}
+.team_view .person_cover:hover{
+    opacity: 0.0;
+    
 }
 .team_view .image_wrapper{
+    position: absolute;
     width: 100%;
     height: 226px;
     overflow: hidden;

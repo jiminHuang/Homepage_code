@@ -273,6 +273,17 @@ class Article(object):
         #author正常输入
         return [ cls.author(user) for user in author.split(',') ] 
     
+    @classmethod
+    def chew(cls, article):
+        if article is None:
+            return None
+
+        article.article_image = chewer.static_image(article.article_id)
+        article.author = Article.authors(article.author)
+        article.short_abstract = chewer.text_cutter(article.abstract, 255)
+        
+        return article
+    
 class Publisher(object):
     '''
         出版 Publisher表持久化对象
@@ -394,8 +405,7 @@ class Paper(object):
         paper.publish_year =\
             chewer.strftime_present("%Y", paper.publish_year)
 
-        paper.author = Article.authors(paper.author)
-        paper.short_abstract = chewer.text_cutter(paper.abstract, 255)
+        paper = Article.chew(paper)
 
         if paper.paper_url is None:
             paper.pdf_url =\

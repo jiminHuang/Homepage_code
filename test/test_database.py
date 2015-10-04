@@ -281,6 +281,26 @@ class TestPersistence(object):
             database.Article.author.return_value = mock_author
             assert_equal(database.Article.authors('1'), [mock_author])
             database.Article.author.assert_called_with('1')
+       
+    def test_article_chew(self):
+        #author未输入
+        assert_raises(TypeError, database.Article.authors)
+        
+        #author为None或空
+        assert database.Article.authors(None) is None
+        
+        #构建mock
+        mock_article = mock.Mock()
+        mock_article.article_id = 1
+        mock_article.abstract = 'test'
+        mock_article.author = 'test'
+    
+        #正常处理
+        with mock.patch('database.Article.authors'):
+            article = database.Article.chew(mock_article)
+            assert_equal(article.article_image, 'img/1.jpeg')
+            assert_equal(article.short_abstract, 'test')
+            database.Article.authors.assert_called_with('test')
              
     def test_publisher_get(self):
         #publisher_id 

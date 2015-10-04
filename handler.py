@@ -34,9 +34,8 @@ class MainHandler(BaseHandler):
     '''
     def get(self):
         articles = database.Article.query()
-        for article in articles:
-            article.article_image = chewer.static_image(article.article_id)
-            article.abstract = chewer.text_cutter(article.abstract, 255)
+        if articles:
+            articles = [database.Article.chew(article) for article in articles]
         
         papers = database.Paper.query()
         if papers:
@@ -67,15 +66,14 @@ class ArticlesHandler(BaseHandler):
     '''
     def get(self):
         articles = database.Article.query()
-        for article in articles:
-            article.article_image = chewer.static_image(article.article_id)
-            article.author = database.Article.authors(article.author)
+        if articles:
+            articles = [database.Article.chew(article) for article in articles]
         self.render(
             "articles.html",
             page_title=u"News - Wuhan University Internet Data Mining Laboratory",
             articles=articles,
         )
-
+    
 class ArticleHandler(BaseHandler):
     '''
         文章页handler
@@ -85,8 +83,8 @@ class ArticleHandler(BaseHandler):
         article = database.Article.get(article_id)
         if article is None:
             self.write_error("404")
-        article.article_image = chewer.static_image(article.article_id)
-        article.author = database.Article.authors(article.author)
+        
+        article = database.Article.chew(article)
         
         self.render(
             "article.html", 

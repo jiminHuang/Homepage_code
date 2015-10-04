@@ -38,3 +38,10 @@ class ResearchListItemModule(tornado.web.UIModule):
     '''
     def render(self, paper):
         return self.render_string('module/researchItem.html', paper=paper)
+
+class ArticleListItemModule(tornado.web.UIModule):
+    '''
+        文章列表页列表项模块
+    '''
+    def render(self, article):
+        return self.render_string('module/articleItem.html', article=article)

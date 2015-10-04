@@ -20,7 +20,7 @@ $(document).ready(function(){
                         if(data["load_more"]=="-1"){
                             $(".list_loading_more").css("display", "none");                
                         }
-                        $("li.media:last").after(data["write_str"]);
+                        $("ul.media-list>hr:last").after(data["write_str"]);
                         $("ul.media-list").data("load", query_num+1);
                     }
                 );

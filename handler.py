@@ -41,9 +41,7 @@ class MainHandler(BaseHandler):
         papers = database.Paper.query()
         if papers:
             papers = papers[:3] 
-            for paper in papers:
-                paper.publish_year = chewer.strftime_present("%Y", paper.publish_year)
-                paper.author = database.Article.authors(paper.author)
+            papers = [database.Paper.chew(paper) for paper in papers]
         
         projects = database.Project.query()
         if projects:
@@ -141,10 +139,7 @@ class PersonHandler(BaseHandler):
         
         #person 论文
         papers = database.Paper.query_in_user(person.user_id)
-        for paper in papers:
-            paper.publish_year = chewer.strftime_present("%Y", paper.publish_year)
-            paper.author = database.Article.authors(paper.author)
-        person.papers = papers
+        person.papers = [database.Paper.chew(paper) for paper in papers]
         
         #person 项目
         projects = database.Project.query_in_user(person.user_id)
@@ -192,24 +187,8 @@ class PaperHandler(BaseHandler):
 
         if paper is None:
             self.write_error(404)
-
-        paper.publish_year =\
-            chewer.strftime_present(
-                "%Y",
-                paper.publish_year
-            )
-
-        paper.author = database.Article.authors(paper.author)
         
-        if paper.paper_url is None:
-            paper.pdf_url =\
-                ''.join(
-                    (
-                        'paper/',
-                        paper.article_id,
-                        '.pdf',
-                    )
-                )
+        paper = database.Paper.chew(paper)
 
         self.render(
             "paper.html",
@@ -225,23 +204,9 @@ class ResearchHandler(BaseHandler):
         papers = database.Paper.query()
         if not papers:
             self.write_error("404")
-        for paper in papers:
 
-            paper.publish_year =\
-                chewer.strftime_present("%Y", paper.publish_year)
+        papers = [database.Paper.chew(paper) for paper in papers]        
 
-            paper.author = database.Article.authors(paper.author)
-            
-            paper.abstract = chewer.text_cutter(paper.abstract, 255)
-
-            paper.images = database.PaperImage.query(paper.article_id)
-            if paper.images:
-                paper.images =\
-                    [
-                        chewer.static_image('paper/' + str(image.image_id), image.suffix)
-                            for image in paper.images
-                    ]
-        
         self.render(
             "research.html",
             page_title="Research-WUIDML",
@@ -250,44 +215,24 @@ class ResearchHandler(BaseHandler):
     
     def post(self):
         query_num = self.get_argument('query_num', None)
+
         if query_num is None:
             self.write('failed')
             return None
+
         papers = database.Paper.query(int(query_num))
     
-        write_str = ''
-        
-        for paper in papers:
-
-            paper.publish_year =\
-                chewer.strftime_present("%Y", paper.publish_year)
-
-            paper.author = database.Article.authors(paper.author)
-            
-            paper.abstract = chewer.text_cutter(paper.abstract, 255)
-
-            paper.images = database.PaperImage.query(paper.article_id)
-            if paper.images:
-                paper.images =\
-                    [
-                        chewer.static_image('paper/' + str(image.image_id), image.suffix)
-                            for image in paper.images
-                    ]
-            
-            write_str = ''.join(
-                (
-                    write_str,
-                    self.render_string(
-                        'module/researchItem.html',
-                        paper=paper
-                    )
-                )
-            )
+        write_str =\
+            ''.join((
+                self.render_string(
+                    'module/researchItem.html',
+                    paper=database.Paper.chew(paper),
+                ) for paper in papers
+            ))
         
         load_more = '-1' if len(papers) < 10 else str(int(query_num)+1)
 
         self.write({'write_str':write_str,'load_more':load_more})
-        
 
 class ProjectHandler(BaseHandler):
     '''

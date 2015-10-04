@@ -12,6 +12,7 @@ import torndb
 import config
 import logging
 import hashlib
+import chewer
 
 def _get_connection(db):
     '''
@@ -325,15 +326,7 @@ class Paper(object):
         
         connection = _get_connection(cls.db)
         
-        paper = connection.get(sql, article_id)
-        
-        if paper is not None:
-            if paper.in_press is None:
-                paper.publisher = Publisher.get(paper.publisher_id)
-            else:
-                paper.title += '(In Press)'
-        
-        return paper
+        return connection.get(sql, article_id)
         
     @classmethod
     def query(cls, query_num=1):
@@ -387,6 +380,34 @@ class Paper(object):
         )
         
         return connection.query(sql, user_id)
+
+    @classmethod
+    def chew(cls, paper):
+        if paper is None:
+            return None
+        
+        if paper.in_press is None:
+            paper.publisher = Publisher.get(paper.publisher_id)
+        else:
+            paper.title += '(In Press)'
+        
+        paper.publish_year =\
+            chewer.strftime_present("%Y", paper.publish_year)
+
+        paper.author = Article.authors(paper.author)
+        paper.short_abstract = chewer.text_cutter(paper.abstract, 255)
+
+        if paper.paper_url is None:
+            paper.pdf_url =\
+                ''.join(
+                    (
+                        'paper/',
+                        paper.article_id,
+                        '.pdf',
+                    )
+                )
+            
+        return paper
     
     @classmethod
     def insert(cls, **kwargs):

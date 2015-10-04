@@ -14,6 +14,7 @@ import torndb
 import mock
 import logging
 import copy
+import chewer
 
 @mock.patch.object(logging, "error")
 def test_typelist_getitem(mock_logging_error):
@@ -316,34 +317,20 @@ class TestPersistence(object):
         
         #构建mock
         mock_paper = mock.Mock()
-        mock_paper.publisher_id = 1
-        mock_paper.title = 'test'
-        mock_paper.in_press = None
         self.mock_db.get.return_value = mock_paper
         
         #正常输入
-        with mock.patch('database.Publisher.get'):
-            #paper正常返回
-            paper = database.Paper.get(1)
-            database.Publisher.get.assert_called_with(1)
-            self.mock_db.get.assert_called_with(
-                (
-                    'SELECT * '
-                    'FROM article '
-                    'NATURAL JOIN paper '
-                    'WHERE article_id = %s'
-                ),
-                1,
-            )
-            #paper in press
-            mock_paper.in_press = True
-            paper = database.Paper.get(1)
-            assert_equal(paper, mock_paper)
-            assert_equal(paper.title, 'test(In Press)')
-            #paper 返回为None
-            self.mock_db.get.return_value = None
-            paper = database.Paper.get(1)
-            assert paper is None
+        paper = database.Paper.get(1)
+        self.mock_db.get.assert_called_with(
+            (
+                'SELECT * '
+                'FROM article '
+                'NATURAL JOIN paper '
+                'WHERE article_id = %s'
+            ),
+            1,
+        )
+        assert_equal(paper, mock_paper)
     
     def test_paper_query(self):
         #构建mock
@@ -452,6 +439,43 @@ class TestPersistence(object):
         with mock.patch('logging.error'):
             assert_equal(database.Paper.insert(**insert), False)
             logging.error.assert_called_with('paper insert error in article: test')
+    
+    def test_paper_chew(self):
+        #paper未输入
+        assert_raises(TypeError, database.Paper.chew)
+        
+        #paper为None
+        assert database.Paper.chew(None) is None
+        
+        #构造mock
+        mock_paper = mock.Mock()
+        mock_paper.publish_year = '2015-01-01'
+        mock_paper.author = 'test'
+        mock_paper.abstract = 'test'
+        mock_paper.publisher_id = 1
+        mock_paper.title = 'test'
+        mock_paper.article_id = 'test'
+        
+        #校验处理
+        with mock.patch('chewer.strftime_present'),\
+            mock.patch('database.Article.authors'),\
+            mock.patch('chewer.text_cutter'),\
+            mock.patch('database.Publisher.get'):
+            #paper in press
+            mock_paper.in_press = 'test'
+            #paper pdf url
+            mock_paper.paper_url = None
+            paper = database.Paper.chew(mock_paper)
+            assert_equal(mock_paper.title, 'test(In Press)')
+            assert_equal(mock_paper.pdf_url, 'paper/test.pdf')
+            chewer.text_cutter.assert_called_with('test', 255)
+            database.Article.authors.assert_called_with('test')
+            chewer.strftime_present.assert_called_with('%Y', '2015-01-01')
+            
+            #paper not in press
+            mock_paper.in_press = None
+            paper = database.Paper.chew(mock_paper)
+            database.Publisher.get.assert_called_with(1)
 
     def test_paper_image_query(self):
         #article_id未输入

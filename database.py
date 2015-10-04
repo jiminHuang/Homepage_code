@@ -628,6 +628,8 @@ class Project(object):
 
         project.end_time =\
             chewer.strftime_present("%m/%Y", project.end_time)
+        
+        return project
 
 class Prize(object):
     '''

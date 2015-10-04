@@ -558,13 +558,8 @@ class Project(object):
         
         connection = _get_connection(cls.db)
         
-        project = connection.get(sql)
+        return connection.get(sql)
         
-        if project is not None:
-            project.item = Item.query(project_id)
-
-        return project
-    
     @classmethod
     def query(cls, project_id=None):
         '''
@@ -586,7 +581,7 @@ class Project(object):
         connection = _get_connection(cls.db)
         
         if project_id is None:
-            projects = connection.query(sql+sql_suffix)
+            return connection.query(sql+sql_suffix)
         else:
             project = cls.get(project_id)
             if project is None:
@@ -596,13 +591,7 @@ class Project(object):
                     'AND start_time >= unix_timestamp(%s) '
                     'AND project_id != {project_id} '
                 ).format(project_id=project_id)
-            projects = connection.query(sql+where+sql_suffix, project.start_time)
-        
-        for project in projects:
-            if project is not None:
-                project.item = Item.query(project.project_id)
-        
-        return projects
+            return connection.query(sql+where+sql_suffix, project.start_time)
     
     @classmethod
     def query_in_user(cls,user_id):
@@ -623,13 +612,26 @@ class Project(object):
                 'ORDER BY start_time DESC'
             )
 
-        projects = connection.query(sql, user_id)
+        return connection.query(sql, user_id)
         
-        for project in projects:
-            if project is not None:
-                project.item = Item.query(project.project_id)
+    @classmethod
+    def chew(cls, project):
+        if project is None:
+            return None
         
-        return projects
+        project.item = Item.query(project.project_id)
+
+        project.users = User.query_in_project(project.project_id)
+        project.project_image =\
+            chewer.static_image(
+                'project/'+str(project.project_id)
+            )
+
+        project.start_time =\
+            chewer.strftime_present("%m/%Y", project.start_time)
+
+        project.end_time =\
+            chewer.strftime_present("%m/%Y", project.end_time)
 
 class Prize(object):
     '''

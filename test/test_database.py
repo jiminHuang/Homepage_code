@@ -535,17 +535,15 @@ class TestPersistence(object):
         self.mock_db.get.return_value = mock_project
         
         #正常输入
-        with mock.patch('database.Item.query'):
-            project = database.Project.get(1)
-            database.Item.query.assert_called_with(1)
-            self.mock_db.get.assert_called_with(
-                (
-                    'SELECT * '
-                    'FROM project '
-                    'WHERE project_id = 1'
-                ),
-            )
-            assert_equal(project, mock_project)
+        project = database.Project.get(1)
+        self.mock_db.get.assert_called_with(
+            (
+                'SELECT * '
+                'FROM project '
+                'WHERE project_id = 1'
+            ),
+        )
+        assert_equal(project, mock_project)
 
     def test_project_query(self):
         #构造mock
@@ -563,7 +561,6 @@ class TestPersistence(object):
                 'ORDER BY start_time DESC '
                 'LIMIT 10'
             ))
-            assert database.Item.query.call_count == 10
             
             #project_id输入
             with mock.patch('database.Project.get'):
@@ -597,18 +594,39 @@ class TestPersistence(object):
         self.mock_db.query.return_value = [mock_project]        
 
         #user_id正常输入
-        with mock.patch('database.Item.query'):
-            projects = database.Project.query_in_user(1)
-            self.mock_db.query.assert_called_with(
-                (
-                    'SELECT * '
-                    'FROM user_project '
-                    'NATURAL JOIN project '
-                    'WHERE user_id = %s '
-                    'ORDER BY start_time DESC'
-                ),
-                1
-            )
+        projects = database.Project.query_in_user(1)
+        self.mock_db.query.assert_called_with(
+            (
+                'SELECT * '
+                'FROM user_project '
+                'NATURAL JOIN project '
+                'WHERE user_id = %s '
+                'ORDER BY start_time DESC'
+            ),
+            1
+        )
+    
+    def test_project_chew(self):
+        #project未输入
+        assert_raises(TypeError, database.Project.chew)
+        
+        #project为None
+        assert database.Project.chew(None) is None
+        
+        #构造mock
+        mock_project = mock.Mock() 
+        mock_project.project_id = 1
+        mock_project.start_time = '2015-01-01'
+        mock_project.end_time = '2015-01-01'
+        
+        with mock.patch('database.Item.query'),\
+            mock.patch('database.User.query_in_project'),\
+            mock.patch('chewer.strftime_present'):
+            project = database.Project.chew(mock_project)
+            database.Item.query.assert_called_with(1)
+            database.User.query_in_project.assert_called_with(1)
+            chewer.strftime_present.assert_called_with('%m/%Y', '2015-01-01')
+            assert_equal(mock_project.project_image, 'img/project/1.jpeg')
     
     def test_prize_query_in_user(self):
         #user_id未输入

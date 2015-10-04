@@ -46,15 +46,7 @@ class MainHandler(BaseHandler):
         projects = database.Project.query()
         if projects:
             projects = projects[:4]
-            for project in projects:
-                project.project_image =\
-                    chewer.static_image('project/'+str(project.project_id))
-
-                project.start_time =\
-                    chewer.strftime_present("%m/%Y", project.start_time)
-
-                project.end_time =\
-                    chewer.strftime_present("%m/%Y", project.end_time)
+            projects = [database.Project.chew(project) for project in projects]
         
         persons = database.User.query()
         for person in persons:
@@ -143,13 +135,7 @@ class PersonHandler(BaseHandler):
         
         #person 项目
         projects = database.Project.query_in_user(person.user_id)
-        for project in projects:
-            project.start_time =\
-                chewer.strftime_present("%m/%Y", project.start_time)
-
-            project.end_time =\
-                chewer.strftime_present("%m/%Y", project.end_time)
-        person.projects = projects
+        person.projects = [database.Project.chew(project) for project in projects]
         
         #person 奖项
         prizes = database.Prize.query_in_user(person.user_id)
@@ -248,25 +234,10 @@ class ProjectHandler(BaseHandler):
         if project.project_null is None:
             self.write_error("404")
 
-        project.users = database.User.query_in_project(project_id)
-        
-        if not project.users:
-            self.write_error("404")
-        
+        project = database.Project.chew(project)
         for user in project.users:
             user.image = chewer.static_image(user.user_id)
 
-        project.start_time =\
-            chewer.strftime_present("%m/%Y", project.start_time)
-
-        project.end_time =\
-            chewer.strftime_present("%m/%Y", project.end_time)
-
-        project.project_image =\
-            chewer.static_image(
-                'project/'+str(project.project_id)
-            )
-        
         self.render(
             "project.html",
             page_title=project.project_name+"-WUIDML",
@@ -281,23 +252,10 @@ class ProjectsHandler(BaseHandler):
         projects = database.Project.query()
         
         if projects:
-            for project in projects:
-                project.users = database.User.query_in_project(project.project_id)
-                project.project_image =\
-                    chewer.static_image(
-                        'project/'+str(project.project_id)
-                    )
-
-                project.start_time =\
-                    chewer.strftime_present("%m/%Y", project.start_time)
-
-                project.end_time =\
-                    chewer.strftime_present("%m/%Y", project.end_time)
+            projects = [database.Project.chew(project) for project in projects]
         
         self.render(
             "projects.html",
             page_title="Projects-WUIDML",
             projects=projects,
         )
-        
-        

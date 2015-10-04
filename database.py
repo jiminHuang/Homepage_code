@@ -39,17 +39,23 @@ class TypeList(list):
         try:
             return super(TypeList, self).__getitem__(index-1)
         except IndexError:
-            logging.error('Typelist Index Error')
+            logging.error('Typelist GetItem Error')
             logging.error('Error List: {error_list}'.format(error_list=self))
             logging.error('Error Index: {error_index}'.format(error_index=index))
             return 'Unknown'
     
+    def index(self, attr):
+        '''
+            改写默认index方法，索引加1并抛出异常
+        '''
+        return super(TypeList, self).index(attr)+1
+
 class User(object):
     '''
         user表持久化
     '''
     db = 'homepage'
-    USER_TYPE = TypeList([u'Mentor', u'Doctor', u'Graduate', u'UnderGraduate'])
+    USER_TYPE = TypeList([u'Mentor', u'Doctor', u'Graduate', u'UnderGraduate', u'Visitor'])
 
     @classmethod
     def get(cls, user_id=None, username=None):
@@ -79,13 +85,23 @@ class User(object):
         return user
     
     @classmethod
-    def query(cls):
+    def query(cls, request_type=None):
         '''
             首页 user列表 query方法
         '''
+        sql = 'SELECT * FROM user '
+        where_clause =\
+            (
+                'WHERE type != {visitor_type} '
+                'ORDER BY type'
+            ).format(visitor_type=User.USER_TYPE.index("Visitor"))\
+            if request_type is None\
+                else 'WHERE type = {request_type}'.format(
+                    request_type=request_type,    
+                )
         connection = _get_connection(cls.db)
         
-        return connection.query('SELECT * FROM user WHERE type != 6')
+        return connection.query(sql+where_clause)
     
     @classmethod
     def query_in_project(cls, project_id):
@@ -107,7 +123,21 @@ class User(object):
             ).format(project_id=project_id)
         
         return connection.query(sql)
+    
+    @classmethod
+    def chew(cls, user):
+        if user is None:
+            return user
         
+        user.image = chewer.static_image(user.user_id)
+        user.english_name =\
+            ''.join((
+                user.firstname.capitalize(),
+                ' ',
+                user.lastname.capitalize(),
+            ))
+        
+        return user
 
 class Background(object):
     '''
@@ -257,7 +287,7 @@ class Article(object):
         author = author.strip()
         #author正常输入
         user = User.get(author)
-        return user if user is not None else author
+        return User.chew(user) if user is not None else author
     
     @classmethod
     def authors(cls, author):
@@ -618,6 +648,7 @@ class Project(object):
         project.item = Item.query(project.project_id)
 
         project.users = User.query_in_project(project.project_id)
+        project.users = [User.chew(user) for user in project.users]
         project.project_image =\
             chewer.static_image(
                 'project/'+str(project.project_id)

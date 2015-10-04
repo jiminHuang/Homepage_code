@@ -14,7 +14,7 @@
             {% for author in article.author %}
                 {% if not isinstance(author, basestring) %}
                     <a href="/person/{{author.username}}">
-                        {{author.firstname.capitalize()}} {{author.lastname.capitalize()}}
+                        {{author.english_name}}
                     </a>
                 {% else %}
                     {{author}}

@@ -95,7 +95,7 @@
         <div class="section_title">Projects</div>
         <div class="row">
             {% for project in projects %}
-            <div class="col-md-3">
+            <div class="{%if projects.index(project)==0%}col-md-offset-3{%end%} col-md-3">
                 <div class="project_wrapper">
                     <div class="projects_img">
                         <img src="{{static_url(project.project_image)}}" />
@@ -123,27 +123,21 @@
 
 <section id="Team">
     <div class="container">
+        {% module TeamSelector() %}
         <div class="section_title">Team</div>
         <div class="team_selection">
             <ul class="list-inline">
                 <li class="active"><span>All</span></li>
-                <li><span>Mentor</span></li>
-                <li><span>Doctor</span></li>
-                <li><span>Graduate</span></li>
-                <li><span>Ungraduate</span></li>
+                {% for user_type in user_types %}
+                <li><span>{{user_type}}</span></li>
+                {% end %}
             </ul>
         </div>
     </div>
         <div class="team_view">
             <div class="row">
                 {%for person in persons%}
-                <div class="col-md-2">
-                    <div class="image_wrapper">
-                        <a href="/person/{{person.username}}">
-                            <img src="{{static_url(person.image)}}" />
-                        </a>
-                    </div>
-                </div>
+                    {% module TeamMember(person) %}
                 {%end%}
             </div>
         </div>

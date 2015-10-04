@@ -52,3 +52,20 @@ class ProjectListItemModule(tornado.web.UIModule):
     '''
     def render(self, project):
         return self.render_string('module/projectItem.html', project=project)
+
+class TeamSelectorModule(tornado.web.UIModule):
+    '''
+        首页team选择模块
+    '''
+    def render(self):
+        return ''
+    
+    def javascript_files(self):
+        return "/static/js/team_selector.js"
+
+class TeamMemberModule(tornado.web.UIModule):
+    '''
+        首页team 人员项模块
+    '''
+    def render(self, person):
+        return self.render_string('module/teamMember.html', person=person)

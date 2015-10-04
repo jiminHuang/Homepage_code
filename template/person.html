@@ -75,7 +75,7 @@
         {% if person.papers %}
         <div class="sub_title" id="MainPublishedPapers">Main Published Papers</div>
         {% for type in publisher_type %}
-        {% set type_list = [ p for p in person.papers if p.publisher_type == publisher_type.index(type)+1]%}
+        {% set type_list = [ p for p in person.papers if p.publisher_type == publisher_type.index(type)]%}
             <div class="para_title">{{type}}</div>
             <div class="table-responsive">
                 <table class="table papers" id="{{type}}">
@@ -145,7 +145,7 @@
         {% if person.proprietaries %}
         <div class="sub_title" id="Others">Main Patents and Copyrights</div>
         {% for type in proprietary_type %}
-        {% set type_list = [p for p in person.proprietaries if p.proprietary_type == proprietary_type.index(type)+1]%}
+        {% set type_list = [p for p in person.proprietaries if p.proprietary_type == proprietary_type.index(type)]%}
         {% if type_list %}
         <div class="para_title">{{type}}</div>
         <div class="table-responsive">

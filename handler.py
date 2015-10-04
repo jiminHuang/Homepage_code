@@ -44,12 +44,12 @@ class MainHandler(BaseHandler):
         
         projects = database.Project.query()
         if projects:
-            projects = projects[:4]
+            projects = projects[:2]
             projects = [database.Project.chew(project) for project in projects]
         
         persons = database.User.query()
-        for person in persons:
-            person.image = chewer.static_image(person.user_id)
+        persons = [database.User.chew(person) for person in persons]
+        user_types = database.User.USER_TYPE[:4]
 
         self.render(
             "index.html",
@@ -58,7 +58,32 @@ class MainHandler(BaseHandler):
             papers=papers,
             projects=projects,
             persons=persons,
+            user_types=user_types,
         )
+
+    def post(self):
+        '''
+            team post请求响应
+        '''
+        request_type = self.get_argument('request_type')
+        try:
+            request_type = database.User.USER_TYPE.index(request_type)
+        except ValueError:
+            logging.error("TeamMember request type index error")
+    
+        persons = database.User.query(request_type)
+        
+        write_str = ''.join(
+            (
+                self.render_string(
+                    'module/teamMember.html',
+                    person=database.User.chew(person),
+                )
+                for person in persons
+            )
+        )
+        
+        self.write(write_str)
 
 class ArticlesHandler(BaseHandler):
     '''
@@ -122,7 +147,7 @@ class PersonHandler(BaseHandler):
         person = database.User.get(username=username)
         if person is None:
             self.write_error("404")
-        person.image = chewer.static_image(person.user_id)
+        person = database.User.chew(person)
         
         #person 教育背景
         backgrounds = database.Background.query(person.user_id)
@@ -182,6 +207,7 @@ class PersonHandler(BaseHandler):
             publisher_type=database.Publisher.PUBLISHER_TYPE,
             proprietary_type=database.Proprietary.PROPRIETARY_TYPE,
         )
+    
 
 class PaperHandler(BaseHandler):
     '''
@@ -254,8 +280,7 @@ class ProjectHandler(BaseHandler):
             self.write_error("404")
 
         project = database.Project.chew(project)
-        for user in project.users:
-            user.image = chewer.static_image(user.user_id)
+        project.users = [database.User.chew(user) for user in project.users]
 
         self.render(
             "project.html",

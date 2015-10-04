@@ -34,29 +34,18 @@ class MainHandler(BaseHandler):
     '''
     def get(self):
         articles = database.Article.query()
-        for article in articles:
-            article.article_image = chewer.static_image(article.article_id)
-            article.abstract = chewer.text_cutter(article.abstract, 255)
+        if articles:
+            articles = [database.Article.chew(article) for article in articles]
         
         papers = database.Paper.query()
         if papers:
             papers = papers[:3] 
-            for paper in papers:
-                paper.publish_year = chewer.strftime_present("%Y", paper.publish_year)
-                paper.author = database.Article.authors(paper.author)
+            papers = [database.Paper.chew(paper) for paper in papers]
         
         projects = database.Project.query()
         if projects:
             projects = projects[:4]
-            for project in projects:
-                project.project_image =\
-                    chewer.static_image('project/'+str(project.project_id))
-
-                project.start_time =\
-                    chewer.strftime_present("%m/%Y", project.start_time)
-
-                project.end_time =\
-                    chewer.strftime_present("%m/%Y", project.end_time)
+            projects = [database.Project.chew(project) for project in projects]
         
         persons = database.User.query()
         for person in persons:
@@ -77,15 +66,35 @@ class ArticlesHandler(BaseHandler):
     '''
     def get(self):
         articles = database.Article.query()
-        for article in articles:
-            article.article_image = chewer.static_image(article.article_id)
-            article.author = database.Article.authors(article.author)
+        if articles:
+            articles = [database.Article.chew(article) for article in articles]
         self.render(
             "articles.html",
             page_title=u"News - Wuhan University Internet Data Mining Laboratory",
             articles=articles,
         )
+    
+    def post(self):
+        query_num = self.get_argument('query_num', None)
 
+        if query_num is None:
+            self.write('failed')
+            return None
+
+        articles = database.Article.query(int(query_num))
+    
+        write_str =\
+            ''.join((
+                self.render_string(
+                    'module/articleItem.html',
+                    article=database.Article.chew(article),
+                ) for article in articles
+            ))
+        
+        load_more = '-1' if len(articles) < 10 else str(int(query_num)+1)
+
+        self.write({'write_str':write_str,'load_more':load_more})
+    
 class ArticleHandler(BaseHandler):
     '''
         文章页handler
@@ -95,8 +104,8 @@ class ArticleHandler(BaseHandler):
         article = database.Article.get(article_id)
         if article is None:
             self.write_error("404")
-        article.article_image = chewer.static_image(article.article_id)
-        article.author = database.Article.authors(article.author)
+        
+        article = database.Article.chew(article)
         
         self.render(
             "article.html", 
@@ -141,20 +150,11 @@ class PersonHandler(BaseHandler):
         
         #person 论文
         papers = database.Paper.query_in_user(person.user_id)
-        for paper in papers:
-            paper.publish_year = chewer.strftime_present("%Y", paper.publish_year)
-            paper.author = database.Article.authors(paper.author)
-        person.papers = papers
+        person.papers = [database.Paper.chew(paper) for paper in papers]
         
         #person 项目
         projects = database.Project.query_in_user(person.user_id)
-        for project in projects:
-            project.start_time =\
-                chewer.strftime_present("%m/%Y", project.start_time)
-
-            project.end_time =\
-                chewer.strftime_present("%m/%Y", project.end_time)
-        person.projects = projects
+        person.projects = [database.Project.chew(project) for project in projects]
         
         #person 奖项
         prizes = database.Prize.query_in_user(person.user_id)
@@ -192,24 +192,8 @@ class PaperHandler(BaseHandler):
 
         if paper is None:
             self.write_error(404)
-
-        paper.publish_year =\
-            chewer.strftime_present(
-                "%Y",
-                paper.publish_year
-            )
-
-        paper.author = database.Article.authors(paper.author)
         
-        if paper.paper_url is None:
-            paper.pdf_url =\
-                ''.join(
-                    (
-                        'paper/',
-                        paper.article_id,
-                        '.pdf',
-                    )
-                )
+        paper = database.Paper.chew(paper)
 
         self.render(
             "paper.html",
@@ -225,28 +209,35 @@ class ResearchHandler(BaseHandler):
         papers = database.Paper.query()
         if not papers:
             self.write_error("404")
-        for paper in papers:
 
-            paper.publish_year =\
-                chewer.strftime_present("%Y", paper.publish_year)
+        papers = [database.Paper.chew(paper) for paper in papers]        
 
-            paper.author = database.Article.authors(paper.author)
-            
-            paper.abstract = chewer.text_cutter(paper.abstract, 255)
-
-            paper.images = database.PaperImage.query(paper.article_id)
-            if paper.images:
-                paper.images =\
-                    [
-                        chewer.static_image('paper/' + str(image.image_id), image.suffix)
-                            for image in paper.images
-                    ]
-        
         self.render(
             "research.html",
             page_title="Research-WUIDML",
             papers=papers,
         )
+    
+    def post(self):
+        query_num = self.get_argument('query_num', None)
+
+        if query_num is None:
+            self.write('failed')
+            return None
+
+        papers = database.Paper.query(int(query_num))
+    
+        write_str =\
+            ''.join((
+                self.render_string(
+                    'module/researchItem.html',
+                    paper=database.Paper.chew(paper),
+                ) for paper in papers
+            ))
+        
+        load_more = '-1' if len(papers) < 10 else str(int(query_num)+1)
+
+        self.write({'write_str':write_str,'load_more':load_more})
 
 class ProjectHandler(BaseHandler):
     '''
@@ -262,25 +253,10 @@ class ProjectHandler(BaseHandler):
         if project.project_null is None:
             self.write_error("404")
 
-        project.users = database.User.query_in_project(project_id)
-        
-        if not project.users:
-            self.write_error("404")
-        
+        project = database.Project.chew(project)
         for user in project.users:
             user.image = chewer.static_image(user.user_id)
 
-        project.start_time =\
-            chewer.strftime_present("%m/%Y", project.start_time)
-
-        project.end_time =\
-            chewer.strftime_present("%m/%Y", project.end_time)
-
-        project.project_image =\
-            chewer.static_image(
-                'project/'+str(project.project_id)
-            )
-        
         self.render(
             "project.html",
             page_title=project.project_name+"-WUIDML",
@@ -295,23 +271,31 @@ class ProjectsHandler(BaseHandler):
         projects = database.Project.query()
         
         if projects:
-            for project in projects:
-                project.users = database.User.query_in_project(project.project_id)
-                project.project_image =\
-                    chewer.static_image(
-                        'project/'+str(project.project_id)
-                    )
-
-                project.start_time =\
-                    chewer.strftime_present("%m/%Y", project.start_time)
-
-                project.end_time =\
-                    chewer.strftime_present("%m/%Y", project.end_time)
+            projects = [database.Project.chew(project) for project in projects]
         
         self.render(
             "projects.html",
             page_title="Projects-WUIDML",
             projects=projects,
         )
+    
+    def post(self):
+        query_num = self.get_argument('query_num', None)
+
+        if query_num is None:
+            self.write('failed')
+            return None
+
+        projects = database.Project.query(int(query_num))
+    
+        write_str =\
+            ''.join((
+                self.render_string(
+                    'module/projectItem.html',
+                    project=database.Project.chew(paper),
+                ) for project in projects
+            ))
         
-        
+        load_more = '-1' if len(projects) < 10 else str(int(query_num)+1)
+
+        self.write({'write_str':write_str,'load_more':load_more})

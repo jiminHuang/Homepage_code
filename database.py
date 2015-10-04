@@ -12,6 +12,7 @@ import torndb
 import config
 import logging
 import hashlib
+import chewer
 
 def _get_connection(db):
     '''
@@ -19,12 +20,12 @@ def _get_connection(db):
     '''
     return torndb.Connection(
         ":".join(
-            [config.get_database_address(),
-            config.get_database_port()]
+            [config.Config.MYSQL_ADDRESS,
+            config.Config.MYSQL_PORT]
         ),
         db,
-        config.get_database_user(),
-        config.get_database_password(),
+        config.Config.MYSQL_USER,
+        config.Config.MYSQL_PASSWD,
     )
 
 class TypeList(list):
@@ -226,7 +227,10 @@ class Article(object):
         return connection.get(sql, article_id)
     
     @classmethod 
-    def query(cls, article_id=None):
+    def query(cls, query_num=1):
+        
+        query_num = query_num if query_num >= 1 else 1
+        
         #构建数据库连接
         connection = _get_connection(cls.db)
         
@@ -235,22 +239,14 @@ class Article(object):
                 'SELECT * '
                 'FROM article '
                 'WHERE type = 1 '
+                'ORDER BY publish_time DESC '
+                'LIMIT {start_num}, {end_num}'
+            ).format(
+                start_num=(query_num-1)*10,
+                end_num=query_num*10,
             )
         
-        article = cls.get(article_id)
-        
-        sql =\
-            ''.join((
-                sql,
-                'AND publish_time > UNIX_TIMESTAMP(%s) '\
-                    if article is not None else '',
-                'ORDER BY publish_time ',
-                'LIMIT 10',
-            ))
-        
-        return connection.query(sql)\
-            if article is None else\
-                connection.query(sql, article.publish_time)
+        return connection.query(sql)
     
     @classmethod
     def author(cls, author):
@@ -271,6 +267,17 @@ class Article(object):
         
         #author正常输入
         return [ cls.author(user) for user in author.split(',') ] 
+    
+    @classmethod
+    def chew(cls, article):
+        if article is None:
+            return None
+
+        article.article_image = chewer.static_image(article.article_id)
+        article.author = Article.authors(article.author)
+        article.short_abstract = chewer.text_cutter(article.abstract, 255)
+        
+        return article
     
 class Publisher(object):
     '''
@@ -325,21 +332,16 @@ class Paper(object):
         
         connection = _get_connection(cls.db)
         
-        paper = connection.get(sql, article_id)
-        
-        if paper is not None:
-            if paper.in_press is None:
-                paper.publisher = Publisher.get(paper.publisher_id)
-            else:
-                paper.title += '(In Press)'
-        
-        return paper
+        return connection.get(sql, article_id)
         
     @classmethod
-    def query(cls, article_id=None):
+    def query(cls, query_num=1):
         '''
             paper query方法
         '''
+        
+        query_num = query_num if query_num >= 1 else 1
+        
         sql =\
             (
                 'SELECT * '
@@ -347,32 +349,16 @@ class Paper(object):
                 'NATURAL JOIN paper '
                 'NATURAL JOIN publisher '
                 'WHERE article.type = 2 '
-            )
-        
-        sql_order =\
-            (
                 'ORDER BY publish_year DESC '
-                'LIMIT 10'
+                'LIMIT {query_start}, {query_end}'
+            ).format(
+                query_start=(query_num-1)*10,
+                query_end=query_num*10,
             )
         
         connection = _get_connection(cls.db)
 
-        if article_id is None:
-            return connection.query(sql+sql_order)
-        else:
-            article = cls.get(article_id)
-            if article is None:
-                return None
-            return connection.query(
-                ''.join((
-                    sql,
-                    'AND article_id != %s ',
-                    'AND publish_year >= unix_timestamp(%s) ',
-                    sql_order,
-                )),
-                article_id,
-                article.publish_year,
-            )
+        return connection.query(sql)
     
     @classmethod
     def query_in_user(cls, user_id):
@@ -400,6 +386,33 @@ class Paper(object):
         )
         
         return connection.query(sql, user_id)
+
+    @classmethod
+    def chew(cls, paper):
+        if paper is None:
+            return None
+        
+        if paper.in_press is None:
+            paper.publisher = Publisher.get(paper.publisher_id)
+        else:
+            paper.title += '(In Press)'
+        
+        paper.publish_year =\
+            chewer.strftime_present("%Y", paper.publish_year)
+
+        paper = Article.chew(paper)
+
+        if paper.paper_url is None:
+            paper.pdf_url =\
+                ''.join(
+                    (
+                        'paper/',
+                        paper.article_id,
+                        '.pdf',
+                    )
+                )
+            
+        return paper
     
     @classmethod
     def insert(cls, **kwargs):
@@ -550,51 +563,31 @@ class Project(object):
         
         connection = _get_connection(cls.db)
         
-        project = connection.get(sql)
+        return connection.get(sql)
         
-        if project is not None:
-            project.item = Item.query(project_id)
-
-        return project
-    
     @classmethod
-    def query(cls, project_id=None):
+    def query(cls, query_num=1):
         '''
             获取10数量的project信息
         '''
+        
+        query_num = query_num if query_num >= 1 else 1
+        
         sql =\
             (
                 'SELECT * '
                 'FROM project '
                 'WHERE NOT ISNULL(project_null) '
-            )        
-
-        sql_suffix =\
-            (
                 'ORDER BY start_time DESC '
-                'LIMIT 10'
+                'LIMIT {start_num}, {end_num}'
+            ).format(
+                start_num=(query_num-1)*10,
+                end_num=query_num*10,
             )
         
         connection = _get_connection(cls.db)
         
-        if project_id is None:
-            projects = connection.query(sql+sql_suffix)
-        else:
-            project = cls.get(project_id)
-            if project is None:
-                return None
-            where =\
-                (
-                    'AND start_time >= unix_timestamp(%s) '
-                    'AND project_id != {project_id} '
-                ).format(project_id=project_id)
-            projects = connection.query(sql+where+sql_suffix, project.start_time)
-        
-        for project in projects:
-            if project is not None:
-                project.item = Item.query(project.project_id)
-        
-        return projects
+        return connection.query(sql)
     
     @classmethod
     def query_in_user(cls,user_id):
@@ -615,13 +608,28 @@ class Project(object):
                 'ORDER BY start_time DESC'
             )
 
-        projects = connection.query(sql, user_id)
+        return connection.query(sql, user_id)
         
-        for project in projects:
-            if project is not None:
-                project.item = Item.query(project.project_id)
+    @classmethod
+    def chew(cls, project):
+        if project is None:
+            return None
         
-        return projects
+        project.item = Item.query(project.project_id)
+
+        project.users = User.query_in_project(project.project_id)
+        project.project_image =\
+            chewer.static_image(
+                'project/'+str(project.project_id)
+            )
+
+        project.start_time =\
+            chewer.strftime_present("%m/%Y", project.start_time)
+
+        project.end_time =\
+            chewer.strftime_present("%m/%Y", project.end_time)
+        
+        return project
 
 class Prize(object):
     '''

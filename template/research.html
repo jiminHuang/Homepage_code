@@ -8,31 +8,9 @@
 {% block contentMain %}
     {% module List() %}
     <hr />
-    <ul class="media-list">
+    <ul class="media-list" data-load="{% if len(papers) < 10 %}-1{%else%}2{% end %}">
         {% for paper in papers %}
-        <li class="media">
-            <div class="media-body">
-                <a href="/paper/{{paper.article_id}}"><h4 class="article_heading">{{paper.title}}</h4></a>
-                <div class="article_info">
-                    {% for author in paper.author %}
-                        <span class="article_author">
-                        {% if not isinstance(author, basestring) %}
-                            <a class="article_user" href="/person/{{author.username}}">
-                                {{author.firstname.capitalize()}} {{author.lastname.capitalize()}}
-                            </a>
-                        {% else %}
-                            {{author}}
-                        {% end %}
-                        </span>
-                    {% end %}
-                    <span class="article_publish_time">{{paper.publish_year}}</span>
-                </div> 
-                <div class="article_abstract">
-                    {% if paper.abstract %}{{paper.abstract}}{% end %}
-                </div>
-            </div>
-        </li> 
-        <hr />
+            {% module ResearchItem(paper) %}
         {% end %}
     </ul>
     <div class="list_loading_more btn btn-default">

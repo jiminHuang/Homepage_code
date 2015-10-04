@@ -1,0 +1,28 @@
+<li class="media" data-id="{{article.article_id}}">
+    <div class="media-body">
+        <a href="/article/{{article.article_id}}"><h4 class="article_heading">{{article.title}}</h4></a>
+        <div class="article_info">
+            {% for author in article.author %}
+            <span class="article_author">
+                {% if not isinstance(author, basestring) %}
+                    <a href="/person/{{author.username}}">
+                        {{author.firstname.capitalize()}} {{author.lastname.capitalize()}}
+                    </a>
+                {% else %}
+                    {{author}}
+                {% end %}
+            </span>
+            {% end %}
+            <span class="article_publish_time">{{article.publish_time}}</span>
+        </div> 
+        <div class="article_abstract">
+            {{article.short_abstract}}
+        </div>
+    </div>
+    <div class="media-left">
+        <a href="/article/{{article.article_id}}">
+            <img class="media-object" src="{{static_url(article.article_image)}}" alt="...">
+        </a>
+    </div>
+</li> 
+<hr />

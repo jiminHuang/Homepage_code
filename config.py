@@ -8,21 +8,47 @@
     读取配置文件
 '''
 from ConfigParser import SafeConfigParser
+import sys
+import os
 
-#读取配置文件
-_config = SafeConfigParser()
-_config.read('config.ini')
+#配置文件设定
+CONFIG_SETTINGS = {
+    'MYSQL_ADDRESS' : 'database',
+    'MYSQL_PORT' : 'database',
+    'MYSQL_USER' : 'database',
+    'MYSQL_PASSWD' : 'database',
+    'MAIL_USER' : 'mail',
+    'MAIL_PASSWD' : 'mail',
+    'COOKIE_SECRET' : 'cookie',        
+}
 
-def get_database_address():
-    return _config.get('database', 'address')
+class _Config(object):
+    '''
+        配置类
+    '''
+    #读取配置文件
+    _config = SafeConfigParser()
+    _config.read('config.ini')
 
-def get_database_port():
-    return _config.get('database', 'port')
+    
+    def __getattr__(self, attr):
+        '''
+            重新定义获取属性方法
+            使得先在环境中后在config文件中搜索
+        '''
 
-def get_database_user():
-    return _config.get('database', 'user')
+        if os.environ.get(attr, None) is not None:
+            return os.environ.get(attr)
+        
+        try:
+            return self._config.get(CONFIG_SETTINGS.get(attr, None), attr)
+        except Exception:
+            return None
 
-def get_database_password():
-    return _config.get('database', 'password')
+    def get_local_position(self, position):
+        '''
+            获取当前位置
+        '''
+        return os.path.join(os.path.dirname(__file__), position)
 
-
+Config = _Config()

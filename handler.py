@@ -269,6 +269,7 @@ class ProjectsHandler(BaseHandler):
     '''
     def get(self):
         projects = database.Project.query()
+        print projects
         
         if projects:
             projects = [database.Project.chew(project) for project in projects]

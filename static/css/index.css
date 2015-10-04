@@ -182,6 +182,9 @@ section{
 .team_selection{
     text-align: center;
 }
+.team_selection li{
+    cursor: pointer;
+}
 .team_selection li.active span{
     border-bottom-color: #2ec3e7;
     border-bottom-width: 2px;

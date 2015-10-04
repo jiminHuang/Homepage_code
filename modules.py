@@ -51,4 +51,5 @@ class ProjectListItemModule(tornado.web.UIModule):
         项目列表页列表项模块
     '''
     def render(self, project):
+        print project
         return self.render_string('module/projectItem.html', project=project)

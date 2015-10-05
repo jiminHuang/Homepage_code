@@ -167,7 +167,7 @@ section{
     border-radius: 100px;
 }
 .projects_text{
-    padding: 15px;
+    padding: 15px 15%;
 }
 .projects_text div{
     margin: 10px 0;
@@ -179,8 +179,8 @@ section{
 .projects_title a{
     color: #2ec3e7;
 }
-#Projects .item{
-    font-weight: bold;
+#Projects .duration{
+    color: #bbb;
 }
 /*Team*/
 #Team{

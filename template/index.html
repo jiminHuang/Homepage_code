@@ -66,17 +66,6 @@
                             <div class="paper_title">
                                 <a href="/paper/{{paper.article_id}}">{{paper.title}}</a>
                             </div>
-                            <p class="paper_writer">
-                                {%for author in paper.author%}
-                                    <span>
-                                    {% if not isinstance(author, basestring) %}
-                                        <a href="/person/{{author.username}}">{{author.english_name}}</a>
-                                    {%else%}
-                                        {{author}}
-                                    {%end%}
-                                    </span>
-                                {%end%}
-                            </p>
                             <p class="paper_publisher">{{paper.publisher_name}}</p>
                         </div>
                     </div>
@@ -94,7 +83,7 @@
         <div class="section_title">Projects</div>
         <div class="row">
             {% for project in projects %}
-            <div class="{%if projects.index(project)==0%}col-md-offset-2{%end%} col-md-5">
+            <div class="{%if projects.index(project)==0%}col-md-offset-2{%end%} col-md-4">
                 <div class="project_wrapper">
                     <div class="projects_img">
                         <img src="{{static_url(project.project_image)}}" />

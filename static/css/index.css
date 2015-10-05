@@ -104,10 +104,11 @@ section{
 }
 .paper_title_wrapper{
     background-color: #2ec3e7;
+    padding: 0 10px;
     height: 90px;
 }
 .paper_title{
-    height: 90px;
+    height: 100px;
 }
 .paper_title a{
     font-size: 1.2em;

@@ -83,7 +83,7 @@
         <div class="section_title">Projects</div>
         <div class="row">
             {% for project in projects %}
-            <div class="{%if projects.index(project)==0%}col-md-offset-2{%end%} col-md-4">
+            <div class="col-md-offset-2 col-md-2">
                 <div class="project_wrapper">
                     <div class="projects_img">
                         <img src="{{static_url(project.project_image)}}" />

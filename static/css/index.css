@@ -107,7 +107,7 @@ section{
     height: 90px;
 }
 .paper_title{
-    height: 70px;
+    height: 90px;
 }
 .paper_title a{
     font-size: 1.2em;
@@ -118,7 +118,7 @@ section{
     text-decoration: none;
 }
 .paper_writer{
-    height: 40px;
+    height: 60px;
 }
 .paper_writer a{
     color: #2ec3e7;
@@ -135,6 +135,7 @@ section{
 .paper_publisher{
     font-size: 0.9em;
     color: #888;
+    height: 30px;
 }
 /*Projects*/
 #Projects{

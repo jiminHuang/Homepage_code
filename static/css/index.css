@@ -25,25 +25,28 @@
 .carousel_text{
     min-height: 320px;
     background-color: #ebf4ec;
+    font-weight: 300;
 }
 .carousel_title{
-    height: 100px;
-    font-size: 2em;
-    padding: 40px 100px 0 100px;
+    min-height: 60px;
+    font-size: 1.5em;
+    font-weight: 400;
+}
+.carousel_text .wrapper{
+    padding: 5% 14%;
+    min-height: 320px;
 }
 .carousel_intro{
-    padding: 0 100px;
-}
-.carousel_link{
-    margin-left: 100px;
     margin-top: 20px;
-    margin-bottom: 25px;
 }
 .carousel_link a{
     font-size: 1.2em;
     background-color: #2ec3e7;
     border-color: #2ec3e7;
     color: #fff;
+}
+.carousel_link{
+    margin-top: 20px;
 }
 .carousel_link a:hover{
     background-color: #2ec3e7;
@@ -57,15 +60,15 @@ section{
     min-height:1px;
 }
 .section_title{
-    font-weight: bold;
-    font-size: 1.6em;
+    font-size: 1.5em;
     margin-bottom: 40px;
     text-align: center;
     color: #303030;
+    font-weight: 700;
 }
 .section_link{
     margin: 30px auto;
-    width: 134px;
+    width: 140px;
 }
 .section_link .btn{
     font-size: 1.5em;
@@ -82,7 +85,10 @@ section{
     font-size: 2em;
 }
 .intro_text{
-    padding: 0 100px;
+    text-align: center;
+    font-size: 1.4em;
+    color: #81878c;
+    font-weight: 300;
 }
 /*Papers*/
 #Papers{
@@ -90,7 +96,7 @@ section{
     background-color:#ebf4ec;
 }
 #Papers .row{
-    padding: 0 100px;
+    padding: 0 10%;
 }
 #Papers .row>div{
     text-align: center;
@@ -201,33 +207,24 @@ section{
     border-bottom-style: solid;
 }
 .team_view{
-    margin: 20px 0px;
+    margin: 80px 0px;
     min-height: 226px;
 }
-.team_view .col-md-2{
-    padding: 0;
-    position: relative
-}
 .team_view .person_cover{
-    position: absolute;
-    width: 100%;
-    height: 226px;
-    line-height: 226px;
     text-align: center;
-    z-index: 1000;
     font-size: 1.4em;
-    color: #fff;
-    background-color: #333;
-    opacity: 0.7;
-}
-.team_view .person_cover:hover{
-    opacity: 0.0;
+    margin-top:20px;
+    color: #333;
 }
 .team_view .image_wrapper{
-    position: absolute;
-    width: 100%;
-    height: 226px;
+    width: 150px;
+    height: 150px;
+    border-radius: 150px;
     overflow: hidden;
+    margin: auto;
+    border-color: #2ec3e7;
+    border-style: solid;
+    border-width: 5px;
 }
 .team_view img{
     width: 100%;

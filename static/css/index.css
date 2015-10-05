@@ -65,7 +65,7 @@ section{
 }
 .section_link{
     margin: 30px auto;
-    width: 100px;
+    width: 134px;
 }
 .section_link .btn{
     font-size: 1.5em;
@@ -97,13 +97,17 @@ section{
 }
 .paper_wrapper{
     background-color: #fff;
-    min-height: 300px;
+    min-height: 250px;
 }
 .paper_text{
-    padding: 10px 10px;
+    padding: 20px 10px;
 }
 .paper_title_wrapper{
     background-color: #2ec3e7;
+    height: 90px;
+}
+.paper_title{
+    height: 70px;
 }
 .paper_title a{
     font-size: 1.2em;
@@ -113,8 +117,15 @@ section{
     color: #2ec3e7;
     text-decoration: none;
 }
+.paper_writer{
+    height: 40px;
+}
 .paper_writer a{
     color: #2ec3e7;
+}
+.paper_writer span{
+    height: 40px;
+    padding-right: 6px;
 }
 .paper_date{
     font-size: 1.9em;
@@ -128,7 +139,17 @@ section{
 /*Projects*/
 #Projects{
     color: #fff;
+    padding: 0;
+    background-image: url("/static/img/switch_three.jpeg");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100% 100%;
+}
+#Projects .wrapper{
+    min-height: 1px;
     background-color: #2ec3e7;
+    opacity: 0.85;
+    padding: 100px 0;
 }
 #Projects .row{
     padding: 0 100px;

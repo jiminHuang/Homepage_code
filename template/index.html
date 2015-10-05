@@ -46,9 +46,8 @@
 <!--Intro-->
 <section id="Intro">
     <div class="container">
-        <div class="page-header intro_slogen">An inspiring slogen!</div>
+        <div class="page-header intro_slogen">The finest language is mostly made up of simple unimposing words</div>
         <div class="intro_text">
-            Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. 
         </div>
     </div>
 </section>
@@ -64,14 +63,14 @@
                             <p class="paper_date">{{paper.publish_year}}</p>
                         </div>
                         <div class="paper_text">
-                            <p class="paper_title">
+                            <div class="paper_title">
                                 <a href="/paper/{{paper.article_id}}">{{paper.title}}</a>
-                            </p>
+                            </div>
                             <p class="paper_writer">
                                 {%for author in paper.author%}
                                     <span>
                                     {% if not isinstance(author, basestring) %}
-                                        <a href="/person/{{author.username}}">{{author.firstname.capitalize()}} {{author.lastname.capitalize()}}</a>
+                                        <a href="/person/{{author.username}}">{{author.english_name}}</a>
                                     {%else%}
                                         {{author}}
                                     {%end%}
@@ -91,6 +90,7 @@
 </section>
 
 <section id="Projects">
+    <div class="wrapper">
     <div class="container">
         <div class="section_title">Projects</div>
         <div class="row">
@@ -119,6 +119,7 @@
             <a class="btn btn-default" href="/projects">Learn More</a>
         </div>
     </div> 
+    </div>
 </section>
 
 <section id="Team">

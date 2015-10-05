@@ -140,20 +140,7 @@ section{
 /*Projects*/
 #Projects{
     color: #fff;
-    padding: 0;
-    background-image: url("/static/img/switch_three.jpeg");
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: 100% 100%;
-}
-#Projects .wrapper{
-    min-height: 1px;
     background-color: #2ec3e7;
-    opacity: 0.85;
-    padding: 100px 0;
-}
-#Projects .row{
-    padding: 0 100px;
 }
 #Projects .section_link .btn{
     border-color: #333;

@@ -130,7 +130,7 @@
                     {%for prize in person.prizes %}
                         <tr>
                             <td>
-                                {{prize.prize_ontology}}
+                                {{prize.prize_ontology if prize.prize_ontology else prize.prize_name}}
                             </td>
                             <td>
                                 {{prize.prize_name}}

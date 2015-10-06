@@ -635,8 +635,8 @@ class TestPersistence(object):
         self.mock_db.query.assert_called_with((
             'SELECT * '
             'FROM project '
-            'WHERE start_time = %s'
-            'ORDER BY end_time DESC '
+            'WHERE end_time >= %s '
+            'ORDER BY start_time DESC '
         ), '2015-01-01')
         assert_equal(projects, [mock_project])
     

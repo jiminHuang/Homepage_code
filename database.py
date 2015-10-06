@@ -653,8 +653,8 @@ class Project(object):
             (
                 'SELECT * '
                 'FROM project '
-                'WHERE start_time = %s'
-                'ORDER BY end_time DESC '
+                'WHERE end_time >= %s'
+                'ORDER BY start_time DESC '
             )
         
         start_time = year + '-01-01'

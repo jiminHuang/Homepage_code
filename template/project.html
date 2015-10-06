@@ -3,7 +3,7 @@
     <link href="{{ static_url("css/project.css") }}" rel="stylesheet">
 {% end %}
 {% block breadCrumb %}
-    <li><a href="/projects">Project</a></li>
+    <li><a href="/projects" target="_blank">Project</a></li>
     <li class="active">{{project.project_name}}</li>
 {% end %}
 {% block contentMain %}
@@ -26,7 +26,7 @@
                     <img src="{{static_url(user.image)}}" />
                 </div>
                 <div class="username">
-                    <a href="/person/{{user.username}}">
+                    <a href="/person/{{user.username}}" target="_blank">
                         {{user.english_name}}
                     </a>
                 </div>

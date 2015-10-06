@@ -3,7 +3,7 @@
     <link href="{{ static_url("css/paper.css") }}" rel="stylesheet">
 {% end %}
 {% block breadCrumb %}
-    <li><a href="/research">Research</a></li>
+    <li><a href="/research" target="_blank">Research</a></li>
     <li class="active">{{paper.title}}</li>
 {% end %}
 {% block contentMain %}
@@ -19,7 +19,7 @@
                 {%for author in paper.author %}
                     <li>
                     {%if not isinstance(author, basestring)%}
-                        <a href="/person/{{author.username}}">
+                        <a href="/person/{{author.username}}" target="_blank">
                             {{author.english_name}}
                         </a>
                     {%else%}

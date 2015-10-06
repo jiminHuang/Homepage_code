@@ -59,14 +59,14 @@
             <table class="table latest">
             {% for paper in papers %}
                     <tr>
-                        <td><a href="/paper/{{paper.article_id}}">{{paper.title}}</a></td>
+                        <td><a href="/paper/{{paper.article_id}}" target="_blank">{{paper.title}}</a></td>
                         <td>{{paper.publisher_name}}</td>
                     </tr>
             {%end%}
             </table>
         </div>
         <div class="section_link">
-            <a class="btn btn-default" href="/research">Learn More</a>
+            <a class="btn btn-default" href="/research" target="_blank">Learn More</a>
         </div>
     </div>
 </section>
@@ -78,7 +78,7 @@
             <table class="table latest">
             {% for project in projects %}
                 <tr>
-                    <td><a href="/project/{{project.project_id}}">{{project.project_name}}</a></td>
+                    <td><a href="/project/{{project.project_id}}" target="_blank">{{project.project_name}}</a></td>
                     <td>{{project.start_time}} - {{project.end_time}}</td>
                     <td>{{project.item[0].item_name}}</td>
                 </tr>
@@ -86,7 +86,7 @@
             </table>
         </div>
         <div class="section_link">
-            <a class="btn btn-default" href="/projects">Learn More</a>
+            <a class="btn btn-default" href="/projects" target="_blank">Learn More</a>
         </div>
     </div> 
 </section>

@@ -83,7 +83,7 @@
                         {%for paper in type_list%}
                             <tr>
                                 <td>
-                                    <a href="/paper/{{paper.article_id}}">{{paper.title}}</a>
+                                    <a href="/paper/{{paper.article_id}}" target="_blank">{{paper.title}}</a>
                                 </td>
                                 <td>{{paper.publisher_name}}</td>
                                 <td>{{paper.publish_year}}</td>
@@ -103,7 +103,7 @@
                         <tr>
                             <td>
                                 {% if project.project_null is not None %}
-                                <a href="/project/{{project.project_id}}">{{project.project_name}}</a>
+                                <a href="/project/{{project.project_id}}" target="_blank">{{project.project_name}}</a>
                                 {% else %}
                                 {{project.project_name}}
                                 {%end%}

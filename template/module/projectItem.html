@@ -1,7 +1,7 @@
 <li class="media" data-id="{{project.project_id}}">
     <div class="media-body">
         {% if project.project_null is not None %}
-            <a href="/project/{{project.project_id}}">
+            <a href="/project/{{project.project_id}}" target="_blank">
         {% else %}
             <a disabled="disabled">
         {% end %}
@@ -10,7 +10,7 @@
         <div class="project_info">
             {% for user in project.users %}
             <span class="project_user">
-                <a href="/person/{{user.username}}">
+                <a href="/person/{{user.username}}" target="_blank">
                     {{user.english_name}}
                 </a>
             </span>

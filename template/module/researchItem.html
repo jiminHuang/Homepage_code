@@ -1,11 +1,11 @@
 <li class="media" data-id="{{paper.article_id}}">
     <div class="media-body">
-        <a href="/paper/{{paper.article_id}}"><h4 class="article_heading">{{paper.title}}</h4></a>
+        <a href="/paper/{{paper.article_id}}" target="_blank"><h4 class="article_heading">{{paper.title}}</h4></a>
         <div class="article_info">
             {% for author in paper.author %}
                 <span class="article_author">
                 {% if not isinstance(author, basestring) %}
-                    <a class="article_user" href="/person/{{author.username}}">
+                    <a class="article_user" href="/person/{{author.username}}" target="_blank">
                         {{author.english_name}}
                     </a>
                 {% else %}

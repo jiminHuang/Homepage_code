@@ -111,7 +111,7 @@
                             <td>
                                 {% for item in project.item %}
                                 {{item.item_name}}
-                                {% if project.item.index(item) != len(project.item)-1%}<br/>{%end%}
+                                {% if project.item.index(item) != len(project.item)-1%}<br/><br/>{%end%}
                                 {%end%}
                             </td>
                             <td>{{project.start_time}}</td>

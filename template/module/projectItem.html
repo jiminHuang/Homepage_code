@@ -1,6 +1,12 @@
 <li class="media" data-id="{{project.project_id}}">
     <div class="media-body">
-        <a href="{% if project.project_null is not None %}/project/{{project.project_id}}{%end%}"><h4 class="project_heading">{{project.project_name}}</h4></a>
+        {% if project.project_null is not None %}
+            <a href="/project/{{project.project_id}}">
+        {% else %}
+            <a disabled="disabled">
+        {% end %}
+            <h4 class="project_heading">{{project.project_name}}</h4>
+        </a>
         <div class="project_info">
             {% for user in project.users %}
             <span class="project_user">

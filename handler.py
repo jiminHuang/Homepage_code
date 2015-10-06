@@ -43,7 +43,7 @@ class MainHandler(BaseHandler):
         if papers:
             papers = [database.Paper.chew(paper) for paper in papers]
         
-        projects = database.Project.query_in_year(this_year)
+        projects = database.Project.query_in_year(str(int(this_year)-2))
         if projects:
             projects = [database.Project.chew(project) for project in projects]
         

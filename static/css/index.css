@@ -28,7 +28,7 @@
     font-weight: 300;
 }
 .carousel_title{
-    min-height: 60px;
+    min-height: 40px;
     font-size: 1.5em;
     font-weight: 400;
 }
@@ -38,6 +38,7 @@
 }
 .carousel_intro{
     margin-top: 20px;
+    font-family: Doris Serif;
 }
 .carousel_link a{
     font-size: 1.2em;

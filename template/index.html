@@ -54,23 +54,16 @@
 <!--Papers-->
 <section id="Papers">
     <div class="container">
-        <div class="section_title">Research</div>
+        <div class="section_title">Latest Paper</div>
         <div class="row">
+            <table class="table latest">
             {% for paper in papers %}
-                <div class="col-md-4 col-sm-6">
-                    <div class="paper_wrapper">
-                        <div class="paper_title_wrapper">
-                            <p class="paper_date">{{paper.publish_year}}</p>
-                        </div>
-                        <div class="paper_text">
-                            <div class="paper_title">
-                                <a href="/paper/{{paper.article_id}}">{{paper.title}}</a>
-                            </div>
-                            <p class="paper_publisher">{{paper.publisher_name}}</p>
-                        </div>
-                    </div>
-                </div>
+                    <tr>
+                        <td><a href="/paper/{{paper.article_id}}">{{paper.title}}</a></td>
+                        <td>{{paper.publisher_name}}</td>
+                    </tr>
             {%end%}
+            </table>
         </div>
         <div class="section_link">
             <a class="btn btn-default" href="/research">Learn More</a>
@@ -80,26 +73,17 @@
 
 <section id="Projects">
     <div class="container">
-        <div class="section_title">Projects</div>
+        <div class="section_title">Latest Project</div>
         <div class="row">
+            <table class="table latest">
             {% for project in projects %}
-            <div class="col-md-offset-2 col-md-3">
-                <div class="project_wrapper">
-                    <div class="projects_img">
-                        <img src="{{static_url(project.project_image)}}" />
-                    </div>
-                    <div class="projects_text">
-                        <div class="projects_title">
-                            <a href="/project/{{project.project_id}}">{{project.project_name}}</a>
-                        </div>
-                        <div class="duration">{{project.start_time}} - {{project.end_time}}</div>
-                        <div class="item">
-                            {{project.item[0].item_name}}
-                        </div>
-                    </div>
-                </div>
-            </div>
+                <tr>
+                    <td><a href="/project/{{project.project_id}}">{{project.project_name}}</a></td>
+                    <td>{{project.start_time}} - {{project.end_time}}</td>
+                    <td>{{project.item[0].item_name}}</td>
+                </tr>
             {%end%}
+            </table>
         </div>
         <div class="section_link">
             <a class="btn btn-default" href="/projects">Learn More</a>

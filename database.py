@@ -391,6 +391,27 @@ class Paper(object):
         return connection.query(sql)
     
     @classmethod
+    def query_in_year(cls, year):
+        if year is None:
+            return None
+        
+        connection = _get_connection(cls.db)
+            
+        year = year + '-01-01'
+        
+        sql =\
+            (
+                'SELECT * '
+                'FROM article '
+                'NATURAL JOIN paper '
+                'NATURAL JOIN publisher '
+                'WHERE publish_year = %s '
+                'ORDER BY publisher_type'
+            ) 
+        
+        return connection.query(sql, year)
+    
+    @classmethod
     def query_in_user(cls, user_id):
         if user_id is None:
             return None
@@ -617,6 +638,28 @@ class Project(object):
         connection = _get_connection(cls.db)
         
         return connection.query(sql)
+    
+    @classmethod
+    def query_in_year(cls, year):
+        '''
+            得到年份相关projects
+        '''
+        if year is None:
+            return None
+        
+        connection = _get_connection(cls.db)
+        
+        sql =\
+            (
+                'SELECT * '
+                'FROM project '
+                'WHERE start_time = %s'
+                'ORDER BY end_time DESC '
+            )
+        
+        start_time = year + '-01-01'
+        
+        return connection.query(sql, start_time)
     
     @classmethod
     def query_in_user(cls,user_id):

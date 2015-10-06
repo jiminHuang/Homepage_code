@@ -276,9 +276,6 @@ class ProjectHandler(BaseHandler):
         if project is None:
             self.write_error("404")
         
-        if project.project_null is None:
-            self.write_error("404")
-
         project = database.Project.chew(project)
         project.users = [database.User.chew(user) for user in project.users]
 

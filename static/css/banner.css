@@ -1,3 +1,7 @@
+body{
+    font-family: 'Lato', Helvetica;
+    font-size: 15px;
+}
 #Banner{
     background-color: #fff;
     border: none;
@@ -17,7 +21,7 @@
     color: #333;
 }
 #ChineseBrand{
-    font-size: 1.5em;
+    font-size: 1.3em;
 }
 #EnglishBrand{
     font-size: 0.7em;
@@ -48,6 +52,10 @@
 }
 #InfoFooter .basic_info div{
     margin-top: 5px;
+}
+#InfoFooter a{
+    color: #333;
+    font-weight: 700;
 }
 #InfoFooter .info_title{
     color: #2ec3e7;

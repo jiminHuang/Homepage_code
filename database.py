@@ -653,7 +653,7 @@ class Project(object):
             (
                 'SELECT * '
                 'FROM project '
-                'WHERE end_time >= %s'
+                'WHERE end_time >= %s '
                 'ORDER BY start_time DESC '
             )
         

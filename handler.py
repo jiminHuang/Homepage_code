@@ -37,14 +37,15 @@ class MainHandler(BaseHandler):
         if articles:
             articles = [database.Article.chew(article) for article in articles]
         
+        this_year = chewer.this_year()
+
         papers = database.Paper.query()
         if papers:
             papers = papers[:3] 
             papers = [database.Paper.chew(paper) for paper in papers]
         
-        projects = database.Project.query()
+        projects = database.Project.query_in_year(this_year)
         if projects:
-            projects = projects[:2]
             projects = [database.Project.chew(project) for project in projects]
         
         persons = database.User.query()

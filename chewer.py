@@ -23,6 +23,12 @@ def strftime_present(time_format, c_time):
     
     return c_time.strftime(time_format)
 
+def this_year():
+    '''
+        获取当前时间的年份
+    ''' 
+    return strftime_present("%Y", datetime.datetime.now())
+
 def static_image(image, suffix='jpeg'):
     '''
         处理image 转化为伪静态地址

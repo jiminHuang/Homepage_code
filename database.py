@@ -619,6 +619,28 @@ class Project(object):
         return connection.query(sql)
     
     @classmethod
+    def query_in_year(cls, year):
+        '''
+            得到年份相关projects
+        '''
+        if year is None:
+            return None
+        
+        connection = _get_connection(cls.db)
+        
+        sql =\
+            (
+                'SELECT * '
+                'FROM project '
+                'WHERE start_time = %s'
+                'ORDER BY end_time DESC '
+            )
+        
+        start_time = year + '-01-01'
+        
+        return connection.query(sql, start_time)
+    
+    @classmethod
     def query_in_user(cls,user_id):
         '''
             得到与user_id相关的全部projects

@@ -18,10 +18,9 @@ import chewer
 
 @mock.patch.object(logging, "error")
 def test_typelist_getitem(mock_logging_error):
-    example = database.TypeList([1])
-    
-    #越界异常
-    test_result = example[2]
+    example = database.TypeList([1]) 
+    #越界异常 
+    test_result = example[2] 
     assert mock_logging_error.called 
     assert_equal(test_result, 'Unknown')
     
@@ -595,6 +594,28 @@ class TestPersistence(object):
             'ORDER BY start_time DESC '
             'LIMIT 0, 10'
         ))
+        assert_equal(projects, [mock_project])
+
+    def test_project_query_in_year(self):
+        #year未输入
+        assert_raises(TypeError, database.Project.query_in_year) 
+        
+        #year输入为None
+        assert database.Project.query_in_year(None) is None
+        
+        #构造mock
+        mock_project = mock.Mock()
+        self.mock_db.query.return_value = [mock_project]
+
+        #year指定
+        projects = database.Project.query_in_year('2015')
+        self.mock_db.query.assert_called_with((
+            'SELECT * '
+            'FROM project '
+            'WHERE start_time = %s'
+            'ORDER BY end_time DESC '
+        ), '2015-01-01')
+        assert_equal(projects, [mock_project])
     
     def test_project_query_in_user(self):
         #user_id未输入

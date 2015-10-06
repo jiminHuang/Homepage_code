@@ -48,10 +48,8 @@ section{
 }
 /*BIO*/
 .bio_text{
-    text-align: justify;
-}
-/*Education Background*/
-#EducationBackground .sub_info{
+    font-family: Droid Serif;
+    font-weight: 300;
     text-align: justify;
 }
 /*Scientific Research*/
@@ -60,11 +58,8 @@ section{
     font-size: 1.5em; 
     margin-right: 10px;
 }
-#ScientificResearch .list-group-item{
-    border-style: none;
-    text-align: justify;
-    padding: 0;
-    margin: 20px 0;
+.papers td:nth-child(1){
+    width: 55%;
 }
 .papers td a{
     color: #2ec3e7;

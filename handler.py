@@ -276,9 +276,6 @@ class ProjectHandler(BaseHandler):
         if project is None:
             self.write_error("404")
         
-        if project.project_null is None:
-            self.write_error("404")
-
         project = database.Project.chew(project)
         project.users = [database.User.chew(user) for user in project.users]
 
@@ -317,7 +314,7 @@ class ProjectsHandler(BaseHandler):
             ''.join((
                 self.render_string(
                     'module/projectItem.html',
-                    project=database.Project.chew(paper),
+                    project=database.Project.chew(project),
                 ) for project in projects
             ))
         

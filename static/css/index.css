@@ -1,7 +1,7 @@
 /*Carousel*/
 .carousel-inner .item>div{
     padding: 0px;
-    min-height: 320px;
+    min-height: 420px;
 }
 .carousel-control.right{
     background-image: none;
@@ -20,7 +20,6 @@
 }
 .carousel_img img{
     width: 100%;
-    height: 320px;
 }
 .carousel_text{
     min-height: 320px;
@@ -28,7 +27,7 @@
     font-weight: 300;
 }
 .carousel_title{
-    min-height: 60px;
+    min-height: 40px;
     font-size: 1.5em;
     font-weight: 400;
 }
@@ -38,6 +37,7 @@
 }
 .carousel_intro{
     margin-top: 20px;
+    font-family: Doris Serif;
 }
 .carousel_link a{
     font-size: 1.2em;

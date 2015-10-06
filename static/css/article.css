@@ -15,6 +15,7 @@
     margin-top: 20px;
     background-color: #ebf4ec;
     padding: 20px;
+    font-family: Doris Serif;
 }
 .article_abstract span{
     font-weight: bold;
@@ -27,6 +28,7 @@
 }
 .article_text{
     font-size: 1.2em;
+    font-family: Doris Serif;
 }
 .article_text p{
     margin: 40px 0;

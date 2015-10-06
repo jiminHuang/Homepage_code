@@ -14,24 +14,21 @@
 
     <!-- Wrapper for slides -->
     <div class="carousel-inner" role="listbox">
-        {% for article in articles[:3] %}
-        <div class="item {% if articles.index(article) == 0 %} active {%end%}">
-            <div class="col-md-6 carousel_img">
-                <img src="{{static_url(article.article_image)}}" alt="...">
-            </div>
-            <div class="col-md-6 carousel_text">
-                <div class="wrapper">
-                    <div class="carousel_title">{{article.title}}</div> 
-                    <div class="carousel_intro">{{article.short_abstract}}</div> 
-                    <div class="carousel_link">
-                        <a class="btn btn-default" href="/article/{{article.article_id}}">
-                            Learn More
-                        </a>
-                    </div>
-                </div>
+        <div class="item active">
+            <div class="carousel_img">
+                <img src="{{static_url("img/switch_one.jpeg")}}" alt="...">
             </div>
         </div>
-        {%end%}
+        <div class="item">
+            <div class="carousel_img">
+                <img src="{{static_url("img/switch_two.jpeg")}}" alt="...">
+            </div>
+        </div>
+        <div class="item">
+            <div class="carousel_img">
+                <img src="{{static_url("img/switch_three.jpeg")}}" alt="...">
+            </div>
+        </div>
     </div>
 
     <!-- Controls -->

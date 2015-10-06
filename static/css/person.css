@@ -50,6 +50,7 @@ section{
 .bio_text{
     font-family: Droid Serif;
     font-weight: 300;
+    text-align: justify;
 }
 /*Scientific Research*/
 .research_field span{
@@ -58,7 +59,7 @@ section{
     margin-right: 10px;
 }
 .papers td:nth-child(1){
-    width: 60%;
+    width: 50%;
 }
 .papers td a{
     color: #2ec3e7;

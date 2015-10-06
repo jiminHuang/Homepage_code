@@ -317,7 +317,7 @@ class ProjectsHandler(BaseHandler):
             ''.join((
                 self.render_string(
                     'module/projectItem.html',
-                    project=database.Project.chew(paper),
+                    project=database.Project.chew(project),
                 ) for project in projects
             ))
         

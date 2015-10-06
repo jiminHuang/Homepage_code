@@ -39,9 +39,8 @@ class MainHandler(BaseHandler):
         
         this_year = chewer.this_year()
 
-        papers = database.Paper.query()
+        papers = database.Paper.query_in_year(this_year)
         if papers:
-            papers = papers[:3] 
             papers = [database.Paper.chew(paper) for paper in papers]
         
         projects = database.Project.query_in_year(this_year)

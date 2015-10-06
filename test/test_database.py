@@ -405,6 +405,29 @@ class TestPersistence(object):
                 'LIMIT 10, 20'
             ),
         )
+    
+    def test_paper_query_in_year(self):
+        #year未输入
+        assert_raises(TypeError, database.Paper.query_in_year) 
+        
+        #year输入为None
+        assert database.Paper.query_in_year(None) is None
+        
+        #构造mock
+        mock_project = mock.Mock()
+        self.mock_db.query.return_value = [mock_project]
+
+        #year指定
+        projects = database.Paper.query_in_year('2015')
+        self.mock_db.query.assert_called_with((
+            'SELECT * '
+            'FROM article '
+            'NATURAL JOIN paper '
+            'NATURAL JOIN publisher '
+            'WHERE publish_year = %s '
+            'ORDER BY publisher_type'
+        ), '2015-01-01')
+        assert_equal(projects, [mock_project])
           
     def test_paper_query_in_user(self):
         #user_id未输入

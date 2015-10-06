@@ -391,6 +391,27 @@ class Paper(object):
         return connection.query(sql)
     
     @classmethod
+    def query_in_year(cls, year):
+        if year is None:
+            return None
+        
+        connection = _get_connection(cls.db)
+            
+        year = year + '-01-01'
+        
+        sql =\
+            (
+                'SELECT * '
+                'FROM article '
+                'NATURAL JOIN paper '
+                'NATURAL JOIN publisher '
+                'WHERE publish_year = %s '
+                'ORDER BY publisher_type'
+            ) 
+        
+        return connection.query(sql, year)
+    
+    @classmethod
     def query_in_user(cls, user_id):
         if user_id is None:
             return None

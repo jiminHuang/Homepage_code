@@ -79,6 +79,12 @@ section{
 .section_link .btn:hover{
     border-style: none;
 }
+.table.latest{
+    font-size: 1.2em;
+}
+.table.latest td:nth-child(1){
+    width: 50%;
+}
 /*Intro*/
 #Intro .intro_slogen{
     text-align: center;
@@ -105,48 +111,12 @@ section{
     background-color: #fff;
     min-height: 250px;
 }
-.paper_text{
-    padding: 20px 10px;
-}
-.paper_title_wrapper{
-    background-color: #2ec3e7;
-    padding: 0 10px;
-    height: 90px;
-}
-.paper_title{
-    height: 100px;
-}
-.paper_title a{
-    font-size: 1.2em;
-    color: #000;
-}
-.paper_title a:hover{
+#Papers .table.latest td a{
     color: #2ec3e7;
-    text-decoration: none;
-}
-.paper_writer{
-    height: 60px;
-}
-.paper_writer a{
-    color: #2ec3e7;
-}
-.paper_writer span{
-    height: 40px;
-    padding-right: 6px;
-}
-.paper_date{
-    font-size: 1.9em;
-    color: #fff;
-    line-height: 90px;
-}
-.paper_publisher{
-    font-size: 0.9em;
-    color: #888;
-    height: 30px;
 }
 /*Projects*/
 #Projects{
-    color: #fff;
+    color: #333;
     background-color: #2ec3e7;
 }
 #Projects .section_link .btn{
@@ -154,39 +124,8 @@ section{
     border-style: solid;
     color: #333;
 }
-#Projects .row>a, a:hover{
-    color: #333;
-}
-#Projects .project_wrapper{
-    padding: 30px 0;
-    background-color: #333;
-    text-align: center;
-    height: 450px;
-}
-.projects_img{
-    margin:0 auto;
-    width: 100px;
-}
-.projects_img img{
-    height: 100px;    
-    width: 100px;
-    border-radius: 100px;
-}
-.projects_text{
-    padding: 15px 15%;
-}
-.projects_text div{
-    margin: 10px 0;
-}
-.projects_title{
-    font-size: 1.2em;
-    margin-bottom: 10px;
-}
-.projects_title a{
-    color: #2ec3e7;
-}
-#Projects .duration{
-    color: #bbb;
+#Projects .table.latest td a{
+    color: #fff;
 }
 /*Team*/
 #Team{

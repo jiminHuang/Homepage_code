@@ -56,14 +56,14 @@
     <div class="container">
         <div class="section_title">Latest Paper</div>
         <div class="row">
-                <table class="table">
+            <table class="table latest">
             {% for paper in papers %}
                     <tr>
                         <td><a href="/paper/{{paper.article_id}}">{{paper.title}}</a></td>
                         <td>{{paper.publisher_name}}</td>
                     </tr>
             {%end%}
-                </table>
+            </table>
         </div>
         <div class="section_link">
             <a class="btn btn-default" href="/research">Learn More</a>
@@ -73,9 +73,9 @@
 
 <section id="Projects">
     <div class="container">
-        <div class="section_title">Projects</div>
+        <div class="section_title">Latest Project</div>
         <div class="row">
-            <table class="table">
+            <table class="table latest">
             {% for project in projects %}
                 <tr>
                     <td><a href="/project/{{project.project_id}}">{{project.project_name}}</a></td>

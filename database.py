@@ -607,7 +607,6 @@ class Project(object):
             (
                 'SELECT * '
                 'FROM project '
-                'WHERE NOT ISNULL(project_null) '
                 'ORDER BY start_time DESC '
                 'LIMIT {start_num}, {end_num}'
             ).format(

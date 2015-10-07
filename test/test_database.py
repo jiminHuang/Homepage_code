@@ -157,7 +157,8 @@ class TestPersistence(object):
                 'SELECT * '
                 'FROM user_background '
                 'NATURAL JOIN background '
-                'WHERE user_id = %s'
+                'WHERE user_id = %s '
+                'ORDER BY background_type'
             ),
             1
         )

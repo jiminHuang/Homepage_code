@@ -162,7 +162,8 @@ class Background(object):
             'SELECT * '
             'FROM user_background '
             'NATURAL JOIN background '
-            'WHERE user_id = %s'
+            'WHERE user_id = %s '
+            'ORDER BY background_type'
         )
         
         backgrounds = connection.query(sql, user_id)

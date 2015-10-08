@@ -144,30 +144,24 @@ class PersonHandler(BaseHandler):
     '''
     def get(self, username):
         #person 基本信息
-        person = database.User.get(username=username)
+        person = database.User.get_username(username)
         if person is None:
             self.write_error("404")
         person = database.User.chew(person)
         
         #person 教育背景
-        backgrounds = database.Background.query(person.user_id)
-        if backgrounds is not None:
-            for background in backgrounds:
-                background.start_time=\
-                    chewer.strftime_present("%m/%Y", background.start_time)
-                background.end_time=\
-                    chewer.strftime_present("%m/%Y", background.end_time)
-        person.backgrounds = backgrounds
+        person.backgrounds =\
+            [
+                database.Background.chew(background)
+                    for background in database.Background.query(person.user_id)
+            ]
     
         #person 工作经历
-        experiences = database.Experience.query(person.user_id)
-        if experiences is not None:
-            for experience in experiences:
-                experience.start_time=\
-                    chewer.strftime_present("%m/%Y", experience.start_time)
-                experience.end_time=\
-                    chewer.strftime_present("%m/%Y", experience.end_time)
-        person.experiences = experiences
+        person.experience =\
+            [
+                database.experience.chew(experience)
+                    for experience in database.Experience.query(person.user_id)
+            ]
     
         #person 研究方向
         interests = database.Interests.query(person.user_id)
@@ -184,17 +178,11 @@ class PersonHandler(BaseHandler):
         #person 奖项
         prizes = database.Prize.query_in_user(person.user_id)
         for prize in prizes:
-            prize.prize_year =\
-                chewer.strftime_present("%Y", prize.prize_year)
-            if not prize.prize_facility:
-                prize.prize_facility = '' 
         person.prizes = prizes
         
         #person 专利/软著
         proprietaries = database.Proprietary.query_in_user(person.user_id)
         for proprietary in proprietaries:
-            proprietary.proprietary_time =\
-                chewer.strftime_present("%Y", proprietary.proprietary_time)
         
         person.proprietaries = proprietaries
 

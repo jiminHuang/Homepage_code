@@ -312,16 +312,16 @@ class TestPersistence(object):
         assert_equal(articles, [mock_article])
 
     def test_article_author(self):
-        with mock.patch("database.User.get_in_username"):
+        with mock.patch("database.User.get_in_user_id"):
             #author为内置user
             with mock.patch("database.User.chew"):
-                database.User.get_in_username.return_value = 2
+                database.User.get_in_user_id.return_value = 2
                 database.User.chew.return_value = 2
                 author = database.Article.author('test')
                 assert_equal(author, 2)
                 database.User.chew.assert_called_with(2)
             #author非内置user
-            database.User.get_in_username.return_value = None
+            database.User.get_in_user_id.return_value = None
             author = database.Article.author('test')
             assert_equal(author, 'test')
     
@@ -399,7 +399,6 @@ class TestPersistence(object):
                 'SELECT * '
                 'FROM article '
                 'NATURAL JOIN paper '
-                'NATURAL JOIN publisher '
                 'WHERE article.type = 2 '
                 'ORDER BY publish_year DESC '
                 'LIMIT 0, 10'
@@ -417,9 +416,7 @@ class TestPersistence(object):
             'SELECT * '
             'FROM article '
             'NATURAL JOIN paper '
-            'NATURAL JOIN publisher '
-            'WHERE publish_year = %s '
-            'ORDER BY publisher_type'
+            'WHERE publish_year = %s'
         ), '2015-01-01')
         assert_equal(projects, [mock_project])
           

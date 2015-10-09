@@ -78,7 +78,15 @@
             <table class="table latest">
             {% for project in projects %}
                 <tr>
-                    <td><a href="/project/{{project.project_id}}" target="_blank">{{project.project_name}}</a></td>
+                    <td>
+                        {%if project.project_null is not None%}
+                        <a href="/project/{{project.project_id}}" target="_blank">
+                            {{project.project_name}}
+                        </a>
+                        {%else%}
+                            {{project.project_name}}
+                        {%end%}
+                    </td>
                     <td>{{project.start_time}} - {{project.end_time}}</td>
                     <td>{{project.item[0].item_name}}</td>
                 </tr>

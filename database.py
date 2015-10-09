@@ -324,7 +324,7 @@ class Article(object):
     @none_input_catcher
     def author(cls, author):
         author = author.strip()
-        user = User.get_in_username(author)
+        user = User.get_in_user_id(author)
         return User.chew(user) if user is not None else author
     
     @classmethod
@@ -339,7 +339,7 @@ class Article(object):
         article.article_image = chewer.static_image(article.article_id)
         article.author = Article.authors(article.author)
         article.short_abstract = chewer.text_cutter(article.abstract, 255)
-        
+            
         return article
     
 class Publisher(object):
@@ -411,7 +411,6 @@ class Paper(object):
                 'SELECT * '
                 'FROM article '
                 'NATURAL JOIN paper '
-                'NATURAL JOIN publisher '
                 'WHERE article.type = 2 '
                 'ORDER BY publish_year DESC '
                 'LIMIT {query_start}, {query_end}'
@@ -433,9 +432,7 @@ class Paper(object):
                 'SELECT * '
                 'FROM article '
                 'NATURAL JOIN paper '
-                'NATURAL JOIN publisher '
-                'WHERE publish_year = %s '
-                'ORDER BY publisher_type'
+                'WHERE publish_year = %s'
             ) 
         
         return connection.query(sql, year)
@@ -466,9 +463,9 @@ class Paper(object):
     @classmethod
     @none_input_catcher
     def chew(cls, paper):
-        if paper.in_press is None:
-            paper.publisher = Publisher.chew(Publisher.get(paper.publisher_id))
-        else:
+        paper.publisher = Publisher.chew(Publisher.get(paper.publisher_id))
+
+        if paper.in_press is not None:
             paper.title += '(In Press)'
         
         paper.publish_year =\

@@ -75,7 +75,7 @@
         {% if person.papers %}
         <div class="sub_title" id="MainPublishedPapers">Main Published Papers</div>
         {% for type in publisher_type %}
-        {% set type_list = [ p for p in person.papers if p.publisher_type == publisher_type.index(type)]%}
+        {% set type_list = [ p for p in person.papers if p.publisher.publisher_type == type]%}
             <div class="para_title">{{type}}</div>
             <div class="table-responsive">
                 <table class="table papers" id="{{type}}">
@@ -85,7 +85,7 @@
                                 <td>
                                     <a href="/paper/{{paper.article_id}}" target="_blank">{{paper.title}}</a>
                                 </td>
-                                <td>{{paper.publisher_name}}</td>
+                                <td>{{paper.publisher.publisher_name}}</td>
                                 <td>{{paper.publish_year}}</td>
                             </tr>
                         {%end%}

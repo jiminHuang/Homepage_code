@@ -61,30 +61,6 @@ class MainHandler(BaseHandler):
             user_types=user_types,
         )
 
-    def post(self):
-        '''
-            team post请求响应
-        '''
-        request_type = self.get_argument('request_type')
-        try:
-            request_type = database.User.USER_TYPE.index(request_type)
-        except ValueError:
-            logging.error("TeamMember request type index error")
-    
-        persons = database.User.query(request_type)
-        
-        write_str = ''.join(
-            (
-                self.render_string(
-                    'module/teamMember.html',
-                    person=database.User.chew(person),
-                )
-                for person in persons
-            )
-        )
-        
-        self.write(write_str)
-
 class ArticlesHandler(BaseHandler):
     '''
         文章列表页handler
@@ -144,7 +120,7 @@ class PersonHandler(BaseHandler):
     '''
     def get(self, username):
         #person 基本信息
-        person = database.User.get_username(username)
+        person = database.User.get_in_username(username)
         if person is None:
             self.write_error("404")
         person = database.User.chew(person)
@@ -157,9 +133,9 @@ class PersonHandler(BaseHandler):
             ]
     
         #person 工作经历
-        person.experience =\
+        person.experiences =\
             [
-                database.experience.chew(experience)
+                database.Experience.chew(experience)
                     for experience in database.Experience.query(person.user_id)
             ]
     
@@ -172,19 +148,25 @@ class PersonHandler(BaseHandler):
         person.papers = [database.Paper.chew(paper) for paper in papers]
         
         #person 项目
-        projects = database.Project.query_in_user(person.user_id)
-        person.projects = [database.Project.chew(project) for project in projects]
+        person.projects =\
+            [
+                database.Project.chew(project)
+                for project in database.Project.query_in_user(person.user_id)
+            ]
         
         #person 奖项
-        prizes = database.Prize.query_in_user(person.user_id)
-        for prize in prizes:
-        person.prizes = prizes
+        person.prizes =\
+            [
+                database.Prize.chew(prize)
+                for prize in database.Prize.query_in_user(person.user_id)
+            ] 
         
         #person 专利/软著
-        proprietaries = database.Proprietary.query_in_user(person.user_id)
-        for proprietary in proprietaries:
-        
-        person.proprietaries = proprietaries
+        person.proprietaries =\
+            [
+                database.Proprietary.chew(proprietary)
+                for proprietary in database.Proprietary.query_in_user(person.user_id)
+            ]
 
         self.render(
             "person.html", 

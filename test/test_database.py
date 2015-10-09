@@ -196,7 +196,7 @@ class TestPersistence(object):
         mock_user.type = 1
         
         user = database.User.chew(mock_user)
-        assert_equal(user.image, 'img/1.jpeg')
+        assert_equal(user.image, 'img/person/1.jpeg')
         assert_equal(user.english_name, 'Test Test')
         assert_equal(user.type, database.User.USER_TYPE[1])
         

@@ -163,7 +163,7 @@ class User(object):
     @classmethod
     @none_input_catcher
     def chew(cls, user):
-        user.image = chewer.static_image(user.user_id)
+        user.image = chewer.static_image('person/'+user.user_id)
         user.english_name =\
             ''.join((
                 user.firstname.capitalize(),
@@ -405,7 +405,7 @@ class Paper(object):
         '''
         
         query_num = query_num if query_num >= 1 else 1
-        
+
         sql =\
             (
                 'SELECT * '
@@ -416,9 +416,8 @@ class Paper(object):
                 'LIMIT {query_start}, {query_end}'
             ).format(
                 query_start=(query_num-1)*10,
-                query_end=query_num*10,
+                query_end=10,
             )
-        
         return connection.query(sql)
     
     @classmethod
@@ -621,7 +620,7 @@ class Project(object):
                 'LIMIT {start_num}, {end_num}'
             ).format(
                 start_num=(query_num-1)*10,
-                end_num=query_num*10,
+                end_num=10,
             )
         return connection.query(sql)
     
@@ -677,7 +676,6 @@ class Project(object):
 
         project.end_time =\
             chewer.strftime_present("%m/%Y", project.end_time)
-        
         return project
 
 class Prize(object):

@@ -61,3 +61,8 @@ target/
 
 #vim
 *.swp
+
+#person.image
+/static/img/person/*
+/static/img/project/*
+/static/paper/*

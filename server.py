@@ -20,6 +20,5 @@ if __name__ == "__main__":
     tornado.options.parse_command_line()
     application.application.listen(options.port)
     server_instance = tornado.ioloop.IOLoop.instance()
-    #tornado.autoreload.add_reload_hook(database.release)
+    # tornado.autoreload.add_reload_hook(database.release)
     server_instance.start()
-    

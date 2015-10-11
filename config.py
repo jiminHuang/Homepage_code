@@ -11,7 +11,7 @@ from ConfigParser import SafeConfigParser
 import sys
 import os
 
-#配置文件设定
+# 配置文件设定
 CONFIG_SETTINGS = {
     'MYSQL_ADDRESS': 'database',
     'MYSQL_PORT': 'database',
@@ -27,7 +27,7 @@ class _Config(object):
     '''
         配置类
     '''
-    #读取配置文件
+    # 读取配置文件
     _config = SafeConfigParser()
     _config.read('config.ini')
 

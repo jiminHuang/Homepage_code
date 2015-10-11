@@ -13,14 +13,15 @@ import os
 
 #配置文件设定
 CONFIG_SETTINGS = {
-    'MYSQL_ADDRESS' : 'database',
-    'MYSQL_PORT' : 'database',
-    'MYSQL_USER' : 'database',
-    'MYSQL_PASSWD' : 'database',
-    'MAIL_USER' : 'mail',
-    'MAIL_PASSWD' : 'mail',
-    'COOKIE_SECRET' : 'cookie',        
+    'MYSQL_ADDRESS': 'database',
+    'MYSQL_PORT': 'database',
+    'MYSQL_USER': 'database',
+    'MYSQL_PASSWD': 'database',
+    'MAIL_USER': 'mail',
+    'MAIL_PASSWD': 'mail',
+    'COOKIE_SECRET': 'cookie',
 }
+
 
 class _Config(object):
     '''
@@ -30,7 +31,6 @@ class _Config(object):
     _config = SafeConfigParser()
     _config.read('config.ini')
 
-    
     def __getattr__(self, attr):
         '''
             重新定义获取属性方法
@@ -39,7 +39,7 @@ class _Config(object):
 
         if os.environ.get(attr, None) is not None:
             return os.environ.get(attr)
-        
+
         try:
             return self._config.get(CONFIG_SETTINGS.get(attr, None), attr)
         except Exception:

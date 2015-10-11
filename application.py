@@ -22,4 +22,3 @@ application = tornado.web.Application([
     (r"/project/(\d+)", handler.ProjectHandler),
     (r".*", handler.BaseHandler),
 ], **settings)
-

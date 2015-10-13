@@ -10,21 +10,27 @@ body{
     margin-top:30px;
 }
 #Banner .navbar-brand{
-    padding: 0 15px 0 0;
+    padding: 5px;
 }
 #Banner .navbar-brand img{
-    height: 50px; 
+    height: 40px; 
 }
-#TextBrand{
-    text-align: center;
-    padding-left: 0px;    
-    color: #333;
+.navbar-left{
+    padding: 5px; 
 }
-#ChineseBrand{
-    font-size: 1.3em;
+.navbar-left img{
+    height: 40px;
 }
-#EnglishBrand{
-    font-size: 0.7em;
+@media screen and (max-width: 600px){
+    .navbar-left img{
+        height: 25px;
+        padding: 0;
+        margin-left: -15px;
+    }
+}
+.navbar-collapse .nav li a{
+    padding: 5px;
+    line-height: 40px;
 }
 .footer{
     width: 100%;
@@ -37,18 +43,12 @@ body{
     height:200px;
 }
 #InfoFooter .banner{
-    padding: 50px 0;
+    line-height: 200px;
 }
 #InfoFooter .banner img{
-    height: 50px;
-    float:left;
-}
-#InfoFooter .banner div{
-    height: 50px;
-    padding-top: 10px;
-    font-size: 1.7em;
-    margin-left: 10px;
-    float: left;
+    width: 100%;
+    padding-right: 10%;
+    vertical-align: middle;
 }
 #InfoFooter .basic_info div{
     margin-top: 5px;
@@ -65,7 +65,7 @@ body{
 #InfoFooter .basic_info .info_title{
     margin-top:10px;
 }
-#InfoFooter .related_links ul,li{
+#InfoFooter .related_links ul, #InfoFooter .related_links li{
     margin-top:5px;
 }
 #RightsFooter{

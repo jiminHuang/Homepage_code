@@ -1,7 +1,6 @@
 /*Carousel*/
 .carousel-inner .item>div{
     padding: 0px;
-    min-height: 420px;
 }
 .carousel-control.right{
     background-image: none;

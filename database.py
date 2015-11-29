@@ -76,35 +76,6 @@ class TypeList(list):
         return super(TypeList, self).index(attr) + 1
 
 
-def none_input_catcher(function):
-    '''
-        捕获空输入
-    '''
-    logging_str =\
-        'None Input Catched: function {function}'.format(
-            function=function.__name__
-        )
-
-    def wrapper(*args, **kwargs):
-        def check_arg(arg):
-            '''
-                检查参数是否为None
-            '''
-            if arg is None:
-                raise TypeError
-
-        try:
-            map(check_arg, args)
-            map(check_arg, kwargs.values())
-            return function(*args, **kwargs)
-        except TypeError, e:
-            logging.error(logging_str)
-            logging.info(e)
-            return None
-
-    return wrapper
-
-
 class User(object):
     '''
         user表持久化
@@ -121,7 +92,6 @@ class User(object):
     )
 
     @classmethod
-    @none_input_catcher
     @get_connection
     def get_in_user_id(cls, connection, user_id):
         '''
@@ -132,7 +102,6 @@ class User(object):
         return connection.get(sql, user_id)
 
     @classmethod
-    @none_input_catcher
     @get_connection
     def get_in_username(cls, connection, username):
         '''
@@ -143,7 +112,6 @@ class User(object):
         return connection.get(sql, username)
 
     @classmethod
-    @none_input_catcher
     @get_connection
     def query(cls, connection, request_type=None):
         '''
@@ -163,7 +131,6 @@ class User(object):
         return connection.query(sql + where_clause)
 
     @classmethod
-    @none_input_catcher
     @get_connection
     def query_in_project(cls, connection, project_id):
         '''
@@ -181,7 +148,6 @@ class User(object):
         return connection.query(sql)
 
     @classmethod
-    @none_input_catcher
     def chew(cls, user):
         user.image = chewer.static_image('person/' + user.user_id)
         user.english_name =\
@@ -203,7 +169,6 @@ class Background(object):
     BACKGROUND_TYPE = TypeList(['Bachelor', 'Master', 'Ph.D'])
 
     @classmethod
-    @none_input_catcher
     @get_connection
     def query(cls, connection, user_id):
         '''
@@ -220,7 +185,6 @@ class Background(object):
         return connection.query(sql, user_id)
 
     @classmethod
-    @none_input_catcher
     def chew(cls, background):
         '''
             background 处理函数
@@ -242,7 +206,6 @@ class Experience(object):
     db = 'homepage'
 
     @classmethod
-    @none_input_catcher
     @get_connection
     def query(cls, connection, user_id):
         '''
@@ -259,7 +222,6 @@ class Experience(object):
         return connection.query(sql, user_id)
 
     @classmethod
-    @none_input_catcher
     def chew(cls, experience):
         '''
             experience 后续处理方法
@@ -279,7 +241,6 @@ class Interests(object):
     db = 'homepage'
 
     @classmethod
-    @none_input_catcher
     @get_connection
     def query(cls, connection, user_id):
         '''
@@ -303,7 +264,6 @@ class Article(object):
     db = 'homepage'
 
     @classmethod
-    @none_input_catcher
     @get_connection
     def get(cls, connection, article_id):
         '''
@@ -319,7 +279,6 @@ class Article(object):
         return connection.get(sql, article_id)
 
     @classmethod
-    @none_input_catcher
     @get_connection
     def query(cls, connection, query_num=1):
         query_num = query_num if query_num >= 1 else 1
@@ -339,20 +298,17 @@ class Article(object):
         return connection.query(sql)
 
     @classmethod
-    @none_input_catcher
     def author(cls, author):
         author = author.strip()
         user = User.get_in_user_id(author)
         return User.chew(user) if user is not None else author
 
     @classmethod
-    @none_input_catcher
     def authors(cls, author):
         # author正常输入
         return [cls.author(user) for user in author.split(',')]
 
     @classmethod
-    @none_input_catcher
     def chew(cls, article):
         article.article_image = chewer.static_image(article.article_id)
         article.author = Article.authors(article.author)
@@ -369,7 +325,6 @@ class Publisher(object):
     PUBLISHER_TYPE = TypeList(['Journal', 'Conference'])
 
     @classmethod
-    @none_input_catcher
     @get_connection
     def get(cls, connection, publisher_id):
         '''
@@ -385,7 +340,6 @@ class Publisher(object):
         return connection.get(sql)
 
     @classmethod
-    @none_input_catcher
     def chew(cls, publisher):
         '''
             publisher 处理方法
@@ -401,7 +355,6 @@ class Paper(object):
     db = 'homepage'
 
     @classmethod
-    @none_input_catcher
     @get_connection
     def get(cls, connection, article_id):
         '''
@@ -417,7 +370,6 @@ class Paper(object):
         return connection.get(sql, article_id)
 
     @classmethod
-    @none_input_catcher
     @get_connection
     def query(cls, connection, query_num=1):
         '''
@@ -441,7 +393,6 @@ class Paper(object):
         return connection.query(sql)
 
     @classmethod
-    @none_input_catcher
     @get_connection
     def query_in_year(cls, connection, year):
         year = year + '-01-01'
@@ -457,7 +408,6 @@ class Paper(object):
         return connection.query(sql, year)
 
     @classmethod
-    @none_input_catcher
     @get_connection
     def query_in_user(cls, connection, user_id):
         # 构建模糊查询表达式
@@ -480,7 +430,6 @@ class Paper(object):
         return connection.query(sql, user_id)
 
     @classmethod
-    @none_input_catcher
     def chew(cls, paper):
         paper.publisher = Publisher.chew(Publisher.get(paper.publisher_id))
 
@@ -588,7 +537,6 @@ class Item(object):
     db = 'homepage'
 
     @classmethod
-    @none_input_catcher
     @get_connection
     def query(cls, connection, project_id):
         sql =\
@@ -610,7 +558,6 @@ class Project(object):
     PROJECT_TYPE = TypeList(['academic', 'application'])
 
     @classmethod
-    @none_input_catcher
     @get_connection
     def get(cls, connection, project_id):
         '''
@@ -625,7 +572,6 @@ class Project(object):
         return connection.get(sql)
 
     @classmethod
-    @none_input_catcher
     @get_connection
     def query(cls, connection, query_num=1):
         '''
@@ -647,7 +593,6 @@ class Project(object):
         return connection.query(sql)
 
     @classmethod
-    @none_input_catcher
     @get_connection
     def query_in_year(cls, connection, year):
         '''
@@ -665,7 +610,6 @@ class Project(object):
         return connection.query(sql, start_time)
 
     @classmethod
-    @none_input_catcher
     @get_connection
     def query_in_user(cls, connection, user_id):
         '''
@@ -682,7 +626,6 @@ class Project(object):
         return connection.query(sql, user_id)
 
     @classmethod
-    @none_input_catcher
     def chew(cls, project):
         project.item = Item.query(project.project_id)
 
@@ -708,7 +651,6 @@ class Prize(object):
     db = 'homepage'
 
     @classmethod
-    @none_input_catcher
     @get_connection
     def query_in_user(cls, connection, user_id):
         '''
@@ -726,7 +668,6 @@ class Prize(object):
         return connection.query(sql, user_id)
 
     @classmethod
-    @none_input_catcher
     def chew(cls, prize):
         prize.prize_year =\
             chewer.strftime_present("%Y", prize.prize_year)
@@ -749,7 +690,6 @@ class Proprietary(object):
     )
 
     @classmethod
-    @none_input_catcher
     @get_connection
     def query_in_user(cls, connection, user_id):
         '''
@@ -767,7 +707,6 @@ class Proprietary(object):
         return connection.query(sql, user_id)
 
     @classmethod
-    @none_input_catcher
     def chew(cls, proprietary):
         '''
             proprietary 后续处理方法

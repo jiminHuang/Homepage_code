@@ -79,44 +79,6 @@ def test_typelist_index():
     assert_equal(example.index(1), 1)
 
 
-@mock.patch("logging.error")
-def test_none_input_catcher(mock_error):
-    class test_c(object):
-
-        @classmethod
-        @database.none_input_catcher
-        def test_case(cls, case, kcase='sss'):
-            pass
-
-        @classmethod
-        @database.none_input_catcher
-        def test_case_one(cls, case):
-            pass
-
-    test_c.test_case()
-    mock_error.assert_called_with('None Input Catched: function test_case')
-
-    mock_error.reset_mock()
-    test_c.test_case(None)
-    mock_error.assert_called_with('None Input Catched: function test_case')
-
-    mock_error.reset_mock()
-    test_c.test_case(None, kcase='test')
-    mock_error.assert_called_with('None Input Catched: function test_case')
-
-    mock_error.reset_mock()
-    test_c.test_case('test', kcase=None)
-    mock_error.assert_called_with('None Input Catched: function test_case')
-
-    mock_error.reset_mock()
-    test_c.test_case('test', kcase='test')
-    assert not mock_error.called
-
-    mock_error.reset_mock()
-    test_c.test_case_one(mock.Mock())
-    assert not mock_error.called
-
-
 class TestPersistence(object):
     '''
         持久化对象测试类
@@ -503,7 +465,8 @@ class TestPersistence(object):
 
         # 校验处理
         with mock.patch('database.Article.authors'),\
-                mock.patch('database.Publisher.get'):
+                mock.patch('database.Publisher.get'),\
+                mock.patch('database.Publisher.chew'):
             # paper in press
             mock_paper.in_press = 'test'
             # paper pdf url

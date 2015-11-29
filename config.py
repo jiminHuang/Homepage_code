@@ -19,6 +19,8 @@ CONFIG_SETTINGS = {
     'MYSQL_PASSWD': 'database',
     'MAIL_USER': 'mail',
     'MAIL_PASSWD': 'mail',
+    'MAIL_SERVER': 'mail',
+    'MAIL_TO': 'mail',
     'COOKIE_SECRET': 'cookie',
 }
 

@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block head %}
+<link href="{{ static_url("css/error.css") }}" rel="stylesheet">
+{% end %}
+{% block body %}
+<div class="page_wrapper">
+    <div class="container">
+        <div class="wrapper">
+            <div class="number_sign">404</div>
+            <div class="oops">Oops!!</div>
+            <div class="text_sign">
+                Something went wrong<br/>
+                while fortunately we've trained the page's embedding :)
+            </div>
+        </div>
+    </div>
+</div>
+{% end %}

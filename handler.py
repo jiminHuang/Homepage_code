@@ -10,6 +10,8 @@
 import tornado.web
 import database
 import chewer
+import email_sender
+import traceback
 
 
 class BaseHandler(tornado.web.RequestHandler):
@@ -21,7 +23,12 @@ class BaseHandler(tornado.web.RequestHandler):
         self.write_error(404)
 
     def write_error(self, status_code, **kwargs):
-        self.render('404.html', title="404")
+        try:
+            message = '\n'.join(traceback.format_exception(*kwargs['exc_info']))
+        except KeyError:
+            message = str(status_code)
+        email_sender.async_send(title="服务器错误", message=message)
+        self.render('404.html', page_title="404")
 
 
 class SafeHandler(BaseHandler):
@@ -115,8 +122,6 @@ class ArticleHandler(BaseHandler):
     def get(self, article_id):
         # article
         article = database.Article.get(article_id)
-        if article is None:
-            self.write_error("404")
 
         article = database.Article.chew(article)
 
@@ -135,8 +140,6 @@ class PersonHandler(BaseHandler):
     def get(self, username):
         # person 基本信息
         person = database.User.get_in_username(username)
-        if person is None:
-            self.write_error("404")
         person = database.User.chew(person)
 
         # person 教育背景
@@ -202,9 +205,6 @@ class PaperHandler(BaseHandler):
     def get(self, article_id):
         paper = database.Paper.get(article_id)
 
-        if paper is None:
-            self.write_error(404)
-
         paper = database.Paper.chew(paper)
 
         self.render(
@@ -221,8 +221,6 @@ class ResearchHandler(BaseHandler):
 
     def get(self):
         papers = database.Paper.query()
-        if not papers:
-            self.write_error("404")
 
         papers = [database.Paper.chew(paper) for paper in papers]
 
@@ -263,9 +261,6 @@ class ProjectHandler(BaseHandler):
 
     def get(self, project_id):
         project = database.Project.get(project_id)
-
-        if project is None:
-            self.write_error("404")
 
         project = database.Project.chew(project)
 

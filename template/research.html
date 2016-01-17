@@ -1,0 +1,19 @@
+{% extends "main.html" %}
+{% block css %}
+    <link href="{{ static_url("css/research.css") }}" rel="stylesheet">
+{% end %}
+{% block breadCrumb %}
+    <li class="active">Research</li>
+{% end %}
+{% block contentMain %}
+    {% module List() %}
+    <hr />
+    <ul class="media-list" data-load="{% if len(papers) < 10 %}-1{%else%}2{% end %}">
+        {% for paper in papers %}
+            {% module ResearchItem(paper) %}
+        {% end %}
+    </ul>
+    <div class="list_loading_more btn btn-default">
+        Load More 
+    </div>
+{% end %}

@@ -1,0 +1,33 @@
+html, body{
+    height: 100%;
+    font-family: 'Lato', Helvetica;
+}
+.page_wrapper{
+    text-align: center;
+    height: 100%;
+    width: 100%;
+    min-height: 100%;
+    display: table;
+}
+.container{
+    vertical-align: middle;
+    display: table-cell;
+}
+.wrapper{
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    min-height: 1px;
+}
+.number_sign{
+    font-size: 10em;
+    font-weight: 700; 
+    color: #2EC3E7;
+}
+.oops{
+    font-size: 3em;
+}
+.text_sign{
+    font-size: 1.5em;
+    font-weight: 300;
+}

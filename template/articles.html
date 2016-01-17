@@ -1,0 +1,19 @@
+{% extends "main.html" %}
+{% block css %}
+    <link href="{{ static_url("css/articles.css") }}" rel="stylesheet">
+{% end %}
+{% block breadCrumb %}
+    <li class="active">News</li>
+{% end %}
+{% block contentMain %}
+    {% module List() %}
+    <hr />
+    <ul class="media-list" data-load="{% if len(articles) < 10 %}-1{%else%}2{% end %}">
+        {% for article in articles %}
+            {% module ArticleItem(article) %}
+        {% end %}
+    </ul>
+    <div class="list_loading_more btn btn-default">
+        Load More 
+    </div>
+{% end %}

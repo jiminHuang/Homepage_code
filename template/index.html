@@ -1,0 +1,124 @@
+{% extends "banner.html" %}
+{% block css %}
+<link href="{{ static_url("css/index.css") }}" rel="stylesheet">
+{% end %}
+{% block main %}
+<!-- Carousel -->
+<div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+    <!-- Indicators -->
+    <ol class="carousel-indicators">
+        <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+        <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+        <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+    </ol>
+
+    <!-- Wrapper for slides -->
+    <div class="carousel-inner" role="listbox">
+        <div class="item active">
+            <div class="carousel_img">
+                <img src="{{static_url("img/switch_one.jpeg")}}" alt="...">
+            </div>
+        </div>
+        <div class="item">
+            <div class="carousel_img">
+                <img src="{{static_url("img/switch_two.jpeg")}}" alt="...">
+            </div>
+        </div>
+        <div class="item">
+            <div class="carousel_img">
+                <img src="{{static_url("img/switch_three.jpeg")}}" alt="...">
+            </div>
+        </div>
+    </div>
+
+    <!-- Controls -->
+    <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+    </a>
+    <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+    </a>
+</div>
+
+<!--Intro-->
+<section id="Intro">
+    <div class="container">
+        <div class="page-header intro_slogen">Focus on data mining and modeling for large-scale of social networks</div>
+        <div class="intro_text">
+            Topic detection, Sentiment analysis, Entity relation extraction, and Community and influence analysis.
+        </div>
+    </div>
+</section>
+<!--Papers-->
+<section id="Papers">
+    <div class="container">
+        <div class="section_title">Latest Publication</div>
+        <div class="row">
+            <table class="table latest">
+            {% for paper in papers %}
+                    <tr>
+                        <td><a href="/paper/{{paper.article_id}}" target="_blank">{{paper.title}}</a></td>
+                        <td>{{paper.publisher.publisher_name}}</td>
+                    </tr>
+            {%end%}
+            </table>
+        </div>
+        <div class="section_link">
+            <a class="btn btn-default" href="/research" target="_blank">Learn More</a>
+        </div>
+    </div>
+</section>
+
+<section id="Projects">
+    <div class="container">
+        <div class="section_title">Latest Project</div>
+        <div class="row">
+            <table class="table latest">
+            {% for project in projects %}
+                <tr>
+                    <td>
+                        {%if project.project_null is not None%}
+                        <a href="/project/{{project.project_id}}" target="_blank">
+                            {{project.project_name}}
+                        </a>
+                        {%else%}
+                            {{project.project_name}}
+                        {%end%}
+                    </td>
+                    <td>{{project.start_time}} - {{project.end_time}}</td>
+                    <td>{{project.item[0].item_name}}</td>
+                </tr>
+            {%end%}
+            </table>
+        </div>
+        <div class="section_link">
+            <a class="btn btn-default" href="/projects" target="_blank">Learn More</a>
+        </div>
+    </div> 
+</section>
+
+<section id="Team">
+    <div class="container">
+        {% module TeamSelector() %}
+        <div class="section_title">Team</div>
+        <div class="team_selection">
+            <ul class="list-inline">
+                <li class="active"><span>All</span></li>
+                {% for user_type in user_types %}
+                <li><span>{{user_type}}</span></li>
+                {% end %}
+            </ul>
+        </div>
+        <div class="team_view">
+            <div class="row">
+                {%for person in persons%}
+                    {% module TeamMember(person) %}
+                {%end%}
+            </div>
+        </div>
+    </div>
+</section>
+    
+{% end %}

@@ -1,0 +1,27 @@
+<li class="media" data-id="{{project.project_id}}">
+    <div class="media-body">
+        {% if project.project_null is not None %}
+            <a href="/project/{{project.project_id}}" target="_blank">
+        {% else %}
+            <a disabled="disabled">
+        {% end %}
+            <h4 class="project_heading">{{project.project_name}}</h4>
+        </a>
+        <div class="project_info">
+            {% for user in project.users %}
+            <span class="project_user">
+                <a href="/person/{{user.username}}" target="_blank">
+                    {{user.english_name}}
+                </a>
+            </span>
+            {% end %}
+        </div> 
+        <div class="duration">{{project.start_time}} - {{project.end_time}}</div>
+        <div class="item">
+            {% for item in project.item %}
+            {{item.item_name}} 
+            {% end %}
+        </div>
+    </div>
+</li> 
+<hr />

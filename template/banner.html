@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% block head %}
+<link href="{{ static_url("css/banner.css") }}" rel="stylesheet">
+{% block css%}
+{% end %}
+{% end %}
+{% block body %}
+<nav class="navbar navbar-default" id="Banner">
+    <div class="container">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand col-sm-6" href="/">
+                <img src="{{static_url("img/whu_logo.png")}}"/>
+            </a>
+        </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <div class="navbar-left">
+                <img src="{{static_url("img/whu_logo2.png")}}"/>
+            </div>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="/#Team">PERSON</a></li>
+                <li><a href="/research" target="_blank">RESEARCH</a></li>
+                <li><a href="/projects" target="_blank">PROJECTS</a></li>
+                <li><a href="#InfoFooter">CONTACT US</a></li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+    </div>
+</nav>
+{% block main %}{% end %}
+<footer class="footer">
+    <div id="InfoFooter">
+        <div class="container">
+            <div class="col-md-6 banner">
+                <span></span>
+                <img src="{{static_url("img/whu_logo1.png")}}"/> 
+            </div>
+            <div class="col-md-3 basic_info">
+                <div class="info_title">
+                    Address
+                </div>
+                <div>
+                    Computer School, Wuhan University, Wuhan, Hubei 430072, China
+                </div>
+                <div class="info_title">
+                    Phone
+                </div>
+                <div>
+                    +86-18602719688 
+                </div>
+                <div class="info_title">
+                    Email
+                </div>
+                <div>
+                    <a href="mailto:pengm@whu.edu.cn">pengm@whu.edu.cn</a>
+                </div>
+            </div>
+            <div class="col-md-3 related_links">
+                <div class="info_title">
+                    Related Links 
+                </div>
+                <ul class="list-unstyled">
+                    <li><a href="http://en.whu.edu.cn" target="_blank">Wuhan University</a></li>
+                    <li><a href="http://cs.whu.edu.cn/cs2011/" target="_blank">Computer School of Wuhan University</a></li>
+                    <li><a href="http://sklse.whu.edu.cn/" target="_blank">State Key Laboratory of Software Engineering</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div id="RightsFooter">
+        <small>武汉大学互联网数据挖掘实验室 Copyright © 2015</small>
+    </div>
+</footer>
+{% end %}

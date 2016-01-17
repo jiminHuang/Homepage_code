@@ -1,0 +1,3 @@
+[submodule "tornado_email"]
+	path = tornado_email
+	url = git@github.com:windworship/tornado_email.git

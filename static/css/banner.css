@@ -1,0 +1,80 @@
+body{
+    font-family: 'Lato', Helvetica;
+    font-size: 15px;
+}
+#Banner{
+    background-color: #fff;
+    border: none;
+    padding: 30px;
+    margin-bottom:0px;
+    margin-top:30px;
+}
+#Banner .navbar-brand{
+    padding: 5px;
+}
+#Banner .navbar-brand img{
+    height: 40px; 
+}
+.navbar-left{
+    padding: 5px; 
+}
+.navbar-left img{
+    height: 40px;
+}
+@media screen and (max-width: 600px){
+    .navbar-left img{
+        height: 25px;
+        padding: 0;
+        margin-left: -15px;
+    }
+}
+.navbar-collapse .nav li a{
+    padding: 5px;
+    line-height: 40px;
+}
+.footer{
+    width: 100%;
+    margin-top: 60px;
+}
+#InfoFooter{
+    padding: 5px;
+}
+#InfoFooter .container>div{
+    height:200px;
+}
+#InfoFooter .banner{
+    line-height: 200px;
+}
+#InfoFooter .banner img{
+    width: 100%;
+    padding-right: 10%;
+    vertical-align: middle;
+}
+#InfoFooter .basic_info div{
+    margin-top: 5px;
+}
+#InfoFooter a{
+    color: #333;
+    font-weight: 700;
+}
+#InfoFooter .info_title{
+    color: #2ec3e7;
+    font-weight: bold;
+    margin-top:10px;
+}
+#InfoFooter .basic_info .info_title{
+    margin-top:10px;
+}
+#InfoFooter .related_links ul, #InfoFooter .related_links li{
+    margin-top:5px;
+}
+#RightsFooter{
+    min-height: 30px;
+}
+#RightsFooter small{
+    line-height: 30px;
+    color: #707070;
+    padding-right: 10px;
+    float:right;
+    height: 30px;
+}

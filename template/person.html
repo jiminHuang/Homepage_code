@@ -1,0 +1,175 @@
+{% extends "main.html" %}
+{% block css %}
+    <link href="{{ static_url("css/person.css") }}" rel="stylesheet">
+{% end %}
+{% block breadCrumb %}
+    <li class="active">{{person.firstname.capitalize()}} {{person.lastname.capitalize()}}</li>
+{% end %}
+{% block contentMain %}
+    <div class="person_image" id="BasicInfo">
+        <img src="{{static_url(person.image)}}" />
+    </div>
+    <div class="person_realname">{{person.firstname.capitalize()}} {{person.lastname.capitalize()}}</div>
+    <div class="person_type">{{person.type}}</div>
+    <hr/>
+    <section id="PersonalInfo">
+        <div class="section_title">PERSONAL INFORMATION</div>
+        <div class="sub_title">Address</div>
+        <div class="sub_info">
+            {% raw person.address%}
+        </div>
+        <div class="sub_title">Phone Number</div>
+        <div class="sub_info">
+            {{person.phone}}
+        </div>
+        <div class="sub_title">Email</div>
+        <div class="sub_info">
+            {{person.email}}
+        </div>
+    </section>
+    <hr/>
+    {% if person.biography %}
+    <section id="BIO">
+        <div class="section_title">BIO</div>
+        <div class="bio_text">
+            {{person.biography}}
+        </div>
+    </section>
+    <hr/>
+    {%end%}
+    <section id="EducationBackground">
+        <div class="section_title">EDUCATION BACKGROUND</div>
+        {% for background in person.backgrounds %}
+        <div class="sub_title">{{background.background_type}}</div>
+        <div class="duration">{{background.start_time}} - {{background.end_time}}</div>
+        <div class="sub_info">
+            {{background.background_type}} of {{background.major}}<br/>
+            {{background.facility}}
+        </div>
+        {% end %}
+    </section>
+    <hr/>
+    {% if person.experiences %}
+    <section id="WorkExperience">
+        <div class="section_title">WORK EXPERIENCE</div>
+        {% for experience in person.experiences %}
+        <div class="sub_title">{{ experience.position }}</div>
+        <div class="duration">{{ experience.start_time }} - {{experience.end_time}}</div>
+        <div class="sub_info">
+            {{experience.facility}}
+        </div>
+        {% end %}
+    </section>
+    <hr />
+    {% end %}
+    <section id="ScientificResearch">
+        <div class="section_title">SCIENTIFIC RESEARCH</div>
+        {% if person.interests %}
+        <div class="sub_title">Interests</div>
+            {% for interest in person.interests %}
+                <div class="research_field">
+                    {{interest.interests_name}}
+                </div>
+            {% end %}
+        {% end %}
+        {% if person.papers %}
+        <div class="sub_title" id="MainPublishedPapers">Main Published Papers</div>
+        {% for type in publisher_type %}
+        {% set type_list = [ p for p in person.papers if p.publisher.publisher_type == type]%}
+            <div class="para_title">{{type}}</div>
+            <div class="table-responsive">
+                <table class="table papers" id="{{type}}">
+                    <tbody>
+                        {%for paper in type_list%}
+                            <tr>
+                                <td>
+                                    <a href="/paper/{{paper.article_id}}" target="_blank">{{paper.title}}</a>
+                                </td>
+                                <td>{{paper.publisher.publisher_name}}</td>
+                                <td>{{paper.publish_year}}</td>
+                            </tr>
+                        {%end%}
+                    </tbody>
+                </table>
+            </div>
+        {%end%}
+        {% end %}
+        {% if person.projects %}
+        <div class="sub_title" id="MainItemsandResearch">Main Items and Research</div>
+        <div class="table-responsive">
+            <table class="table papers">
+                <tbody>
+                    {%for project in person.projects %}
+                        <tr>
+                            <td>
+                                {% if project.project_null is not None %}
+                                <a href="/project/{{project.project_id}}" target="_blank">{{project.project_name}}</a>
+                                {% else %}
+                                {{project.project_name}}
+                                {%end%}
+                            </td>
+                            <td>
+                                {% for item in project.item %}
+                                {{item.item_name}}
+                                {% if project.item.index(item) != len(project.item)-1%}<br/><br/>{%end%}
+                                {%end%}
+                            </td>
+                            <td>{{project.start_time}}</td>
+                            <td>{{project.end_time}}</td>
+                        </tr>
+                    {%end%}
+                </tbody>
+            </table>
+        </div>
+        {% end %}
+        {% if person.prizes %}
+        <div class="sub_title" id="ResearchPrize">Research Prize</div>
+        <div class="table-responsive">
+            <table class="table papers">
+                <tbody>
+                    {%for prize in person.prizes %}
+                        <tr>
+                            <td>
+                                {{prize.prize_ontology if prize.prize_ontology else prize.prize_name}}
+                            </td>
+                            <td>
+                                {{prize.prize_name}}
+                            </td>
+                            <td>{{prize.prize_facility}}</td>
+                            <td>{{prize.prize_year}}</td>
+                        </tr>
+                    {%end%}
+                </tbody>
+            </table>
+        </div>
+        {% end %}
+        {% if person.proprietaries %}
+        <div class="sub_title" id="Others">Main Patents and Copyrights</div>
+        {% for type in proprietary_type %}
+        {% set type_list = [p for p in person.proprietaries if p.proprietary_type == proprietary_type.index(type)]%}
+        {% if type_list %}
+        <div class="para_title">{{type}}</div>
+        <div class="table-responsive">
+            <table class="table papers">
+                <tbody>
+                    {%for proprietary in type_list %}
+                        <tr>
+                            <td>
+                                {{proprietary.proprietary_name}}
+                            </td>
+                            <td>
+                                {{proprietary.proprietary_facility}}
+                            </td>
+                            <td>{{proprietary.proprietary_no}}</td>
+                            <td>{{proprietary.proprietary_time}}</td>
+                        </tr>
+                    {%end%}
+                </tbody>
+            </table>
+        </div>
+        {% end %}
+        {% end %}
+        {% end %}
+    </section>
+    <hr />
+{% end %}

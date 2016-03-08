@@ -83,3 +83,11 @@ class TeamMemberModule(tornado.web.UIModule):
 
     def render(self, person):
         return self.render_string('module/teamMember.html', person=person)
+
+
+class ModelListItemModule(tornado.web.UIModule):
+    '''
+        模型列表页列表项模块
+    '''
+    def render(self, model):
+        return self.render_string('module\modelItem.html', model=model)

@@ -71,6 +71,13 @@
     </section>
     <hr/>
     {% end %}
+    {% if model %}
+    <section id="Model">
+        <div class="section_title">MODEL IN THIS PAPER</div>
+        <div class="model_name"><a href="/model/{{model.model_id}}" target="_blank">{{model.name}}</a></div>
+    </section>
+    <hr/>
+    {% end %}
     <section id="Download">
         {% if paper.in_press is not None %}
             <a class="btn btn-default disabled">

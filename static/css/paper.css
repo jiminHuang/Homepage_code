@@ -21,6 +21,20 @@
 #Abstract .abstract{
     text-align: justify;
 }
+#Model{
+
+}
+.model_name a{
+    background-color: #f5f5f5;
+}
+.model_name a:link,.model_name a:visited{
+    color: #4B4B4B;
+    text-decoration: none;
+}
+.model_name a:hover,.model_name a:active{
+    color: #242424;
+    text-decoration: underline;
+}
 #Download a, #Download a:hover, #Download a:visited{
     background-color: #2ec3e7;
     border-color: #2ec3e7;

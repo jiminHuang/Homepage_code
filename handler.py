@@ -24,7 +24,8 @@ class BaseHandler(tornado.web.RequestHandler):
 
     def write_error(self, status_code, **kwargs):
         try:
-            message = '\n'.join(traceback.format_exception(*kwargs['exc_info']))
+            message = \
+                '\n'.join(traceback.format_exception(*kwargs['exc_info']))
         except KeyError:
             message = str(status_code)
         email_sender.async_send(title="服务器错误", message=message)
@@ -207,10 +208,13 @@ class PaperHandler(BaseHandler):
 
         paper = database.Paper.chew(paper)
 
+        model = database.Model.get_in_refer(paper.article_id)
+
         self.render(
             "paper.html",
             page_title=paper.title,
             paper=paper,
+            model=model,
         )
 
 
@@ -310,3 +314,135 @@ class ProjectsHandler(BaseHandler):
         load_more = '-1' if len(projects) < 10 else str(int(query_num) + 1)
 
         self.write({'write_str': write_str, 'load_more': load_more})
+
+
+class ModelsHandler(BaseHandler):
+    '''
+        模型列表页面handler
+    '''
+
+    def get(self):
+        models = database.Model.query()
+        if models:
+            models = [database.Model.chew(model) for model in models]
+        self.render(
+            "models.html",
+            page_title="Models-WUIDML",
+            models=models,
+        )
+
+    def post(self):
+        query_num = self.get_argument('query_num', None)
+
+        if query_num is None:
+            self.write('failed')
+            return None
+
+        models = database.Model.query(int(query_num))
+
+        write_str =\
+            ''.join(
+                (
+                    self.render_string(
+                        'module/modelItem.html',
+                        model=database.Model.chew(model),
+                    ) for model in models
+                )
+            )
+
+        load_more = '-1' if len(models) < 10 else str(int(query_num) + 1)
+
+        self.write({'write_str': write_str, 'load_more': load_more})
+
+
+class ModelHandler(BaseHandler):
+    '''
+        模型展示页handler
+    '''
+    def get(self, model_id):
+
+        model = database.Model.get_in_model_id(model_id)
+        model = database.Model.chew(model)
+
+        paper = database.Paper.get(model.refer)
+        paper = database.Paper.chew(paper)
+
+        process = database.Process.get_in_proc_id(model.proc)
+        process = database.Process.chew(process)
+
+        experiments = database.Experiment.query(model_id)
+        if experiments:
+            experiments = (
+                [database.Experiment.chew(experiment)
+                    for experiment in experiments]
+            )
+
+        self.render(
+            "model.html",
+            page_title=model.name,
+            model=model,
+            paper=paper,
+            process=process,
+            experiments=experiments,
+        )
+
+
+class ExperimentHandler(BaseHandler):
+    '''
+        单个模型实验效果展示页handler
+    '''
+    def get(self, exp_id):
+
+        model_id = self.get_argument("model_id", 0)
+
+        experiment = database.Experiment.get_in_exp_id(exp_id)
+        experiment = database.Experiment.chew(experiment)
+
+        model = database.Model.get_in_model_id(model_id)
+        model = database.Model.chew(model)
+
+        datasets = database.Dataset.query_in_model_id(model_id)
+        if not datasets:  # 若按照model_id取出来记录为空，则说明用exp_id标注
+            datasets = database.Dataset.query_in_exp_id(exp_id)
+        if datasets:
+            datasets = (
+                [database.Dataset.chew(dataset)
+                    for dataset in datasets]
+            )
+
+        evaluations = database.Evaluation.query(exp_id)
+        if evaluations:
+            evaluations = (
+                [database.Evaluation.chew(evaluation)
+                    for evaluation in evaluations]
+            )
+
+        baselines = database.Baseline.query(exp_id)
+        if baselines:
+            baselines = (
+                [database.Baseline.chew(baseline)
+                    for baseline in baselines]
+            )
+
+        results = database.Result.query(exp_id)
+        if results:
+            results = (
+                [database.Result.chew(result)
+                    for result in results]
+            )
+
+        self.render(
+            "experiment.html",
+            page_title=experiment.exp_name,
+            experiment=experiment,
+            datasets=datasets,
+            evaluations=evaluations,
+            baselines=baselines,
+            results=results,
+            model=model,
+        )
+
+    def post(self):
+        '''
+            接收客户请求做出相应显示
+        '''

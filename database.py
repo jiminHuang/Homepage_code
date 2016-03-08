@@ -8,6 +8,7 @@
     数据层文件
     包括持久化和操作
 '''
+
 import torndb
 import config
 import logging
@@ -714,3 +715,317 @@ class Proprietary(object):
         proprietary.proprietary_time =\
             chewer.strftime_present("%Y", proprietary.proprietary_time)
         return proprietary
+
+
+class Model(object):
+    '''
+        model表持久化
+    '''
+    db = 'homepage'
+
+    @classmethod
+    @get_connection
+    def get_in_model_id(cls, connection, model_id):
+        '''
+            按model_id取单条记录
+        '''
+        sql = \
+            (
+                'SELECT * FROM model WHERE model_id = %s'
+            )
+        return connection.get(sql, model_id)
+
+    @classmethod
+    @get_connection
+    def get_in_refer(cls, connection, refer):
+        '''
+            按所属论文id取单条记录（一一对应）
+        '''
+        sql = \
+            (
+                'SELECT * FROM model WHERE refer = %s'
+            )
+        return connection.get(sql, refer)
+
+    @classmethod
+    @get_connection
+    def query(cls, connection, query_num=1):
+        '''
+            直接返回全部model记录
+            query_num表示显示次数，即第几次显示
+        '''
+        entry_number = 10  # 每次显示的记录数目
+        query_num = query_num if query_num >= 1 else 1
+
+        sql = (
+            'SELECT * FROM model LIMIT {start}, {end}'
+        ).format(
+            start=(query_num - 1) * entry_number,
+            end=query_num * entry_number,
+        )
+
+        return connection.query(sql)
+
+    @classmethod
+    @get_connection
+    def query_in_time_order(cls, connection, query_num=1):
+        '''
+            按照所属论文的发表时间进行排序返回记录集
+        '''
+        entry_number = 10  # 每次显示的记录数目
+        query_num = query_num if query_num >= 1 else 1
+
+        sql = (
+            'SELECT * '
+            'FROM paper '
+            'NATURAL JOIN model '
+            'ORDER BY publish_year DESC'
+            'LIMIT {start}, {end}'
+        ).format(
+            start=(query_num - 1) * entry_number,
+            end=query_num * entry_number,
+        )
+        return connection.query(sql)
+
+    @classmethod
+    def chew(cls, model):
+        '''
+            model 处理函数
+        '''
+        application = Application.get_in_app_id(model.app)
+        if application:
+            model.app = application.app_type
+        else:
+            model.app = 'Not Classified Yet'
+
+        return model
+
+
+class Application(object):
+    '''
+        模型所属类别 application表持久化
+    '''
+    db = 'homepage'
+    # APPLICATION_TYPE = ['', '', '']
+
+    @classmethod
+    @get_connection
+    def get_in_app_id(cls, connection, app_id):
+        '''
+            按app_id取类别记录
+        '''
+        sql = 'SELECT * FROM model_application WHERE app_id = %s'
+        return connection.get(sql, app_id)
+
+    @classmethod
+    def chew(cls, application):
+        '''
+            application 处理函数
+        '''
+
+        return application
+
+
+class Baseline(object):
+    '''
+        baseline表持久化
+    '''
+    db = 'homepage'
+
+    @classmethod
+    @get_connection
+    def get_in_base_id(cls, connection, base_id):
+        '''
+            按base_id获取单条记录
+        '''
+        sql = 'SELECT * FROM model_baseline WHERE base_id = %s'
+        return connection.get(sql, base_id)
+
+    @classmethod
+    @get_connection
+    def query(cls, connection, exp_id):
+        '''
+            按exp_id所属实验获取属于该实验的baseline记录
+        '''
+        sql = 'SELECT * FROM model_baseline WHERE exp_id = %s'
+        return connection.query(sql, exp_id)
+
+    @classmethod
+    def chew(cls, baseline):
+        '''
+            baseline 处理函数
+        '''
+
+        return baseline
+
+
+class Dataset(object):
+    '''
+        dataset表持久化
+    '''
+    db = 'homepage'
+
+    @classmethod
+    @get_connection
+    def get_in_data_id(cls, connection, data_id):
+        '''
+            按data_id取单条记录
+        '''
+        sql = 'SELECT * FROM model_dataset WHERE data_id = %s'
+        return connection.get(sql, data_id)
+
+    @classmethod
+    @get_connection
+    def query_in_model_id(cls, connection, model_id):
+        '''
+            按model_id所属模型获取属于该模型的dataset记录
+        '''
+        sql = 'SELECT * FROM model_dataset WHERE model_id = %s'
+        return connection.query(sql, model_id)
+
+    @classmethod
+    @get_connection
+    def query_in_exp_id(cls, connection, exp_id):
+        '''
+            按exp_id所属实验获取属于该实验的dataset记录
+        '''
+        sql = 'SELECT * FROM model_dataset WHERE exp_id = %s'
+        return connection.query(sql, exp_id)
+
+    @classmethod
+    def chew(cls, dataset):
+        '''
+            dataset 处理函数
+        '''
+
+        return dataset
+
+
+class Evaluation(object):
+    '''
+        评估信息evaluation表持久化
+    '''
+    db = 'homepage'
+
+    @classmethod
+    @get_connection
+    def get_in_evl_id(cls, connection, evl_id):
+        '''
+            按evl_id取单条记录
+        '''
+        sql = 'SELECT * FROM model_evaluation WHERE evl_id = %s'
+        return connection.get(sql, evl_id)
+
+    @classmethod
+    @get_connection
+    def query(cls, connection, exp_id):
+        '''
+            按exp_id所属实验获取属于该实验的evaluation记录
+        '''
+        sql = 'SELECT * FROM model_evaluation WHERE exp_id = %s'
+        return connection.query(sql, exp_id)
+
+    @classmethod
+    def chew(cls, evaluation):
+        '''
+            evaluation 处理函数
+        '''
+
+        return evaluation
+
+
+class Result(object):
+    '''
+        实验结果信息result表持久化
+    '''
+    db = 'homepage'
+
+    @classmethod
+    @get_connection
+    def get_in_result_id(cls, connection, result_id):
+        '''
+            按result_id取单条记录
+        '''
+        sql = 'SELECT * FROM model_result WHERE result_id = %s'
+        return connection.get(sql, result_id)
+
+    @classmethod
+    @get_connection
+    def query(cls, connection, exp_id):
+        '''
+            按exp_id所属实验获取属于该实验的result记录
+        '''
+        sql = 'SELECT * FROM model_result WHERE exp_id = %s'
+        return connection.query(sql, exp_id)
+
+    @classmethod
+    def chew(cls, result):
+        '''
+            result 处理函数
+        '''
+        result.result_pic = \
+            chewer.static_image('result/' + str(result.result_id))
+
+        return result
+
+
+class Experiment(object):
+    '''
+        experiment表持久化
+    '''
+    db = 'homepage'
+
+    @classmethod
+    @get_connection
+    def get_in_exp_id(cls, connection, exp_id):
+        '''
+            按exp_id取单条记录
+        '''
+        sql = 'SELECT * FROM model_experiment WHERE exp_id = %s'
+        return connection.get(sql, exp_id)
+
+    @classmethod
+    @get_connection
+    def query(cls, connection, model_id):
+        '''
+            按model_id所属模型获取属于该模型的实验记录，一条或多条
+        '''
+        sql = 'SELECT * FROM model_experiment WHERE model_id = %s'
+        return connection.query(sql, model_id)
+
+    @classmethod
+    def chew(cls, experiment):
+        '''
+            experiment 处理函数
+        '''
+
+        return experiment
+
+
+class Process(object):
+    '''
+        模型详细信息process表持久化
+    '''
+    db = 'homepage'
+
+    @classmethod
+    @get_connection
+    def get_in_proc_id(cls, connection, proc_id):
+        '''
+            按proc_id取单条记录
+        '''
+        sql = 'SELECT * FROM model_process WHERE proc_id = %s'
+        return connection.get(sql, proc_id)
+
+    @classmethod
+    def chew(cls, process):
+        '''
+            process 处理函数
+        '''
+        if process.proc_pic:
+            process.proc_pic = \
+                chewer.static_image('process/' + str(process.proc_id))
+        else:
+            process.proc_pic = ''
+
+        return process

@@ -9,6 +9,7 @@ import config
 
 settings = {
     'debug': True,  # 调试选项，开启后每一次源文件的更改将会自动重启服务器(而不需要手动操作)
+    'autoescape': None,  # 新添加，不知会妨碍原程序与否
     'login_url': '/login',
     'cookie_secret': config.Config.COOKIE_SECRET,
     'static_path': config.Config.get_local_position('static'),
@@ -21,6 +22,7 @@ settings = {
         'ProjectItem': modules.ProjectListItemModule,
         'TeamSelector': modules.TeamSelectorModule,
         'TeamMember': modules.TeamMemberModule,
+        'ModelItem': modules.ModelListItemModule,
     }
-    #'log_file_prefix': '8888.log',
+    # 'log_file_prefix': '8888.log',
 }

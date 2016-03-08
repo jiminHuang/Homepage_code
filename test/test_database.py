@@ -632,3 +632,274 @@ class TestPersistence(object):
 
         proprietary = database.Proprietary.chew(mock_proprietary)
         assert_equal(proprietary.proprietary_time, '2015')
+
+    def test_model_get_in_model_id(self):
+        # 构建mock
+        mock_model = mock.Mock()
+        self.mock_db.get.return_value = mock_model
+
+        model = database.Model.get_in_model_id(1)
+        self.mock_db.get.assert_called_with(
+            (
+                'SELECT * FROM model WHERE model_id = %s'
+            ),
+            1,
+        )
+        assert_equal(model, mock_model)
+
+    def test_model_get_in_refer(self):
+        # 构建mock
+        mock_model = mock.Mock()
+        self.mock_db.get.return_value = mock_model
+
+        model = database.Model.get_in_refer(1)
+        self.mock_db.get.assert_called_with(
+            (
+                'SELECT * FROM model WHERE refer = %s'
+            ),
+            1,
+        )
+        assert_equal(model, mock_model)
+
+    def test_model_query(self):
+        # 构建mock
+        mock_model = mock.Mock()
+        self.mock_db.query.return_value = [mock_model]
+
+        models = database.Model.query()
+        self.mock_db.query.assert_called_with(
+            (
+                'SELECT * FROM model LIMIT 0, 10'
+            )
+        )
+        assert_equal(models, [mock_model])
+
+    def test_model_query_in_time_order(self):
+        # 构建mock
+        mock_model = mock.Mock()
+        self.mock_db.query.return_value = [mock_model]
+
+        models = database.Model.query_in_time_order()
+        self.mock_db.query.assert_called_with(
+            (
+                'SELECT * '
+                'FROM paper '
+                'NATURAL JOIN model '
+                'ORDER BY publish_year DESC'
+                'LIMIT 0, 10'
+            )
+        )
+        assert_equal(models, [mock_model])
+
+    def test_model_chew(self):
+        # 构建mock
+        mock_model = mock.Mock()
+        mock_model.app = 1
+
+        with mock.patch('database.Application.get_in_app_id') as app:
+            application = app(1)
+            model = database.Model.chew(mock_model)
+            database.Application.get_in_app_id.assert_called_with(1)
+            assert_equal(model.app, application.app_type)
+
+    def test_application_get_in_app_id(self):
+        # 构建mock
+        mock_application = mock.Mock()
+        self.mock_db.get.return_value = mock_application
+
+        application = database.Application.get_in_app_id(1)
+        self.mock_db.get.assert_called_with(
+            (
+                'SELECT * FROM model_application WHERE app_id = %s'
+            ),
+            1,
+        )
+        assert_equal(application, mock_application)
+
+    # def test_application_chew(self):
+        # 构建mock
+        # mock_application = mock.Mock()
+
+    def test_baseline_get_in_base_id(self):
+        # 构建mock
+        mock_baseline = mock.Mock()
+        self.mock_db.get.return_value = mock_baseline
+
+        baseline = database.Baseline.get_in_base_id(1)
+        self.mock_db.get.assert_called_with(
+            (
+                'SELECT * FROM model_baseline WHERE base_id = %s'
+            ),
+            1,
+        )
+        assert_equal(baseline, mock_baseline)
+
+    def test_baseline_query(self):
+        # 构建mock
+        mock_baseline = mock.Mock()
+        self.mock_db.query.return_value = [mock_baseline]
+
+        baselines = database.Baseline.query(1)
+        self.mock_db.query.assert_called_with(
+            (
+                'SELECT * FROM model_baseline WHERE exp_id = %s'
+            ),
+            1,
+        )
+        assert_equal(baselines, [mock_baseline])
+
+    def test_dataset_get_in_data_id(self):
+        # 构建mock
+        mock_dataset = mock.Mock()
+        self.mock_db.get.return_value = mock_dataset
+
+        dataset = database.Dataset.get_in_data_id(1)
+        self.mock_db.get.assert_called_with(
+            (
+                'SELECT * FROM model_dataset WHERE data_id = %s'
+            ),
+            1,
+        )
+        assert_equal(dataset, mock_dataset)
+
+    def test_dataset_query_in_model_id(self):
+        # 构建mock
+        mock_dataset = mock.Mock()
+        self.mock_db.query.return_value = [mock_dataset]
+
+        datasets = database.Dataset.query_in_model_id(1)
+        self.mock_db.query.assert_called_with(
+            (
+                'SELECT * FROM model_dataset WHERE model_id = %s'
+            ),
+            1,
+        )
+        assert_equal(datasets, [mock_dataset])
+
+    def test_dataset_query_in_exp_id(self):
+        # 构建mock
+        mock_dataset = mock.Mock()
+        self.mock_db.query.return_value = [mock_dataset]
+
+        datasets = database.Dataset.query_in_exp_id(1)
+        self.mock_db.query.assert_called_with(
+            (
+                'SELECT * FROM model_dataset WHERE exp_id = %s'
+            ),
+            1,
+        )
+        assert_equal(datasets, [mock_dataset])
+
+    def test_evaluation_get_in_evl_id(self):
+        # 构建mock
+        mock_evaluation = mock.Mock()
+        self.mock_db.get.return_value = mock_evaluation
+
+        evaluation = database.Evaluation.get_in_evl_id(1)
+        self.mock_db.get.assert_called_with(
+            (
+                'SELECT * FROM model_evaluation WHERE evl_id = %s'
+            ),
+            1,
+        )
+        assert_equal(evaluation, mock_evaluation)
+
+    def test_evaluation_query(self):
+        # 构建mock
+        mock_evaluation = mock.Mock()
+        self.mock_db.query.return_value = [mock_evaluation]
+
+        evaluations = database.Evaluation.query(1)
+        self.mock_db.query.assert_called_with(
+            (
+                'SELECT * FROM model_evaluation WHERE exp_id = %s'
+            ),
+            1,
+        )
+        assert_equal(evaluations, [mock_evaluation])
+
+    def test_result_get_in_result_id(self):
+        # 构建mock
+        mock_result = mock.Mock()
+        self.mock_db.get.return_value = mock_result
+
+        result = database.Result.get_in_result_id(1)
+        self.mock_db.get.assert_called_with(
+            (
+                'SELECT * FROM model_result WHERE result_id = %s'
+            ),
+            1,
+        )
+        assert_equal(result, mock_result)
+
+    def test_result_query(self):
+        # 构建mock
+        mock_result = mock.Mock()
+        self.mock_db.query.return_value = [mock_result]
+
+        results = database.Result.query(1)
+        self.mock_db.query.assert_called_with(
+            (
+                'SELECT * FROM model_result WHERE exp_id = %s'
+            ),
+            1,
+        )
+        assert_equal(results, [mock_result])
+
+    def test_result_chew(self):
+        # 构建mock
+        mock_result = mock.Mock()
+        mock_result.result_id = 1
+
+        database.Result.chew(mock_result)
+        assert_equal(mock_result.result_pic, 'img/result/1.jpeg')
+
+    def test_experiment_get_in_exp_id(self):
+        # 构建mock
+        mock_experiment = mock.Mock()
+        self.mock_db.get.return_value = mock_experiment
+
+        experiment = database.Experiment.get_in_exp_id(1)
+        self.mock_db.get.assert_called_with(
+            (
+                'SELECT * FROM model_experiment WHERE exp_id = %s'
+            ),
+            1,
+        )
+        assert_equal(experiment, mock_experiment)
+
+    def test_experiment_query(self):
+        # 构建mock
+        mock_experiment = mock.Mock()
+        self.mock_db.query.return_value = [mock_experiment]
+
+        experiments = database.Experiment.query(1)
+        self.mock_db.query.assert_called_with(
+            (
+                'SELECT * FROM model_experiment WHERE model_id = %s'
+            ),
+            1,
+        )
+        assert_equal(experiments, [mock_experiment])
+
+    def test_process_get_proc_id(self):
+        # 构建mock
+        mock_process = mock.Mock()
+        self.mock_db.get.return_value = mock_process
+
+        process = database.Process.get_in_proc_id(1)
+        self.mock_db.get.assert_called_with(
+            (
+                'SELECT * FROM model_process WHERE proc_id = %s'
+            ),
+            1,
+        )
+        assert_equal(process, mock_process)
+
+    def test_process_chew(self):
+        # 构建mock
+        mock_process = mock.Mock()
+        mock_process.proc_id = 1
+
+        database.Process.chew(mock_process)
+        assert_equal(mock_process.proc_pic, 'img/process/1.jpeg')

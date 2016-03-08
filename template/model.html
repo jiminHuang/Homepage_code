@@ -1,0 +1,60 @@
+{% extends "main.html" %}
+{% block css %}
+    <link href="{{ static_url("css/model.css") }}" rel="stylesheet">
+{% end %}
+{% block breadCrumb %}
+    <li><a href="/models" target="_blank">Models</a></li>
+    <li class="active">{{model.name}}</li>
+{% end %}
+{% block contentMain %}
+    <div class="model_name">
+        {{model.name}}
+    </div>
+    <hr/>
+    <section id="BasicInfo">
+        <div>
+            <div class="section_title">INFO</div>
+            <div class="subtitle">REFERENCE</div>
+            <div class="refer"> <a href="/paper/{{paper.article_id}}" target="_blank"><I>{{paper.title}}</I></a></div>
+        </div>
+
+        <div>
+        <div class="subtitle">APPLICATION</div>
+        <div class="application">{{model.app}}</div>
+        </div>
+
+        <div>
+        <div class="subtitle">OBJECTIVE</div>
+        <div class="goal">{{model.goal}}</div>
+        </div>
+
+        <div>
+        <div class="subtitle">PROCEDURE</div>
+        <div class="proc_info">{{process.proc_info}}</div>
+
+        {% if process.proc_pic %}
+            <div class="proc_pic">
+                <p class="desc">PROCEDURE FLOW CHART</p>
+                <img src="{{static_url(process.proc_pic)}}">
+            </div>
+        {% end %}
+        </div>
+        
+    </section>
+    
+    {% if experiments %}
+    <hr/>
+    <section id="Experiment">
+        <div class="section_title">EXPERIMENT</div>
+        <div class="exp_list">
+            
+            {% for experiment in experiments %}
+            <li>
+                <a href="/experiment/{{experiment.exp_id}}?model_id={{model.model_id}}">{{experiment.exp_name}}</a>
+            </li>
+            {% end %}
+            
+        </div>
+    </section>
+    {% end %}
+{% end %}

@@ -1,0 +1,93 @@
+{% extends "main.html" %}
+{% block css %}
+    <link href="{{ static_url("css/experiment.css") }}" rel="stylesheet">
+{% end %}
+{% block breadCrumb %}
+    <li><a href="/models" target="_blank">Models</a></li>
+    <li class="active"><a href="/model/{{model.model_id}}">{{model.name}}</a></li>
+{% end %}
+{% block contentMain %}
+    <div class="exp_name">
+        {{experiment.exp_name}}
+    </div>
+    <hr/>
+    {% if datasets %}
+    <section id="DataSets">
+        <div>
+            <div class="section_title">DATA SETS</div>
+            
+            {% for dataset in datasets %}
+            
+                <div class="subtitle">{{dataset.data_name}}</div>
+                <p>{{dataset.data_info}}</p>
+                {% if dataset.data_url %}
+                <div class="dataset_link"><a href="{{dataset.data_url}}" target="_blank">LINK</a></div>
+                {% end %}
+            
+            {% end %}
+            {% if dataset.data_pic %}
+            <div class="dataset_pic">
+                <p class="desc">miaoshu?</p>
+                <img src="{{static_url(dataset.data_pic)}}">
+            </div>
+            {% end %}
+        </div>
+    </section>
+    <hr/>
+    {% end %}
+
+    {% if experiment.exp_parameter %}
+    <section id="ParaSetting">
+        <div class="section_title">PARAMETER SETTING</div>
+        <p>{{experiment.exp_parameter}}</p>
+    </section>
+    <hr/>
+    {% end %}
+
+    {% if evaluations %}
+    <section id="EvlMearures">
+        <div class="section_title">EVALUATION MEARSURES</div>
+        <div>
+            {% for evaluation in evaluations %}
+                <div class="subtitle">{{evaluation.evl_name}}</div>
+                {% if evaluation.evl_formul %}
+                    {{evaluation.evl_formul}}
+                {% end %}
+                <p>{{evaluation.evl_info}}</p>
+            
+            {% end %}
+        </div>
+    </section>
+    <hr/>
+    {% end %}
+
+    {% if baselines %}
+    <section id="EvlMear">
+        <div class="section_title">BASELINES</div>
+        <div>
+        {% for baseline in baselines %}
+            <div class="subtitle">{{baseline.base_name}}</div>
+            <div class="base_info">{{baseline.base_info}}</div>
+            {% if baseline.base_refer %}
+                <div class="base_refer">Referrence: <em>{{baseline.base_refer}}</em></div>
+            {% end %}
+            
+        {% end %}
+        </div>
+    </section>
+    <hr/>
+    {% end %}
+
+    {% if results %}
+    <section id="EvlMear">
+        <div class="section_title">EXPERIMENTAL RESULTS</div>
+        {% for result in results %}
+            <div class="results">
+                <div class="result_pic"><img src="{{static_url(result.result_pic)}}"></div>
+                <div class="result_desc"><b>DESCRIPTION:</b><P>{{result.result_info}}</P></div>
+                <br>
+            </div>
+        {% end %}   
+    </section>
+    {% end %}
+{% end %}

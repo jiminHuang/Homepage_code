@@ -1,0 +1,22 @@
+.model_heading{
+    font-size: 1.8em;
+}
+.model_heading a {
+    color:#000;
+    text-decoration:none;
+    background-color:transparent;
+}
+.model_heading a:hover,a:active {
+    outline:0;
+}
+.model-info {
+    padding-top: 10px;
+}
+.model_type {
+    padding: 4px 0;
+    background-color: #f5f5f5;
+}
+.model_goal {
+    padding: 10px 0;
+    text-align: justify;
+}
